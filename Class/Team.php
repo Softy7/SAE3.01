@@ -23,5 +23,6 @@ class Team {
             $list[$i] = $this->listPlayer[$i];
         }
         $this->listPlayer = $list;
+
     }
 }
