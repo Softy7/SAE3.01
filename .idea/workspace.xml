@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bdd65b78-5af1-403b-86d7-bd81230b303c" name="Changes" comment="Voilà" />
+    <list default="true" id="bdd65b78-5af1-403b-86d7-bd81230b303c" name="Changes" comment="Voilà">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <list id="ca555039-e4fc-4180-9118-0f36fbd30159" name="Changes by f15s7" comment="">
       <change beforePath="$PROJECT_DIR$/Class/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Member.php" afterDir="false" />
     </list>
@@ -13,6 +15,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ChangesViewManager" show_ignored="true" />
   <component name="ComposerSettings">
     <execution />
   </component>
@@ -103,7 +106,9 @@
       <workItem from="1695121380083" duration="1000" />
       <workItem from="1695122578699" duration="3000" />
       <workItem from="1695126432682" duration="7959000" />
-      <workItem from="1695201565496" duration="1839000" />
+      <workItem from="1695201565496" duration="3170000" />
+      <workItem from="1695206036520" duration="9000" />
+      <workItem from="1695211983139" duration="307000" />
     </task>
     <task id="LOCAL-00001" summary="Ajout des classes Admin et Guy">
       <option name="closed" value="true" />
@@ -137,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695203924358</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Voilà">
+      <option name="closed" value="true" />
+      <created>1695204072471</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1695204072471</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
