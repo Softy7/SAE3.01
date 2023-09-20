@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bdd65b78-5af1-403b-86d7-bd81230b303c" name="Changes" comment="Ajout des classes Admin et Guy">
-      <change afterPath="$PROJECT_DIR$/Class/Capitain.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Class/test.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/Administrator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Administrator.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/Guy.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Member.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/Player.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Player.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/Team.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Team.php" afterDir="false" />
-    </list>
+    <list default="true" id="bdd65b78-5af1-403b-86d7-bd81230b303c" name="Changes" comment="Voilà" />
     <list id="ca555039-e4fc-4180-9118-0f36fbd30159" name="Changes by f15s7" comment="">
-      <change beforePath="$PROJECT_DIR$/Class/Guy.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Member.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/Member.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Member.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,14 +40,6 @@
         <option name="url" value="https://github.com/Softy7/SAE3.01.git" />
       </UrlAndAccount>
     </option>
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/Class/Member.php">
-      <ranges>
-        <range start1="2" end1="3" start2="2" end2="3" changelist="bdd65b78-5af1-403b-86d7-bd81230b303c" />
-        <range start1="20" end1="20" start2="20" end2="34" changelist="ca555039-e4fc-4180-9118-0f36fbd30159" />
-      </ranges>
-    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -119,7 +103,7 @@
       <workItem from="1695121380083" duration="1000" />
       <workItem from="1695122578699" duration="3000" />
       <workItem from="1695126432682" duration="7959000" />
-      <workItem from="1695201565496" duration="1223000" />
+      <workItem from="1695201565496" duration="1839000" />
     </task>
     <task id="LOCAL-00001" summary="Ajout des classes Admin et Guy">
       <option name="closed" value="true" />
@@ -145,7 +129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695031345297</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Voilà">
+      <option name="closed" value="true" />
+      <created>1695203924358</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695203924358</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,6 +168,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajout des classes Admin et Guy" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout des classes Admin et Guy" />
+    <MESSAGE value="Voilà" />
+    <option name="LAST_COMMIT_MESSAGE" value="Voilà" />
   </component>
 </project>

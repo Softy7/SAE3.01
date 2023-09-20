@@ -23,5 +23,4 @@ class Capitain extends Player {
 
         $this->team :: addPlayer(sceachPlayer($namePlayer)) ;
     }
-
 }
