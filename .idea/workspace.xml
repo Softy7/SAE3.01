@@ -4,9 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bdd65b78-5af1-403b-86d7-bd81230b303c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Accueil/connexion.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Accueil/verif.php" afterDir="false" />
+    <list default="true" id="bdd65b78-5af1-403b-86d7-bd81230b303c" name="Changes" comment="Ajout des classes Admin et Guy">
+      <change afterPath="$PROJECT_DIR$/Class/Capitain.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/test.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/Administrator.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Administrator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/Guy.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Member.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/Player.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Player.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/Team.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Team.php" afterDir="false" />
+    </list>
+    <list id="ca555039-e4fc-4180-9118-0f36fbd30159" name="Changes by f15s7" comment="">
+      <change beforePath="$PROJECT_DIR$/Class/Guy.php" beforeDir="false" afterPath="$PROJECT_DIR$/Class/Member.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +35,28 @@
     <branch-grouping />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Softy7&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="5a02628d-c35e-4c4b-9d61-279f3ac48420" />
+        <option name="url" value="https://github.com/Softy7/SAE3.01.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/Class/Member.php">
+      <ranges>
+        <range start1="2" end1="3" start2="2" end2="3" changelist="bdd65b78-5af1-403b-86d7-bd81230b303c" />
+        <range start1="20" end1="20" start2="20" end2="34" changelist="ca555039-e4fc-4180-9118-0f36fbd30159" />
+      </ranges>
+    </file>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -40,22 +70,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/ewanr/PhpstormProjects/SAE3.01",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ewanr/PhpstormProjects/SAE3.01&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ewanr\PhpstormProjects\SAE3.01\Accueil" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="console.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+      <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/e2a096bb-7ccf-480f-8f9c-183c10714397/console.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -66,8 +113,39 @@
       <updated>1695021046461</updated>
       <workItem from="1695021047462" duration="864000" />
       <workItem from="1695025026424" duration="1278000" />
-      <workItem from="1695027476791" duration="851000" />
+      <workItem from="1695027476791" duration="3359000" />
+      <workItem from="1695039074456" duration="739000" />
+      <workItem from="1695109571594" duration="8628000" />
+      <workItem from="1695121380083" duration="1000" />
+      <workItem from="1695122578699" duration="3000" />
+      <workItem from="1695126432682" duration="7959000" />
+      <workItem from="1695201565496" duration="1223000" />
     </task>
+    <task id="LOCAL-00001" summary="Ajout des classes Admin et Guy">
+      <option name="closed" value="true" />
+      <created>1695030431778</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1695030431778</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Ajout des classes Admin et Guy">
+      <option name="closed" value="true" />
+      <created>1695031264713</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1695031264713</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Ajout des classes Admin et Guy">
+      <option name="closed" value="true" />
+      <created>1695031345297</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1695031345297</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -95,5 +173,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Ajout des classes Admin et Guy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout des classes Admin et Guy" />
   </component>
 </project>

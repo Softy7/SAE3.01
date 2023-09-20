@@ -2,27 +2,26 @@
 
 require 'Player.php';
 class Team {
+    public $name;
     public $capitain;
-    public $listPlayer=array();
+    public $listPlayer;
 
-    public function __construct() {
-
+    public function __construct($name) {
+        $this->listPlayer = array();
+        $this->name = $name;
     }
-
-    public function setCapitain($capi)
-    {
+    function setCapitain($capi) {
         $this->capitain = $capi;
     }
 
-    public function addPlayer($player){
+    function addPlayer($player) {
         $this->listPlayer[-1] = $player;
     }
-    public function removePlayer($player) {
+    function removePlayer($player) {
         $list = array();
         for ($i = 0; $i < count($this->listPlayer)-1; $i++) {
             $list[$i] = $this->listPlayer[$i];
         }
         $this->listPlayer = $list;
-
     }
 }
