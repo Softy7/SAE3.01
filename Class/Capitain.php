@@ -14,13 +14,16 @@ class Capitain extends Player {
     }
 
     function sceachPlayer($namePlayer){
-        $bdd = new PDO('postgres:host=localhost;dbname=iutinfo263', 'iutinfo263', '5mTvGJJk');
+        $bdd = new PDO('pgsql:host=localhost;dbname=iutinfo263', 'iutinfo263', '5mTvGJJk');
         $scearchName=$bdd->exec("SELECT FirstName FROM Membre WHERE FirstName=$namePlayer");
         fetchAll($scearchName);
     }
 
     function addPlayer($namePlayer){
-
-        $this->team :: addPlayer(sceachPlayer($namePlayer)) ;
+        $this->team :: addPlayer(sceachPlayer);
     }
+
+
+
+
 }
