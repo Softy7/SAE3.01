@@ -1,0 +1,20 @@
+body{
+    background-image : url('https://th.bing.com/th/id/OIP.qqU8ZqlwL9F1cxu3O5vFTgHaEK?pid=ImgDet&rs=1');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+h1{
+    color: white;
+}
+h2{
+    color: white;
+}
+p{
+    color: white;
+}
+header{
+    position: fixed;
+    right: 50px;
+}
