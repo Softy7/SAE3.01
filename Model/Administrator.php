@@ -30,5 +30,16 @@ class Administrator extends Member {
             return true;
         } return false;
     }
+    function createMatch($team1,$team2,$parcour) {
+        $match = new Match($team1,$team2,$parcour);
+        $team1->setMatch($match);
+        $team2->setMatch($match);
+    }
+    function gestionMatch($match) {
+        $match->setChole();
+    }
+    function setScore($match) {
+        $match->setGoal();
+    }
 
 }

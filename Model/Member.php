@@ -1,5 +1,5 @@
 <?php
-
+require "CheckConnect.php";
 class Member {
     public $username;
     private $mail;
@@ -59,5 +59,12 @@ class Member {
 
     public function setIsRegistering() {
         $this->isRegistering = !$this->isRegistering;
+    }
+
+    public function unregisterMember(Member $member,CheckConnect $bdd, String $user, String $password){
+        unset($member);
+        $request = $bdd->prepare("DELETE * FROM guests WHERE username = '$user' AND password = '$password' AND isRegistering = false");
+        $request->execute();
+
     }
 }
