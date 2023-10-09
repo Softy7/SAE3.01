@@ -1,15 +1,15 @@
 <?php
-require 'Team.php';
-require 'Player.php';
+include_once('Team.php');
+include_once('Player.php');
 class Capitain extends Player {
-    public $team;
+    public Team $team;
     function __construct($un, $m, $n, $fn, $b, $p)
     {
         parent::__construct($un, $m, $n, $fn, $b, $p);
     }
 
     function createTeam() {
-        $this->team = new Team();
+        $this->team = new Team("$this->username Team");
         $this->team->setCapitain($this);
     }
 
@@ -17,9 +17,9 @@ class Capitain extends Player {
         /*
          * dois pouvoir voir la liste de joueur
          * condition si joueur choisi
-         *   retirer joueur
+         *     retirer joueur
          * sinon
-         *   ajouter joueur
+         *     ajouter joueur
          */
     }
 
@@ -29,12 +29,14 @@ class Capitain extends Player {
 
     function searchPlayer($search): array{
         $players = array();
-        $bdd = new PDO ("pgsql:host=iutinfo-sgbd;dbname=iutinfo263",'iutinfo263','5mTvGJJk');
+        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
         $lines = array("username", "name", "firstname");
         for ($i=0; $i<3; $i++) {
             $SUN = $bdd->prepare("SELECT username, name, firstname, team 
                                         FROM Guests 
-                                        WHERE $lines[i] = '$search'");
+                                        WHERE :lines = :search");
+            $SUN->bindParam(':lines',$lines[i]);
+            $SUN->bindParam(':search',$search);
             $SUN->execute();
             $SUN = $SUN->fetchAll();
             foreach ($SUN as $row) {

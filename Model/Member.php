@@ -1,5 +1,4 @@
 <?php
-require "CheckConnect.php";
 class Member {
     public $username;
     private $mail;
@@ -49,22 +48,24 @@ class Member {
         return $this->password;
     }
 
-    function wantBecomePlayer() {
-        $this->isRegistering = true;
-        /*mail($this->mail, "Inscription", "Bonjour,`\n Vous avez soumis votre inscription
-        pour le tournoi de Chôlage. Nos administrateurs vont vérifier vos informations et valider ou réfuter votre 
-        inscription, le cas échéant, vous recevrez un mail de confirmation. Nous vous remercions de votre inscription et 
-        espérons vous recevoir très vite pour l'événement. \n\n Cordialement,\nL'équipe du tournoi !!!");*/
+    function becomePlayer($bdd) {
+        $request = $bdd->prepare("update Guests 
+                                        set isPlayer = true
+                                        where username = :username;");
+        $request->bindValue(':username',$this->username,PDO::PARAM_STR);
+        $request->execute();
+        return new player($this->username, $this->mail, $this->name, $this->firstname, $this->birthday,$this->password);
     }
 
     public function setIsRegistering() {
         $this->isRegistering = !$this->isRegistering;
     }
 
-    public function unregisterMember(Member $member,CheckConnect $bdd, String $user, String $password){
-        unset($member);
-        $request = $bdd->prepare("DELETE * FROM guests WHERE username = '$user' AND password = '$password' AND isRegistering = false");
+    public function unregisterMember($bdd){
+        $request = $bdd->prepare("delete from Guests
+                                  where username = :username;");
+        $request->bindValue(':username',$this->username,PDO::PARAM_STR);
         $request->execute();
-
+        return true;
     }
 }
