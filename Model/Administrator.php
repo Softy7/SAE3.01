@@ -1,30 +1,27 @@
 <?php
 
-include_once("Member.php");
+require_once("Member.php");
 class Administrator extends Member {
-    public function __construct($un, $m, $n, $fn, $b, $p, $ir)
+    public function __construct($un/*username*/, $m/*mail*/, $n/*nom*/, $fn/*prénom*/, $b/*date de naissance*/, $p/*mots de passe*/, $ir/*est en train de s' enregistrer*/)
     {
-        parent::__construct($un, $m, $n, $fn, $b, $p, $ir);
-    }
-    function BecomeMember($un, $m, $n, $fn, $b, $p, $ir) {
-        $member = new Member($un, $m, $n, $fn, $b, $p, $ir);
-        /* Partie export dans la base de donnée */
-    }
-    function becomePlayer($bdd) {
-        return new PlayerAdministrator($this->username,
-            $this->getMail(),
-            $this->getName(),
-            $this->getFirstname(),
-            $this->getBirthday(),
-            $this->getPassword()
-        );
+        parent::__construct($un/*username*/, $m/*mail*/, $n/*nom*/, $fn/*prénom*/, $b/*date de naissance*/, $p/*mots de passe*/, $ir/*est en train de s' enregistrer*/);
     }
 
+    //à modifier
+    //passe le visiteur qui est en train de s'enregistrer en membre
+    function BecomeMember($un/*username*/, $m/*mail*/, $n/*nom*/, $fn/*prénom*/, $b/*date de naissance*/, $p/*mots de passe*/, $ir/*est en train de s' enregistrer*/) {
+        $member = new Member($un/*username*/, $m/*mail*/, $n/*nom*/, $fn/*prénom*/, $b/*date de naissance*/, $p/*mots de passe*/, $ir/*est en train de s' enregistrer*/);
+        /* Partie export dans la base de donnée */
+    }
+
+
+    //passe ouvre les inscription du tournois.
     function setIsOpen($bdd) {
         $req = $bdd->prepare("UPDATE Inscription SET open = true WHERE open = false");
         $req->execute();
     }
 
+    //passe ferme les inscription du tournois.
     function setIsClosed($bdd) {
         $req = $bdd->prepare("Update Inscription set open = false WHERE open = true");
         $req->execute();
@@ -37,17 +34,6 @@ class Administrator extends Member {
             $member->setIsRegistering();
             return true;
         } return false;
-    }
-    function createMatch($team1,$team2,$parcour) {
-        $match = new Match($team1,$team2,$parcour);
-        $team1->setMatch($match);
-        $team2->setMatch($match);
-    }
-    function gestionMatch($match) {
-        $match->setChole();
-    }
-    function setScore($bdd, $match, $isScored) {
-        $match->setGoal($bdd, $match->annee );
-    }
-*/
+    }*/
+
 }

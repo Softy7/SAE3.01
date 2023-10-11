@@ -6,7 +6,7 @@
 
 </head>
 <body>
-<form action="CheckConnect.php" method="post">
+<form action="../Controller/Connect/CheckConnect.php" method="post">
   <label>veuiller donner votre identifiant et mot de passe :</label><br />
   <label>identifiant: </label>
   <input name="id" type="text" />
@@ -14,10 +14,15 @@
   <label>mot de passe: </label>
   <input name="MDP" type="password" /><br />
 
-  <input type="submit" value="Connection" name="ok"/>
+  <input type="submit" value="Connexion" name="ok"/>
 </form>
 </body>
 </html>
 
 <?php
 session_start();
+$_SESSION['isAdmin'] = false;
+$_SESSION['isPlayer'] = false;
+
+
+$_SESSION['connected'] = false;

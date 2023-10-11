@@ -13,7 +13,15 @@ class Capitain extends Player {
         $this->team->setCapitain($this);
     }
 
-    function updateTeam($player){
+    function updateTeam($player){//à modifier
+        for ($i=0;$player==$this->team->listlayer[$i];$i++){
+            if ($player==$this->team->listlayer[i]){
+                $this->team->removePlayer($player);
+            }
+
+        }
+        $this->team->addPlayer($player);
+
         /*
          * dois pouvoir voir la liste de joueur
          * condition si joueur choisi
@@ -23,18 +31,19 @@ class Capitain extends Player {
          */
     }
 
-    function deleteTeam(){
+    function deleteTeam(){//dissoudre
         unset($this->team);
+        //passe capitaine en joueur
     }
 
-    function searchPlayer($search): array{
+    function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
         $players = array();
         $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
         $lines = array("username", "name", "firstname");
         for ($i=0; $i<3; $i++) {
             $SUN = $bdd->prepare("SELECT username, name, firstname, team 
                                         FROM Guests 
-                                        WHERE :lines = :search");
+                                        WHERE :lines = :search");//recherche dans la base de donné
             $SUN->bindParam(':lines',$lines[i]);
             $SUN->bindParam(':search',$search);
             $SUN->execute();

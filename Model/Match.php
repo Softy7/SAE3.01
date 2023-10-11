@@ -35,7 +35,7 @@ class Match {
     }
 
     public function setChole($bdd, $annee) {
-        if ($this->betT1 < $this->betT2) {//l'équipe 1 a un plus petit pari que l'equipe 2.
+        if ($this->betT1 < $this->betT2) { //l'équipe 1 a un plus petit pari que l'equipe 2.
             $this->chole = $this->team1;
             $request = $bdd->prepare("update Match 
                                         set betteamkept = :betT1 and attack = :team1 and defend = :team2
