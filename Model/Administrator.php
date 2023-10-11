@@ -1,7 +1,6 @@
 <?php
 
-require "Member.php";
-require "become.php";
+require_once("Member.php");
 class Administrator extends Member {
     public function __construct($un, $m, $n, $fn, $b, $p, $ir)
     {
@@ -11,18 +10,21 @@ class Administrator extends Member {
         $member = new Member($un, $m, $n, $fn, $b, $p, $ir);
         /* Partie export dans la base de donnée */
     }
-    function BecomePlayer(Member $member) {
-        new Player($member->username,
-            $member->getMail(),
-            $member->getName(),
-            $member->getFirstname(),
-            $member->getBirthday(),
-            $member->getPassword()
-        );
-        unset($member);
+
+
+    //passe ouvre les inscription du tournois.
+    function setIsOpen($bdd) {
+        $req = $bdd->prepare("UPDATE Inscription SET open = true WHERE open = false");
+        $req->execute();
     }
-    function SeeTryRegister() {
-        /*Connexion à la BDD*/
+
+    //passe ferme les inscription du tournois.
+    function setIsClosed($bdd) {
+        $req = $bdd->prepare("Update Inscription set open = false WHERE open = true");
+        $req->execute();
+    }
+    /*function SeeTryRegister() {
+        Connexion à la BDD
     }
     function StayMember(Member $member) {
         if ($member->getIsRegistering()) {
@@ -30,5 +32,16 @@ class Administrator extends Member {
             return true;
         } return false;
     }
-
+    function createMatch($team1,$team2,$parcour) {
+        $match = new Match($team1,$team2,$parcour);
+        $team1->setMatch($match);
+        $team2->setMatch($match);
+    }
+    function gestionMatch($match) {
+        $match->setChole();
+    }
+    function setScore($bdd, $match, $isScored) {
+        $match->setGoal($bdd, $match->annee );
+    }
+*/
 }

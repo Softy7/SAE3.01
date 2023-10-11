@@ -1,5 +1,4 @@
 <?php
-
 class Member {
     public $username;
     private $mail;
@@ -49,15 +48,39 @@ class Member {
         return $this->password;
     }
 
-    function wantBecomePlayer() {
-        $this->isRegistering = true;
-        /*mail($this->mail, "Inscription", "Bonjour,`\n Vous avez soumis votre inscription
-        pour le tournoi de Chôlage. Nos administrateurs vont vérifier vos informations et valider ou réfuter votre 
-        inscription, le cas échéant, vous recevrez un mail de confirmation. Nous vous remercions de votre inscription et 
-        espérons vous recevoir très vite pour l'événement. \n\n Cordialement,\nL'équipe du tournoi !!!");*/
+    public function becomePlayer($bdd)
+    {
+        $request = $bdd->prepare("update Guests 
+                                        set isPlayer = true
+                                        where username = :username;");/*passe le membre en joueur en modifiant une colone de notre base de donné*/
+        $request->bindValue(':username', $this->username, PDO::PARAM_STR);
+        $request->execute();
+        if ($this instanceof Administrator) {
+            return new PlayerAdministrator($this->username, $this->mail, $this->name, $this->firstname, $this->birthday, $this->password);
+        }
+        else{
+            return new player($this->username, $this->mail, $this->name, $this->firstname, $this->birthday, $this->password);
+        }
     }
 
     public function setIsRegistering() {
         $this->isRegistering = !$this->isRegistering;
+    }//crée un membre ...
+
+    public function unregisterMember($bdd){
+        if($this instanceof Administrator) {
+            $request = $bdd->prepare("select count(*) from Guests where isAdmin = true;");
+            //vérifie le nombre de membre de la BDD.
+            $request->execute();
+            $request = $request->fetchall();
+            if ($request[0][0]<=1) {
+                return false;
+            }
+        }
+        $request = $bdd->prepare("delete from Guests
+                                  where username = :username;");//supprime le membre de la base de donné.
+        $request->bindValue(':username',$this->username,PDO::PARAM_STR);
+        $request->execute();
+        return true;//renvoie true pour voir si la comande ci-dessus fonctionne correctement
     }
 }
