@@ -1,11 +1,7 @@
 <?php
-
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\PlayerAdministrator.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\Player.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\Member.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\Administrator.php');
-function launch(){
-    $conn = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+function launch()
+{
+    $conn = new PDO("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
     $req = $conn->prepare("Select open from Inscription");
     $req->execute();
     $result = $req->fetchAll();
@@ -18,27 +14,45 @@ function launch(){
         $_SESSION['openn'] = false;
     }
 
+    $tn = null;
+    if ($_SESSION['teamName'] != null) {
+        $tn = new Team($_SESSION['teamName']);
+    }
+
     $user = null;
-    if ($_SESSION['isPlayer'] == 1 && $_SESSION['isAdmin'] == 1) {
+    if ($_SESSION['isPlayer'] == 1 && $_SESSION['isAdmin'] == 1 && $_SESSION['captain'] == 1) {
+        $user = new AdminCapitain($_SESSION['username'],
+            $_SESSION['mail'], $_SESSION['name'],
+            $_SESSION['firstname'], $_SESSION['birthday'],
+            $_SESSION['password'], $tn);
+        $_SESSION['lenght'] = $user->lenghtAdmin($conn);
+    } else if ($_SESSION['isPlayer'] == 1 && $_SESSION['isAdmin'] == 1) {
         $user = new PlayerAdministrator($_SESSION['username'],
             $_SESSION['mail'], $_SESSION['name'],
             $_SESSION['firstname'], $_SESSION['birthday'],
-            $_SESSION['password']);
+            $_SESSION['password'], $tn);
+        $_SESSION['lenght'] = $user->lenghtAdmin($conn);
+    } else if ($_SESSION['isPlayer'] == 1 && $_SESSION['captain'] == 1) {
+        $user = new Capitain($_SESSION['username'],
+            $_SESSION['mail'], $_SESSION['name'],
+            $_SESSION['firstname'], $_SESSION['birthday'],
+            $_SESSION['password'], $tn, array());
     } else if ($_SESSION['isPlayer'] == 1) {
         $user = new Player($_SESSION['username'],
             $_SESSION['mail'], $_SESSION['name'],
             $_SESSION['firstname'], $_SESSION['birthday'],
-            $_SESSION['password']);
+            $_SESSION['password'], $tn);
     } else if ($_SESSION['isAdmin'] == 1) {
         $user = new Administrator($_SESSION['username'],
             $_SESSION['mail'], $_SESSION['name'],
             $_SESSION['firstname'], $_SESSION['birthday'],
-            $_SESSION['password'], false);
+            $_SESSION['password']);
+        $_SESSION['lenght'] = $user->lenghtAdmin($conn);
     } else if ($_SESSION['username'] != null) {
         $user = new Member($_SESSION['username'],
             $_SESSION['mail'], $_SESSION['name'],
             $_SESSION['firstname'], $_SESSION['birthday'],
-            $_SESSION['password'], false);
+            $_SESSION['password']);
     }
     return $user;
 }
