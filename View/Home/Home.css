@@ -1,0 +1,70 @@
+
+h3 {
+    font-size: 24px;
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+/* Style des étiquettes (labels) */
+label {
+    color: white;
+    display: block;
+    margin: 10px;
+}
+
+/* Style des boutons */
+input[type="submit"] {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Style pour le message "404 not found" */
+h1 {
+    text-align: center;
+    color: red;
+}
+/*le point c est pour les class*/
+/*le # c est pour les id*/
+#championship{
+    display: inline-block;
+    position: relative;
+    top: -130px;
+    right: -1550px;
+}
+
+#deconnexion{
+    position: relative;
+    top: 100px;
+    right: -1550px;
+}
+
+#del{
+    position: relative;
+    top: -124px;
+    right: -1550px;
+}
+
+#CreateTeam{
+    position: relative;
+    top: -206px;
+    right: -1395px;
+
+}
+
+#viewTeam{
+    position: relative;
+    top: -250px;
+    right: -1435px;
+}
+
+#leave{
+    position: relative;
+    top: -230px;
+    right: -1435px;
+}
