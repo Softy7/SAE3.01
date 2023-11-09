@@ -1,12 +1,25 @@
 <?php
-require_once('Team.php');
-require_once('Member.php');
-
+include_once('Member.php');
 class Player extends Member {
-    private $team;
+    protected $team;
 
-    function __construct($un, $m, $n, $fn, $b, $p) {
-        parent::__construct($un, $m, $n, $fn, $b, $p, false);
+    /**
+     * @param $un "le pseudo du joueur
+     * @param $m "le mail du joueur
+     * @param $n "le nom du joueur
+     * @param $fn "le prénom du joueur
+     * @param $b "la date de naissance du joueur écrit sous la forme jj/mm/aaaa
+     * @param $p "le mot de passe du joueur
+     * @param $t "l'équipe du joueur
+     */
+
+    function __construct($un, $m, $n, $fn, $b, $p, $t) {
+        parent::__construct($un, $m, $n, $fn, $b, $p);
+        $this->team = $t;
+    }
+
+    public function getTeam() {
+        return $this->team;
     }
 
     public function setTeam($team) {
@@ -14,13 +27,25 @@ class Player extends Member {
 
         $request = $bdd->prepare("update Guests 
                                         set Team = :teamName
-                                        where username = :username;");//passe se joueur dans une équipe
+                                        where username = :username;");//passe ce joueur dans une équipe
         $request->bindValue(':teamName',$team->name,PDO::PARAM_STR);
         $request->bindValue(':username',$this->username,PDO::PARAM_STR);
         $request->execute();
         $this->team = $team;
 
     }
+
+    function getTeammates($bdd) {
+        $request = $bdd->prepare("Select username from Guests where team = :teamname and username != :username");//retire le capitaine de son equipe
+        $request->bindValue(':teamname', $this->team->name, PDO::PARAM_STR);
+        $request->bindValue(':username', $this->username, PDO::PARAM_STR);
+        $request->execute();
+        return $request->fetchAll();
+    }
+
+    /*
+     * cette fonction permet de retirer le joueur de l'équipe
+     * */
 
     public function unsetTeam() {
         $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
@@ -30,15 +55,16 @@ class Player extends Member {
                                         where username = :username;");//retire se joueur son equipe
         $request->bindValue(':username',$this->username,PDO::PARAM_STR);
         $request->execute();
-        $this->team->removePlayer($this);
+        $this->team->removePlayer($this->username);
         $this->team = null;//annule l'équipe affilié
     }
 
+    /*
+     * cette fonction permet de passer un joueur membre
+     * */
+
     //à modifier
     public function unsetPlayer($bdd){
-        //check ouverture insciption, si true utilisation code ci-dessous.
-        //check ouverture insciption, si false bloquer l'option.
-
         $request = $bdd->prepare("update Guests 
                                         set isPlayer = false
                                         where username = :username;");//passe le joueur en tant que membre
@@ -50,18 +76,39 @@ class Player extends Member {
         return new Member($this->username, $this->getMail(), $this->getName(), ($this->getFirstname()), $this->getBirthday(), $this->getPassword(), $this->getIsRegistering());
     }
 
-    public function createTeam(){
-            $this->team = new Team("$this->username Team");
-            $this->team->setCapitain($this);
+    public function createTeam($teamName, $playerUsername, $bdd){
+        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
+        $requete->bindParam(':teamName',$teamName);
+        $requete->execute();
 
-        /* crée une équipe
-         * entre le nom de l'equipe
-         * recherche dans la bdd si le nom est présent dans la bdd
-         * si présent dans la bdd
-         *      refuse et demande un autre nom d'equipe
-         * sinon
-         *      ajoute dans la bdd
-         * passe le joueur en capitaine dans la bdd
-         */
+        $requete0=$bdd->prepare("INSERT INTO Capitain VALUES (:capUsername,:teamName)");
+        $requete0->bindParam(':capUsername',$this->username);
+        $requete0->bindParam(':teamName',$teamName);
+        $requete0->execute();
+
+        $requete1=$bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:playerUsername");
+        $requete1->bindParam(':teamName',$teamName);
+        $requete1->bindParam(':playerUsername',$playerUsername);
+        $requete1->execute();
+
+        $requete2=$bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:thisUsername");
+        $requete2->bindParam(':teamName',$teamName);
+        $requete2->bindParam(':thisUsername',$this->username);
+        $requete2->execute();
+
+        return new Capitain($this->username, $this->getMail(), $this->getName(), $this->getFirstname(), $this->getBirthday(), $this->getPassword(), $teamName, array($playerUsername));
+    }
+
+    public function scearchName($teamName,$bdd)
+    {
+        $requete = $bdd->prepare("SELECT * FROM Team WHERE teamName=:teamName");
+        $requete->bindParam(':teamName', $teamName);
+        $requete->execute();
+        $isPresent = $requete->fetchAll();
+        if ($isPresent != null) {
+            return true;//renvoie true si il est dans la base de donné
+        } else {
+            return false;//renvoie false si il n'est pas dans la base de donné
+        }
     }
 }

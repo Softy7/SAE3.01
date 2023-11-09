@@ -8,6 +8,13 @@ class Match {
     private int $betT2; // capitaine equipe 2 que pari
     private bool $goal; //pour voir si l'équipe qui chole a marqué.
 
+    /**
+     *
+     * @param Team $team1
+     * @param Team $team2
+     * @param String $parcours parcours sur le quel les deux équipes joue
+     */
+
     function __construct($team1, $team2, $parcours)
     {
         $this->team1 = $team1;
