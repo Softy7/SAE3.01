@@ -23,6 +23,6 @@
 session_start();
 $_SESSION['isAdmin'] = false;
 $_SESSION['isPlayer'] = false;
-
+$_SESSION['try'] = true;
 
 $_SESSION['connected'] = false;

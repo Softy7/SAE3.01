@@ -5,10 +5,10 @@ session_start();
 <html lang="fr">
 <head>
     <meta charset="UFT-8">
-    <title>Desinscription Tournoi</title>
+    <title>Désinscription Tournoi</title>
 </head>
 <body>
-    <p>voulez-vous vous desinscrire du tournoi ?</p>
+    <p>Voulez-vous vous désinscrire du tournoi ?</p>
 <form action="../../Controller/Unregistering/unregisteringTournament.php" method="post">
     <input type="submit" value="Oui">
 </form>

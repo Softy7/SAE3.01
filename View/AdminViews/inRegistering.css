@@ -1,0 +1,45 @@
+body{
+    background-image : url('https://th.bing.com/th/id/OIP.qqU8ZqlwL9F1cxu3O5vFTgHaEK?pid=ImgDet&rs=1');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+h3 {
+    font-size: 24px;
+    text-align: center;
+    color: #fff;
+    padding: 10px;
+}
+
+/* Style des étiquettes (labels) */
+label {
+    color: white;
+    display: block;
+    margin: 10px;
+}
+
+/* Style des boutons */
+input[type="submit"] {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Style pour le message "404 not found" */
+h1 {
+    text-align: center;
+    color: red;
+}
+
+
+
+
+
+
+
+
+
+
+
+
