@@ -1,11 +1,13 @@
 <?php
 session_start();
-
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\PlayerAdministrator.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\Player.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\Member.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\Administrator.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Controller\launch.php');
+require_once('../../Model/Capitain.php');
+require_once('../../Model/AdminCapitain.php');
+require_once('../../Model/PlayerAdministrator.php');
+require_once('../../Model/Player.php');
+require_once('../../Model/Member.php');
+require_once('../../Model/Administrator.php');
+require_once('../../Model/Team.php');
+require_once('../launch.php');
 
 //require_once permet de récuperer les fichiers une seul fois ce qui évite des problème de mémoire.
 
@@ -19,15 +21,23 @@ if (!$_SESSION['connected']) {
 
 $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
 
-$request = $bdd->prepare("SELECT username, mail, name, firstname, birthday, password, isPlayer, isAdmin
+$request = $bdd->prepare("SELECT username, mail, name, firstname, birthday, password, isPlayer, isAdmin, team
                                 FROM Guests 
                                 WHERE username = :user 
                                   AND password = :password 
-                                  AND isRegistering = false");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre
+                                  AND isRegistered = true
+                                  AND isDeleted = false");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre et regarde si l'utilisateur ne s'est pas désinscrit au préalable
 $request->bindValue(':user',$user);
 $request->bindValue(':password',$password);
 $request->execute();
 $result = $request->fetchAll();
+
+$request = $bdd->prepare("SELECT username, teamName
+                                FROM capitain 
+                                WHERE username = :user ");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre et regarde si l'utilisateur ne s'est pas désinscrit au préalable
+$request->bindValue(':user',$user);
+$request->execute();
+$result1 = $request->fetchAll();
 
 if ($result != null) {// si la requete ci-dessus a trouver un membre, joueur ou un administrateur
     $_SESSION['username'] = $result[0][0];
@@ -39,18 +49,32 @@ if ($result != null) {// si la requete ci-dessus a trouver un membre, joueur ou 
     $_SESSION['isPlayer'] = $result[0][6];
     $_SESSION['isAdmin'] = $result[0][7];
     $_SESSION['connected'] = true;
+    $_SESSION['teamName'] = $result[0][8];
+
+    if ($result1 == null) {
+        $_SESSION['captain'] = 0;
+    } else {
+        $_SESSION['captain'] = 1;
+    }
     $user = launch();
 
-    if ($user instanceof PlayerAdministrator) {
-        header("location: ../../View/Home/AdminPlayer.php");
+    if ($user instanceof AdminCapitain) {
+        $_SESSION['view'] = 'Espace Capitaine Administrateur';
+    } else if ($user instanceof Capitain) {
+        $_SESSION['view'] = 'Espace Capitaine';
+    } else if ($user instanceof PlayerAdministrator) {
+        $_SESSION['view'] = 'Espace Joueur Administrateur';
     } else if ($user instanceof Administrator) {
-        header("location: ../../View/Home/Admin.php");
+        $_SESSION['view'] = 'Espace Administrateur';
     } else if ($user instanceof Player) {
-        header("location: ../../View/Home/Playerr.php");
+        $_SESSION['view'] = 'Espace Joueur';
     } else if ($user instanceof Member) {
-        header("location: ../../View/Home/Memberr.php");
+        $_SESSION['view'] = 'Espace Membre';
     }
-} else {
+    header("location: ../../View/Home/Home.php");
+} else if ($_SESSION['try']){
     header("location: ../../View/NotAccepted.html");
+} else {
+    header("location: ../../View/Guest_Home.html");
 }
 exit;
