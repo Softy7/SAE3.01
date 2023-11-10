@@ -7,6 +7,7 @@ require_once('../../Model/Player.php');
 require_once('../../Model/Member.php');
 require_once('../../Model/Administrator.php');
 require_once('../../Model/Team.php');
+require_once('../../ConnexionDataBase.php');
 require_once('../launch.php');
 
 //require_once permet de récuperer les fichiers une seul fois ce qui évite des problème de mémoire.
@@ -19,7 +20,7 @@ if (!$_SESSION['connected']) {
     $password = $_SESSION['password'];
 }
 
-$bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 
 $request = $bdd->prepare("SELECT username, mail, name, firstname, birthday, password, isPlayer, isAdmin, team
                                 FROM Guests 

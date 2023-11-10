@@ -7,9 +7,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once('../../vendor/autoload.php');
+require_once('../../ConnexionDataBase.php');
 
 $user = $_SESSION['del'];
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 if (isset($_POST)) {
     foreach ($_POST as $key => $value) {
         if (strpos($key, 'insert_') !== false) {

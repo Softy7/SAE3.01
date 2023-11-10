@@ -1,5 +1,5 @@
 <?php
-
+require_once('../ConnexionDataBase.php');
 class Team {
     public string $name;
     public array $listPlayer;
@@ -10,7 +10,7 @@ class Team {
         $this->listPlayer = array();
         $this->name = $name;
         $this->listMatch = array();
-        $bdd = new PDO("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
+        $bdd = __init__();
         $req = $bdd->prepare("select username, mail, name, firstname, birthday, password, isadmin from guests where team = :teamName");
         $req->bindValue(":teamName", $name, PDO::PARAM_STR);
         $req->execute();
@@ -32,7 +32,7 @@ class Team {
     }
 
     function addPlayer($player): void {
-        $bdd = new PDO("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
+        $bdd = __init__();
         $request=$bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $this->name, PDO::PARAM_STR);
         $request->bindValue(':username',$player->username, PDO::PARAM_STR);

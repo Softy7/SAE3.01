@@ -10,6 +10,7 @@ $_SESSION['password'] = null;
 $_SESSION['isPlayer'] = null;
 $_SESSION['isAdmin'] = null;
 $_SESSION['connected'] = null;
+$_SESSION['captain'] = null;
 
 session_destroy();
 

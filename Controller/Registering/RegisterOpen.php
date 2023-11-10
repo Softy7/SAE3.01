@@ -3,11 +3,12 @@ session_start();
 
 require_once('../launch.php');
 require_once('../../Model/AdminCapitain.php');
+require_once('../../ConnexionDataBase.php');
 require_once('../../Model/Capitain.php');
 require_once('../../Model/Team.php');
 
 $user = launch();
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 if ($_SESSION['open'] == 'Inscriptions Ouvertes') {
     $user->setIsClosed($bdd);
     $_SESSION['open'] = 'Inscriptions Fermées';
