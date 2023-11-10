@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\Member.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\Player.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Model\PlayerAdministrator.php');
-require_once('C:\Users\ewanr\PhpstormProjects\SAE3.01\Controller\launch.php');
+require_once('../../Model/Member.php');
+require_once('../../Model/Player.php');
+require_once('../../Model/PlayerAdministrator.php');
+require_once('../launch.php');
 
 $user = launch();
 if ($_SESSION['openn'] == 1) {

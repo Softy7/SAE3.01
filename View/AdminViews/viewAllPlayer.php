@@ -38,7 +38,7 @@ echo"</table>";
 <center><button onclick="window.location.href='../Home/Home.php';" value="Home">Retour sur votre espace</button></center>
 </body>
 </html>
-<?php
+    <?php
 } else {
     header('location: ../Guest_Home.html');
 }

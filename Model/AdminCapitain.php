@@ -1,19 +1,7 @@
 <?php
-include_once('Player.php');
-/**
- *
- */
-class Capitain extends Player {
 
-    /**
-     * @param $un "le pseudo du capitain
-     * @param $m "le mail du capitain
-     * @param $n "le nom du capitain
-     * @param $fn "le prénom du capitain
-     * @param $b "la date de naissace du capitain écrit sous la forme jj/mm/aaaa
-     * @param $p "le mot de passe du capitain
-     * @param $tn "le nom de l'équipe que le capitaine souhaite créé
-     */
+include('PlayerAdministrator.php');
+class AdminCapitain extends PlayerAdministrator {
     function __construct($un, $m, $n, $fn, $b, $p, $tn)
     {
         parent::__construct($un, $m, $n, $fn, $b, $p, $tn);
@@ -27,31 +15,31 @@ class Capitain extends Player {
         $this->team->removePlayer($player);
     }
 
-
     public function deleteTeam(){//dissoudre
-            $bdd = new PDO ("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
+        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
 
-            $request = $bdd->prepare("Delete 
+        $request = $bdd->prepare("Delete 
                                         from capitain
                                         WHERE username = :username ");//retire le capitaine de son equipe
-            $request->bindValue(':username', $this->username, PDO::PARAM_STR);
-            $request->execute();
-            $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
-            $prepare->bindValue(':teamname', $this->team->name);
-            $prepare->execute();
+        $request->bindValue(':username', $this->username, PDO::PARAM_STR);
+        $request->execute();
+        $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
+        echo $this->team->name;
+        $prepare->bindValue(':teamname', $this->team->name);
+        $prepare->execute();
 
-            $request2 = $bdd->prepare("Delete
+        $request2 = $bdd->prepare("Delete
                                         From Team
-                                        where teamname = :teamname ");
-            $request2->bindParam(':teamname', $this->team->name);
-            $request2->execute();
-            return new Player($this->username,
-                $this->getMail(),
-                $this->getName(),
-                $this->getFirstname(),
-                $this->getBirthday(),
-                $this->getPassword(),
-                null);
+                                        where teamname = :teamname");
+        $request2->bindParam(':teamname', $this->team->name);
+        $request2->execute();
+        return new PlayerAdministrator($this->username,
+            $this->getMail(),
+            $this->getName(),
+            $this->getFirstname(),
+            $this->getBirthday(),
+            $this->getPassword(),
+            null);
     }
 
     function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
@@ -78,23 +66,21 @@ class Capitain extends Player {
         return $players;
     }
 
+    function addPlayer($seachPlayer){
+        $this->team->addPlayer($seachPlayer);
+    }
+
     function bet($match){
-        if($match->getTeam1->name == $this->team->name){
-            $match->setBetT1($this->team);
+        if($match->getTeam1=$this){
+            $match->setBetT1($this);
         }
         else{
-            $match->setBetT2($this->team);
+            $match->setBetT2($this);
         }
     }
 
-    /**
-     * @param Player $playerSelected joueur que le capitain souhaite passer capitain
-     * @return void
-     */
     function chooseNewCapitain($playerSelectedUsername){
         $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
-
-
         $request = $bdd->prepare("DELETE FROM capitain WHERE username = :ancienCapUsername");
         $request->bindValue(':ancienCapUsername',$this->username);
         $request->execute();
@@ -104,5 +90,28 @@ class Capitain extends Player {
         $request1->bindValue(':teamName',$this->team->name);
         $request1->execute();
 
+        /* passer le joueur choisi en cap
+         * setCap le nouveau cap
+         * on passe l ancien cap en joueur. */
     }
+    /*function addRun($link,$nbpm,$bdd){
+       $req = $bdd->prepare("INSERT INTO run VALUES :link,:paris ");
+       $req-> blindValues(:link,$link);
+       $req-> blindValues(:paris,$nbpm);
+       $req->execute;
+   }
+
+   function deleteRun($link,$bdd){
+       $req = $bdd->prepare("DELETE * From run where name= :link ");
+       $req-> blindValues(:link,$link);
+       $req->execute;
+   }
+
+   function updateRun($link,$remplacer,$nbpm,$bdd){
+   $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm where name= :remplacer ");
+   $req-> blindValues(:link,$link);
+   $req-> blindValues(:paris,$nbpm);
+   $req-> blindValues(:remplacer,$remplacer);
+   $req->execute;
+   }*/
 }
