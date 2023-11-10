@@ -1,39 +1,57 @@
 <?php
-include_once('Team.php');
 include_once('Player.php');
+/**
+ *
+ */
 class Capitain extends Player {
-    public Team $team;
-    function __construct($un, $m, $n, $fn, $b, $p)
+
+    /**
+     * @param $un "le pseudo du capitain
+     * @param $m "le mail du capitain
+     * @param $n "le nom du capitain
+     * @param $fn "le prénom du capitain
+     * @param $b "la date de naissace du capitain écrit sous la forme jj/mm/aaaa
+     * @param $p "le mot de passe du capitain
+     * @param $tn "le nom de l'équipe que le capitaine souhaite créé
+     */
+    function __construct($un, $m, $n, $fn, $b, $p, $tn)
     {
-        parent::__construct($un, $m, $n, $fn, $b, $p);
+        parent::__construct($un, $m, $n, $fn, $b, $p, $tn);
     }
 
-    function createTeam() {
-        $this->team = new Team("$this->username Team");
-        $this->team->setCapitain($this);
-    }
-
-    function updateTeam($player){//à modifier
-        for ($i=0;$player==$this->team->listlayer[$i];$i++){
-            if ($player==$this->team->listlayer[i]){
-                $this->team->removePlayer($player);
-            }
-
-        }
+    function addPlayerInTeam($player) {
         $this->team->addPlayer($player);
-
-        /*
-         * dois pouvoir voir la liste de joueur
-         * condition si joueur choisi
-         *     retirer joueur
-         * sinon
-         *     ajouter joueur
-         */
     }
 
-    function deleteTeam(){//dissoudre
-        unset($this->team);
-        //passe capitaine en joueur
+    function removePlayerInTeam($player) {
+        $this->team->removePlayer($player);
+    }
+
+
+    public function deleteTeam(){//dissoudre
+            $bdd = new PDO ("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
+
+            $request = $bdd->prepare("Delete 
+                                        from capitain
+                                        WHERE username = :username ");//retire le capitaine de son equipe
+            $request->bindValue(':username', $this->username, PDO::PARAM_STR);
+            $request->execute();
+            $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
+            $prepare->bindValue(':teamname', $this->team->name);
+            $prepare->execute();
+
+            $request2 = $bdd->prepare("Delete
+                                        From Team
+                                        where teamname = :teamname ");
+            $request2->bindParam(':teamname', $this->team->name);
+            $request2->execute();
+            return new Player($this->username,
+                $this->getMail(),
+                $this->getName(),
+                $this->getFirstname(),
+                $this->getBirthday(),
+                $this->getPassword(),
+                null);
     }
 
     function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
@@ -60,19 +78,31 @@ class Capitain extends Player {
         return $players;
     }
 
-    function addPlayer($seachPlayer){
-        $this->team :: addPlayer($seachPlayer);
-    }
-
     function bet($match){
-        if($match->getTeam1=$this){
-            $match->setBetT1($this);
+        if($match->getTeam1->name == $this->team->name){
+            $match->setBetT1($this->team);
         }
         else{
-            $match->setBetT2($this);
+            $match->setBetT2($this->team);
         }
     }
 
+    /**
+     * @param Player $playerSelected joueur que le capitain souhaite passer capitain
+     * @return void
+     */
+    function chooseNewCapitain($playerSelectedUsername){
+        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
 
 
+        $request = $bdd->prepare("DELETE FROM capitain WHERE username = :ancienCapUsername");
+        $request->bindValue(':ancienCapUsername',$this->username);
+        $request->execute();
+
+        $request1 = $bdd->prepare("INSERT INTO Capitain VALUES(:playerSelectedUsername,:teamName)");
+        $request1->bindValue(':playerSelectedUsername',$playerSelectedUsername);
+        $request1->bindValue(':teamName',$this->team->name);
+        $request1->execute();
+
+    }
 }

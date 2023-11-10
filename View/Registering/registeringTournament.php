@@ -5,10 +5,10 @@ session_start();
 <html lang="fr">
 <head>
     <meta charset="UFT-8">
-    <title>Inscription course</title>
+    <title>Inscription Tournoi</title>
 </head>
 <body>
-    <p>voulez-vous vous inscrire au tournois?</p>
+    <p>Voulez-vous vous inscrire au tournois?</p>
 <form action="../../Controller/Registering/registeringTournament.php" method="post">
     <input type="submit" value="Oui">
 </form>

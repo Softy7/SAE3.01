@@ -1,0 +1,47 @@
+table {
+    border-collapse: collapse;
+    margin : auto;
+}
+
+td,th {
+    border: 1px solid black;
+    padding: 15px;
+    width: 30%;
+}
+
+th {
+    font-weight: bolder;
+}
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+div{
+    text-align:center;
+}
+
+h3{
+    text-align:center;
+}
+
+button{
+    margin-top: 20px;
+
+}
+#bouton{
+    text-align:right;
+    transform: translate(-560px);
+}
+
+#add:hover{
+    margin-right: 15px;
+    color: white;
+    background-color: slategray;
+}
+
+button:hover{
+    color: white;
+    background-color: slategray;
+}
