@@ -129,9 +129,10 @@ class Administrator extends Member {
         } return false;
     }*/
 
-    /*function addRun($link,$pdd,$pda,$nbpm,$bdd){
+    /*function addRun($link,$data,$pdd,$pda,$nbpm,$bdd){
         $req = $bdd->prepare("INSERT INTO run VALUES :link,:pdd,:pda,:paris ");
         $req-> blindValues(:link,$link);
+        $req-> blindValues(:data,$link);
         $req-> blindValues(:pdd,$pdd);
         $req-> blindValues(:pda,$pda);
         $req-> blindValues(:paris,$nbpm);
@@ -145,7 +146,7 @@ class Administrator extends Member {
     }
 
     function updateRun($link,$pdd,$pda,$remplacer,$nbpm,$bdd){
-    $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm AND ima where name= :remplacer ");
+    $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm AND image_data=: where name= :remplacer ");
     $req-> blindValues(:link,$link);
     $req-> blindValues(:pdd,$pdd);
     $req-> blindValues(:pda,$pda);
