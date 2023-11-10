@@ -1,6 +1,7 @@
 <?php
+require_once('../../ConnexionDataBase.php');
 session_start();
-$conn = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$conn = __init__();
 $name = $_POST['name'];
 $FirstName = $_POST['firstname'];
 $email = $_POST['email'];

@@ -1,5 +1,6 @@
 <?php
 include_once('Player.php');
+require_once('../ConnexionDataBase.php');
 /**
  *
  */
@@ -29,7 +30,7 @@ class Capitain extends Player {
 
 
     public function deleteTeam(){//dissoudre
-            $bdd = new PDO ("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
+            $bdd = __init__();
 
             $request = $bdd->prepare("Delete 
                                         from capitain
@@ -56,7 +57,7 @@ class Capitain extends Player {
 
     function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
         $players = array();
-        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+        $bdd = __init__();
         $lines = array("username", "name", "firstname");
         for ($i=0; $i<3; $i++) {
             $SUN = $bdd->prepare("SELECT username, name, firstname, team 
@@ -92,7 +93,7 @@ class Capitain extends Player {
      * @return void
      */
     function chooseNewCapitain($playerSelectedUsername){
-        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+        $bdd = __init__();
 
 
         $request = $bdd->prepare("DELETE FROM capitain WHERE username = :ancienCapUsername");

@@ -1,8 +1,9 @@
 <?php
 session_start();
+require_once('../../ConnexionDataBase.php');
 
 if ($_SESSION['isAdmin'] == 1) {
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 $req = $bdd->prepare("SELECT username, mail, name, firstname, birthday FROM Guests WHERE isRegistered = false and isDeleted = false");
 $req->execute();
 $resultat = $req->fetchAll();
