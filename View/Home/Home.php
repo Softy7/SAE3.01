@@ -105,7 +105,7 @@ if ($_SESSION['connected']) {
             <form action="../AdminViews/UnregisteredView.php" method="post">
                 <input type="submit" value="Voir désinscrits" />
             </form>
-            <form action="../AdminViews/UnregisteredView.php" method="post">
+            <form action="../AdminViews/RunView.php" method="post">
                 <input type="submit" value="gérer parcours" />
             </form>
             <button onclick="window.location.href='../AdminViews/CreateTeam.php';" value="CreateByForce">Création forcée d'équipe</button>
