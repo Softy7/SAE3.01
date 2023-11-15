@@ -1,13 +1,14 @@
 <?php
 session_start();
 
+require_once('../../ConnexionDataBase.php');
 include_once('../../Model/Member.php');
 include_once('../../Model/Player.php');
 require_once('../launch.php');
 
 $user = launch();
 if ($_SESSION['openn'] == 1) {
-    $bdd = new PDO ("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
+    $bdd = __init();
     $user = launch();
     $test = $user->unregisterMember($bdd);
     if ($test == 1) {

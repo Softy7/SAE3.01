@@ -1,6 +1,7 @@
 <?php
+require_once('../../ConnexionDataBase.php');
 session_start();
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 $requete = $bdd->prepare("SELECT * FROM Guests WHERE Team is null and isPlayer = true and username != :username");
 $requete->bindValue(':username', $_SESSION['username'],PDO::PARAM_STR );
 $requete->execute();

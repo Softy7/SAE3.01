@@ -3,6 +3,7 @@
 include('Administrator.php');
 include('Team.php');
 
+
 class PlayerAdministrator extends Administrator {
     protected $team;
     function __construct($un, $m, $n, $fn, $b, $p, $t) {
@@ -13,7 +14,7 @@ class PlayerAdministrator extends Administrator {
         return $this->team;
     }
     public function setTeam($team) {
-        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+        $bdd = __init__();
 
         $request = $bdd->prepare("update Guests 
                                         set Team = :teamName
@@ -25,7 +26,7 @@ class PlayerAdministrator extends Administrator {
     }
 
     public function unsetTeam() {
-        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+        $bdd = __init__();
 
         $request = $bdd->prepare("update Guests 
                                         set Team = null
@@ -93,5 +94,6 @@ class PlayerAdministrator extends Administrator {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
+    /**/
 
 }

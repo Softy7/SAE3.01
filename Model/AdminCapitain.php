@@ -16,7 +16,7 @@ class AdminCapitain extends PlayerAdministrator {
     }
 
     public function deleteTeam(){//dissoudre
-        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
+        $bdd = __init__();
 
         $request = $bdd->prepare("Delete 
                                         from capitain
@@ -44,7 +44,7 @@ class AdminCapitain extends PlayerAdministrator {
 
     function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
         $players = array();
-        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+        $bdd = __init__();
         $lines = array("username", "name", "firstname");
         for ($i=0; $i<3; $i++) {
             $SUN = $bdd->prepare("SELECT username, name, firstname, team 
@@ -80,7 +80,7 @@ class AdminCapitain extends PlayerAdministrator {
     }
 
     function chooseNewCapitain($playerSelectedUsername){
-        $bdd = new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+        $bdd = __init__();
         $request = $bdd->prepare("DELETE FROM capitain WHERE username = :ancienCapUsername");
         $request->bindValue(':ancienCapUsername',$this->username);
         $request->execute();
@@ -114,4 +114,5 @@ class AdminCapitain extends PlayerAdministrator {
    $req-> blindValues(:remplacer,$remplacer);
    $req->execute;
    }*/
+    /**/
 }
