@@ -83,6 +83,6 @@ class Member {
         $req->bindValue(':birthday',$this->birthday,PDO::PARAM_STR);
         $req->bindValue(':password',$this->password,PDO::PARAM_STR);
         $req->execute();
-
+        /**/
     }
 }

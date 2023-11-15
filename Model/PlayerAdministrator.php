@@ -2,7 +2,7 @@
 
 include('Administrator.php');
 include('Team.php');
-require_once('../ConnexionDataBase.php');
+
 
 class PlayerAdministrator extends Administrator {
     protected $team;
@@ -94,5 +94,6 @@ class PlayerAdministrator extends Administrator {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
+    /**/
 
 }
