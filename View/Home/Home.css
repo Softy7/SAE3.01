@@ -35,25 +35,24 @@ h1 {
     display: inline-block;
     position: relative;
     top: -130px;
-    right: -1550px;
+    float:right;
 }
 
 #deconnexion{
     position: relative;
-    top: 100px;
-    right: -1550px;
+    top: -20px;
+    float:right;
 }
 
 #del{
     position: relative;
-    top: -124px;
-    right: -1550px;
+    float:right;
 }
 
 #CreateTeam{
     position: relative;
-    top: -206px;
-    right: -1395px;
+    top: -215px;
+    float:right;
 
 }
 
