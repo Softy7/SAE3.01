@@ -60,7 +60,7 @@ if ($_SESSION['isAdmin'] == 1) {
         $bdd = __init__();
 
         if (!$bdd) {
-            echo "Erreur de connexion à la base de données.";
+            echo "Erreur de connexion à la base de données. Veuillez réessayer";
         } else {
             $request = $bdd->prepare("SELECT * FROM articles ORDER BY datepublication DESC");
             $request->execute();

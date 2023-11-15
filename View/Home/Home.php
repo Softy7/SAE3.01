@@ -136,7 +136,7 @@ if ($_SESSION['connected']) {
                     echo "</div>";
                 }
             } else {
-                echo "Aucune publication trouvée.";
+                echo "Aucune publication trouvée...";
             }
         }
         ?>

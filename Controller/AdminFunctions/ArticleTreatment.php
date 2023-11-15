@@ -39,10 +39,8 @@ if (!$bdd) {
             }
         }
 
-        header("Location: ../../View/AdminViews/ArticlesEdit.php");
+        header("location: ../../View/AdminViews/ArticlesEdit.php");
         exit();
-    } else {
-        echo "Méthode non autorisée.";
     }
 }
 ?>
