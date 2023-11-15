@@ -53,7 +53,7 @@ if ($_SESSION['isAdmin'] == 1) {
         <?php
         $bdd = __init__();
 
-        /*if (!$bdd) {
+        if (!$bdd) {
             echo "Erreur de connexion à la base de données.";
         } else {
             $request = $bdd->prepare("SELECT * FROM run ORDER BY maxBet DESC");
@@ -75,7 +75,7 @@ if ($_SESSION['isAdmin'] == 1) {
             } else {
                 echo "Aucune publication trouvée.";
             }
-        }*/
+        }
         ?>
     </form>
     <button onclick="window.location.href='../../Controller/Connect/CheckConnect.php';">Retour</button>
