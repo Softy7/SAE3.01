@@ -24,6 +24,7 @@ if (!$bdd) {
             $nPdd = $_POST['pdd_' . $idarticle];
             $nPda = $_POST['pda_' . $idarticle];
             $nBet = $_POST['bet_' . $idarticle];
+            $user->deleteRun();
 
 
 
