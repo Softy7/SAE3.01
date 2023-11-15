@@ -1,5 +1,4 @@
 <?php
-require_once('../ConnexionDataBase.php');
 class Team {
     public string $name;
     public array $listPlayer;

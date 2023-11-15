@@ -1,6 +1,6 @@
 <?php
 include_once('Player.php');
-require_once('../ConnexionDataBase.php');
+
 /**
  *
  */

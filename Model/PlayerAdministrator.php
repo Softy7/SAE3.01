@@ -2,7 +2,7 @@
 
 include('Administrator.php');
 include('Team.php');
-require_once('../ConnexionDataBase.php');
+
 
 class PlayerAdministrator extends Administrator {
     protected $team;
