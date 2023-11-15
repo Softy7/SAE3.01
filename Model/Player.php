@@ -17,4 +17,5 @@ class Player extends Member {
         parent::__construct($un, $m, $n, $fn, $b, $p);
         $this->team = $t;
     }
+    /**/
 }

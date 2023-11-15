@@ -104,6 +104,6 @@ class Capitain extends Player {
         $request1->bindValue(':playerSelectedUsername',$playerSelectedUsername);
         $request1->bindValue(':teamName',$this->team->name);
         $request1->execute();
-
+        /**/
     }
 }

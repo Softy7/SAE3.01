@@ -114,4 +114,5 @@ class AdminCapitain extends PlayerAdministrator {
    $req-> blindValues(:remplacer,$remplacer);
    $req->execute;
    }*/
+    /**/
 }

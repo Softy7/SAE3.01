@@ -94,5 +94,6 @@ class PlayerAdministrator extends Administrator {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
+    /**/
 
 }
