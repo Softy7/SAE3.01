@@ -1,7 +1,7 @@
 <?php
 function launch()
 {
-    $conn = new PDO("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
+    $conn = __init__();
     $req = $conn->prepare("Select open from Inscription");
     $req->execute();
     $result = $req->fetchAll();
