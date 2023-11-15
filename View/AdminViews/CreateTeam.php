@@ -1,13 +1,14 @@
 <?php
 session_start();
 
+require_once('../../ConnexionDataBase.php');
 require_once('../../Controller/launch.php');
 require_once('../../Model/AdminCapitain.php');
 require_once('../../Model/Capitain.php');
 
 if ($_SESSION['isAdmin'] == 1) {
     $bdd = new PDO("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
-    $results = launch()->getPlayer($bdd);
+    $results = launch()->getPlayer(__init__());
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +21,7 @@ if ($_SESSION['isAdmin'] == 1) {
 <form action="../../Controller/AdminFunctions/CreateTeam.php" method='post'>
     <label>Nom d'équipe : </label><input Type="text" value="nameTeam" required="required"/><br>
     <label>Capitaine : </label><select required="required" id="cap">
-        <option value="">choisisez</option><?php
+        <option value="">Choisissez</option><?php
         foreach ($results as $res){
             if ($res[3] == null){
                 ?>
@@ -38,7 +39,7 @@ if ($_SESSION['isAdmin'] == 1) {
             }
         }?></select><br>
     <label>Joueur 2 : </label><select required="required" id="Player2">
-        <option value="">choisisez</option><?php
+        <option value="">Choisissez</option><?php
         foreach ($results as $res){
             if ($res[3] == null){
                 ?>
@@ -47,7 +48,7 @@ if ($_SESSION['isAdmin'] == 1) {
             }
         }?></select><br>
     <label>Joueur 3 : </label><select id="Player3">
-        <option value="">non obligatoire</option><?php
+        <option value="">Non obligatoire</option><?php
         foreach ($results as $res){
             if ($res[3] == null){
                 ?>

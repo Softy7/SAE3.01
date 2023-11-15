@@ -101,5 +101,6 @@ class Match {
         $request->bindValue(':team2Name',$this->team2->name,PDO::PARAM_STR);
         $request->bindValue(':annee',$annee,PDO::PARAM_INT);
         $request->execute();
+        /**/
     }
 }

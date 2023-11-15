@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once('../../ConnexionDataBase.php');
 if ($_SESSION['isAdmin'] == 1) {
 
     ?>
@@ -50,7 +51,7 @@ if ($_SESSION['isAdmin'] == 1) {
     <h2>Parcours Existants</h2>
     <form action="../../Controller/AdminFunctions/RunTreatment.php" method="post">
         <?php
-        $bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+        $bdd = __init__();
 
         /*if (!$bdd) {
             echo "Erreur de connexion à la base de données.";
