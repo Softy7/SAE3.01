@@ -1,6 +1,7 @@
 <?php
+require_once('../../ConnexionDataBase.php');
 session_start();
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 
 if (!$bdd) {
     echo "Erreur de connexion à la base de données.";

@@ -3,13 +3,13 @@ session_start();
 // Inclusion de la bibliothèque PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
+require_once('../../ConnexionDataBase.php');
 require_once('../../vendor/autoload.php');
 require_once('../launch.php');
 require_once('../../Model/PlayerAdministrator.php');
 
 
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 if (isset($_POST)) {
     foreach ($_POST as $key => $value) {
         if (strpos($key, 'accept_') !== false) {

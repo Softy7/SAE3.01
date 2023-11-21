@@ -1,7 +1,8 @@
 <?php
 session_start();
+require_once('../../ConnexionDataBase.php');
 if ($_SESSION['captain'] == 1) {
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 $req = $bdd->prepare("SELECT name, firstname, username FROM Guests WHERE Team is null and isPlayer = true");
 $req->execute();
 $resultat = $req->fetchAll();

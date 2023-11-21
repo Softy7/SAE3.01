@@ -4,7 +4,7 @@ require_once("../launch.php");
 require_once('../../Model/Capitain.php');
 require_once('../../Model/AdminCapitain.php');
 
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 
 $user = launch();
 $teamName = $_POST['teamName'];

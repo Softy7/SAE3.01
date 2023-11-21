@@ -4,9 +4,10 @@ session_start();
 require_once('../../Controller/launch.php');
 require_once('../../Model/AdminCapitain.php');
 require_once('../../Model/Capitain.php');
+require_once('../../ConnexionDataBase.php');
 
 if ($_SESSION['isAdmin'] == 1) {
-$bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
+$bdd = __init__();
 $results = launch()->getPlayer($bdd)
 
 ?>
