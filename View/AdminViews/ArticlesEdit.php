@@ -20,6 +20,14 @@ if ($_SESSION['isAdmin'] == 1) {
 
             function confirmerPublication(){
                 return confirm("Êtes-vous sûr de vouloir publier votre texte ?");
+        function confirmerPublication(){
+            return confirm("Êtes-vous sûr de vouloir publier le parcours ?");
+        }
+        function remplirChamps(id, titre, contenu) {
+            if (confirmerModification(id)) {
+                document.getElementById("titre").value = titre;
+                document.getElementById("contenu").value = contenu;
+                return true;
             }
             function remplirChamps(id, titre, contenu) {
                 if (confirmerModification(id)) {

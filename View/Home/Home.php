@@ -12,15 +12,16 @@ if ($_SESSION['connected']) {
         <link href="Home.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1><?php echo $_SESSION['view'] ?></h1>
+    <h1><?php echo $_SESSION['view'] /*""*/?></h1>
     <p>Bienvenue sur votre espace ! Monsieur <?php echo $_SESSION['username']?></p>
     <form action="../../Controller/Connect/Deconnect.php" method="post">
         <input type="submit" value="Déconnexion" id="deconnexion"/>
     </form>
+    <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'" id="ModeTournois">Mode Tournois</button>
     <?php
     if ($_SESSION['teamName'] != null) {
     ?>
-    <p><?php echo 'Vous êtes dans l\'équipe ', $_SESSION['teamName'];?></p>
+    <p id="nomEquipe"><?php echo 'Vous êtes dans l\'équipe ', $_SESSION['teamName'];?></p>
     <?php
     }
 
@@ -30,7 +31,7 @@ if ($_SESSION['connected']) {
                     <input type='submit' value='Supprimer le compte' id='del'/>
                     </form>";
         } else {
-            echo "<p id='supp'>Vous ne pouvez pas<br> vous désincrire car vous êtes <br>le seul administrateur du site</p>";
+            echo "<p><div id='boite'>Vous ne pouvez pas<br> vous désincrire car vous êtes <br>le seul administrateur du site</div></p>";
         }
     }else{
         echo "<form action='../Unregistering/unregisteringWebsite.php' method='post'>
@@ -67,10 +68,10 @@ if ($_SESSION['connected']) {
             } else {
                 ?>
                 <form action='../Capitain/DestroyTeam.php' method="post">
-                    <input type='submit' value="Dissoudre l'équipe">
+                    <input type='submit' value="Dissoudre l'équipe" id="deleteTeam">
                 </form>
                 <form action='../Capitain/NewPlayer.php' method="post">
-                    <input type='submit' value="Recruter un joueur">
+                    <input type='submit' value="Recruter un joueur" id="addPlayerTeam">
                 </form>
                 <?php
 
@@ -84,36 +85,36 @@ if ($_SESSION['connected']) {
     }
         if ($_SESSION['isAdmin'] == 1) {
             ?>
-            <button onclick="window.location.href='../AdminViews/viewAllPlayer.php';" value="ViewPlayer">Voir les joueurs</button>
+            <button onclick="window.location.href='../AdminViews/viewAllPlayer.php';" value="ViewPlayer" id="ViewPlayer">Voir les joueurs</button>
             <?php
             if ($_SESSION['openn'] == 1) {
                 echo "<form action='../../Controller/Registering/RegisterOpen.php' method='post'>
-            <input type='submit' value='Fermer Inscriptions' />
+            <input type='submit' value='Fermer Inscriptions' id='boutonEtatInscription'/>
             </form>";
             } else {
                 echo "<form action='../../Controller/Registering/RegisterOpen.php' method='post'>
-            <input type='submit' value='Ouvrir Inscriptions' />
+            <input type='submit' value='Ouvrir Inscriptions' id='boutonEtatInscription'/>
             </form>";
             }
             ?>
             <form action="../AdminViews/ViewInRegistering.php" method="post">
-                <input type="submit" value="Voir Demande Adhesion" />
+                <input type="submit" value="Voir Demande Adhesion" id="voirAdhesion"/>
             </form>
             <form action="../AdminViews/ArticlesEdit.php" method="post">
-                <input type="submit" value="Gérer Publications" />
+                <input type="submit" value="Gérer Publications" id="gererPublication"/>
             </form>
 
             <form action="../AdminViews/UnregisteredView.php" method="post">
-                <input type="submit" value="Voir désinscrits" />
+                <input type="submit" value="Voir désinscrits" id="viewUnregistered"/>
             </form>
             <form action="../AdminViews/UnregisteredView.php" method="post">
-                <input type="submit" value="gérer parcours" />
+                <input type="submit" value="gérer parcours" id="gererParcours"/>
             </form>
-            <button onclick="window.location.href='../AdminViews/CreateTeam.php';" value="CreateByForce">Création forcée d'équipe</button>
+            <button onclick="window.location.href='../AdminViews/CreateTeam.php';" value="CreateByForce" id="CreateByForce">Création forcée d'équipe</button>
             <?php
         }
     ?>
-    <p><?php echo $_SESSION['open'];?></p>
+    <p id="etatInscription"><?php echo $_SESSION['open'];?></p>
     <div id="publications">
         <h2>Actualités:</h2>
         <?php
@@ -141,6 +142,7 @@ if ($_SESSION['connected']) {
         }
         ?>
     </div>
+
     </body>
     </html>
     <?php
