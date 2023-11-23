@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+require_once('../../ConnexionDataBaseNR.php');
+$bdd = __init__();
 if ($_SESSION['connected']) {
     ?>
     <!DOCTYPE html>
@@ -129,13 +130,14 @@ if ($_SESSION['connected']) {
             if ($result) {
                 foreach ($result as $row) {
                     echo "<div>";
-                    echo "<h4>".htmlspecialchars($row['title'])."</h4>";
-                    echo "<h4>".htmlspecialchars($row['datepublication.'])."</h4>";
+                    echo htmlspecialchars($row['title'])."<br>";
+                    echo "date: " . $row['datepublication'] . "<br>";
+                    echo "Auteur: ".htmlspecialchars(($row['writer']))."<br>";
                     echo "<textarea readonly='readonly' id='contenu_" . $row['idarticle'] . "' name='contenu_" . $row['idarticle'] . "'>" . htmlspecialchars($row['contenu']) . "</textarea><br>";
                     echo "</div>";
                 }
             } else {
-                echo "Aucune publication trouvée.";
+                echo "Aucune publication trouvée...";
             }
         }
         ?>
