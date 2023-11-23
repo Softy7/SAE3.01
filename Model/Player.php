@@ -17,7 +17,6 @@ class Player extends Member {
         parent::__construct($un, $m, $n, $fn, $b, $p);
         $this->team = $t;
     }
-  
     public function getTeam() {
         return $this->team;
     }
@@ -102,5 +101,4 @@ class Player extends Member {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
-    /**/
 }

@@ -1,7 +1,7 @@
 <?php
 
-include('Administrator.php');
-include('Team.php');
+include_once('Administrator.php');
+include_once('Team.php');
 
 
 class PlayerAdministrator extends Administrator {
@@ -94,6 +94,5 @@ class PlayerAdministrator extends Administrator {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
-    /**/
 
 }

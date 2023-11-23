@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once('../../ConnexionDataBaseNR.php');
+require_once('../../ConnexionDataBase.php');
+
 $bdd = __init__();
 if ($_SESSION['connected']) {
     ?>

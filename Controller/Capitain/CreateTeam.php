@@ -3,6 +3,7 @@ session_start();
 require_once("../launch.php");
 require_once('../../Model/Capitain.php');
 require_once('../../Model/AdminCapitain.php');
+require_once('../../ConnexionDataBase.php');
 
 $bdd = __init__();
 
