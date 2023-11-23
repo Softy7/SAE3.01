@@ -16,9 +16,7 @@ if ($_SESSION['connected']) {
     <form action="../../Controller/Connect/Deconnect.php" method="post">
         <input type="submit" value="Déconnexion" id="deconnexion"/>
     </form>
-    <form action="../HomeTournaments/HomeTournaments.php" method="post">
-        <input type="submit" value="ModeTournois" id="ModeTournois"/>
-    </form>
+    <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'" id="ModeTournois">Mode Tournois</button>
     <?php
     if ($_SESSION['teamName'] != null) {
     ?>

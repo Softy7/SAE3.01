@@ -19,8 +19,13 @@ if (!$bdd) {
     foreach ($_POST as $key => $value) {
         if (strpos($key, 'modifier_') === 0) {
             $idarticle = substr($key, 9);
-            $nouveauTitre = $_POST['titre_' . $idarticle];
-            $nouveauContenu = $_POST['contenu_' . $idarticle];
+            $nTitre = $_POST['titre_' . $idarticle];
+            $nData = $_POST['lien_' . $idarticle];
+            $nPdd = $_POST['pdd_' . $idarticle];
+            $nPda = $_POST['pda_' . $idarticle];
+            $nBet = $_POST['bet_' . $idarticle];
+
+
 
             
 

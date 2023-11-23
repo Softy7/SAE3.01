@@ -1,5 +1,4 @@
 <?php
-require_once('../ConnexionDataBase.php');
 class Team {
     public string $name;
     public array $listPlayer;
@@ -51,6 +50,7 @@ class Team {
     function setMatch($match): void {
         $this->listMatch[-1] = $match;
     }
+    /**/
 
 
 }

@@ -1,6 +1,5 @@
 <?php
 
-require_once('../ConnexionDataBase.php');
 include('PlayerAdministrator.php');
 class AdminCapitain extends PlayerAdministrator {
     function __construct($un, $m, $n, $fn, $b, $p, $tn)
@@ -115,4 +114,5 @@ class AdminCapitain extends PlayerAdministrator {
    $req-> blindValues(:remplacer,$remplacer);
    $req->execute;
    }*/
+    /**/
 }

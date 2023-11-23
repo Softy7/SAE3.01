@@ -19,7 +19,7 @@ if ($_SESSION['isAdmin'] == 1) {
         }
 
         function confirmerPublication(){
-            return confirm("Êtes-vous sûr de vouloir publier votre texte ?");
+            return confirm("Êtes-vous sûr de vouloir publier le parcours ?");
         }
         function remplirChamps(id, titre, contenu) {
             if (confirmerModification(id)) {
