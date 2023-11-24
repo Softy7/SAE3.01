@@ -16,7 +16,7 @@ function launch()
 
     $tn = null;
     if ($_SESSION['teamName'] != null) {
-        $tn = new Team($_SESSION['teamName']);
+        $tn = $_SESSION['teamName'];
     }
 
     $user = null;

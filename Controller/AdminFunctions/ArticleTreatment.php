@@ -1,5 +1,5 @@
 <?php
-require_once('../../ConnexionDataBaseNR.php');
+require_once('../../ConnexionDataBase.php');
 session_start();
 $bdd = __init__();
 

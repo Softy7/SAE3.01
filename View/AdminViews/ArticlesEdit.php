@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../../ConnexionDataBaseNR.php');
+require_once('../../ConnexionDataBase.php');
 if ($_SESSION['isAdmin'] == 1) {
 ?>
     <!DOCTYPE html>
