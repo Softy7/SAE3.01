@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../../ConnexionDataBase.php');
+
 $bdd = __init__();
 if ($_SESSION['connected']) {
     ?>
@@ -12,7 +13,7 @@ if ($_SESSION['connected']) {
         <link href="Home.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1><?php echo $_SESSION['view'] /*""*/?></h1>
+    <h1><?php echo $_SESSION['view'] ?></h1>
     <p>Bienvenue sur votre espace ! Monsieur <?php echo $_SESSION['username']?></p>
     <form action="../../Controller/Connect/Deconnect.php" method="post">
         <input type="submit" value="Déconnexion" id="deconnexion"/>
