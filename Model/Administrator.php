@@ -107,6 +107,26 @@ class Administrator extends Member {
         $bdd->bindValue(':username', $username, PDO::PARAM_STR);
         $req->execute();
 }
+
+    function createMatch($bdd, $t1, $t2, $year, $run) {
+        $req = $bdd->prepare("insert into Match values (:IDt1, :IDt2, null, false, :year, :runtitle, false)");
+        $req->bindValue(':year', $year);
+        $req->bindValue('runtitle', $run);
+        $req->execute();
+    }
+
+    function getMatch($bdd, $t) {
+        if ($t != null) {
+            $req = $bdd->prepare("select * from Match");
+            $req->execute();
+            return $req->fetchAll();
+        } else {
+            $req = $bdd->prepare('select * from Match where attack = :t or defend = :t');
+            $req->bindValue(":t", $t);
+            $req->execute();
+            return $req->fetchAll();
+        }
+    }
     /**
      * compte le nombre d'administrateur
      *

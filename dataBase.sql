@@ -28,7 +28,8 @@ create table Capitain (
 );
 
 create table Articles (
-                          title text not null primary key,
+                        idArticle serial not null primary key,
+                          title text not null,
                           contenu text not null,
                           writer text not null references Guests,
                           datePublication date not null,
@@ -47,7 +48,7 @@ create table Match (
                        attack text not null references Team,
                        defend text not null references team,
                        betTeamKept int,
-                       goal boolean not null,
+                       goal boolean,
                        annee int not null primary key,
                        runTitle text not null references run,
                        draw boolean not null

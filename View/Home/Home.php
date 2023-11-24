@@ -55,7 +55,7 @@ if ($_SESSION['connected']) {
                 if ($_SESSION['teamName'] != null) {
                     ?>
                     <!--bouton ci-dessous à modifier-->
-                    <button onclick="window.location.href='../CreateTeam/Form.php';" id="viewTeam" value="Voir Equipe">Voir Equipe</button>
+                    <button onclick="window.location.href='../PlayerView/ViewTeam.php';" id="viewTeam" value="Voir Equipe">Voir Equipe</button>
                     <?php
                     ?>
                     <button onclick="window.location.href='../Team/LeaveConfirm4.php';" id="leave" value="Quitter Equipe">Quitter Equipe</button>
