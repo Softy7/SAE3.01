@@ -3,7 +3,7 @@ session_start();
 require_once('../../ConnexionDataBase.php');
 if ($_SESSION['captain'] == 1) {
 $bdd = __init__();
-$req = $bdd->prepare("SELECT name, firstname, username FROM Guests WHERE Team is null and isPlayer = true");
+$req = $bdd->prepare("SELECT name, firstname, username FROM Guests WHERE Team is null and isPlayer = true and isDeleted = false");
 $req->execute();
 $resultat = $req->fetchAll();
 ?>
@@ -36,7 +36,7 @@ foreach ($resultat as $result){
     <form action="../../Controller/Capitain/addPlayer.php" method='post'>
 
             <label><?php echo $result[2]?></label>
-            <input id="add" type='submit' name="add_team_<?php echo $result[0]; ?>" value="+"/>
+            <input id="add" type='submit' name="add_team_<?php echo $result[2]; ?>" value="+"/>
 
     </form>
             </td>
