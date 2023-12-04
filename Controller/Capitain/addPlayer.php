@@ -15,8 +15,10 @@ if (!empty($_POST)) {
         echo 0;
         if (strpos($key, 'add_team_')!==false) {
             echo 1;
+            echo $key;
             $username = str_replace('add_team_', '', $key);
-            $user->addPlayerInTeam(new Player($username, null, null, null, null, null, null));
+            echo $username;
+            $user->addPlayerInTeam($username);
             echo "<script>alert('Joueur ajouté avec succès.');</script>";
             sleep(1);
             header("location: ../../View/Capitain/NewPlayer.php");

@@ -1,7 +1,7 @@
 <?php
 
-include('Administrator.php');
-include('Team.php');
+include_once('Administrator.php');
+include_once('Team.php');
 
 
 class PlayerAdministrator extends Administrator {
@@ -33,7 +33,6 @@ class PlayerAdministrator extends Administrator {
                                         where username = :username;");//retire se joueur son equipe
         $request->bindValue(':username',$this->username,PDO::PARAM_STR);
         $request->execute();
-        $this->team->removePlayer($this);
         $this->team = null;//annule l'équipe affilié
     }
 
@@ -77,7 +76,7 @@ class PlayerAdministrator extends Administrator {
 
     function getTeammates($bdd) {
         $request = $bdd->prepare("Select username from Guests where team = :teamname and username != :username");//retire le capitaine de son equipe
-        $request->bindValue(':teamname', $this->team->name, PDO::PARAM_STR);
+        $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         return $request->fetchAll();
@@ -94,6 +93,5 @@ class PlayerAdministrator extends Administrator {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
-    /**/
 
 }

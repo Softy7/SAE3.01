@@ -17,7 +17,6 @@ class Player extends Member {
         parent::__construct($un, $m, $n, $fn, $b, $p);
         $this->team = $t;
     }
-  
     public function getTeam() {
         return $this->team;
     }
@@ -41,7 +40,6 @@ class Player extends Member {
                                         where username = :username;");//retire se joueur son equipe
         $request->bindValue(':username',$this->username,PDO::PARAM_STR);
         $request->execute();
-        $this->team->removePlayer($this);
         $this->team = null;//annule l'équipe affilié
     }
 
@@ -85,7 +83,7 @@ class Player extends Member {
 
     function getTeammates($bdd) {
         $request = $bdd->prepare("Select username from Guests where team = :teamname and username != :username");//retire le capitaine de son equipe
-        $request->bindValue(':teamname', $this->team->name, PDO::PARAM_STR);
+        $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         return $request->fetchAll();
@@ -102,5 +100,4 @@ class Player extends Member {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
-    /**/
 }

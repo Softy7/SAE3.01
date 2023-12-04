@@ -34,7 +34,7 @@ if($resultat!=null){
     <?php
 }
 ?>
-<button onclick="window.location.href='../Home/Home.php';" value="Home">Retour à l'Acceuil</button>
+<button onclick="window.location.href='../Home/Home.php';" value="Home">Retour à l'Accueil</button>
 </body>
 <?php
 } else {

@@ -2,7 +2,7 @@
 require_once('../../ConnexionDataBase.php');
 session_start();
 $bdd = __init__();
-$requete = $bdd->prepare("SELECT * FROM Guests WHERE Team is null and isPlayer = true and username != :username");
+$requete = $bdd->prepare("SELECT * FROM Guests WHERE Team is null and isPlayer = true and username != :username and isDeleted != true");
 $requete->bindValue(':username', $_SESSION['username'],PDO::PARAM_STR );
 $requete->execute();
 $donnees = $requete->fetchAll();

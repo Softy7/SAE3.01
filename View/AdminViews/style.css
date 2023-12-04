@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    color: black;
+}
+
+form {
+    background-color: lightgrey;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],textarea{
+    width: 20%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+textarea{
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+input[type="submit"], button {
+    padding: 10px 20px;
+    background-color: lightgreen;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: green;
+    color: white;
+}
+
+div {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+button {
+    background-color:lightcoral;
+    color: black;
+}
+
+button:hover {
+    background-color: darkred;
+    color: white;
+}
+#modif:hover {
+    background-color: darkgreen;
+    color: white;
+}
+#modif {
+    background-color: lightgreen;
+    color: black;
+}
+
+#gestion_publi {
+    background-color: #ffffff;
+    padding: 10px;
+    border: 2px black;
+    text-align: center;
+    margin-left:35% ;
+    margin-right:35%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
