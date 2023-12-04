@@ -1,6 +1,7 @@
 <?php
-require_once ('../../Model/Administrator.php');
+require_once ('../../Model/AdminCapitain.php');
 require_once('../../ConnexionDataBase.php');
+require_once ('../launch.php');
 session_start();
 $bdd = __init__();
 $user = launch();
@@ -9,7 +10,8 @@ if (!$bdd) {
 } else {
     if (isset($_POST['publier'])) {
         $titre = $_POST['titre'];
-        $lien = $_POST['lien'];
+        /*$lien = $_POST['lien'];*/
+        $lien = file_get_contents($_FILES['lien']['tmp_name']);
         $pdd = $_POST['pdd'];
         $pda = $_POST['pda'];
         $bet= $_POST['bet'];
