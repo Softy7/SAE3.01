@@ -41,6 +41,7 @@ create table Run (
                      image_data bytea not null,
                      starterPoint text not null,
                      finalPoint text not null,
+                     orderRun int not null,
                      maxBet int not null check (maxBet>=0)
 );
 
@@ -51,7 +52,8 @@ create table Match (
                        goal boolean,
                        annee int not null primary key,
                        runTitle text not null references run,
-                       draw boolean not null
+                       draw boolean not null,
+                       contest boolean
 );
 
 create table Inscription (
