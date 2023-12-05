@@ -49,11 +49,14 @@ create table Match (
                        attack text not null references Team,
                        defend text not null references team,
                        betTeamKept int,
-                       goal boolean,
+                       goal int,
                        annee int not null primary key,
                        runTitle text not null references run,
-                       draw boolean not null,
-                       contest boolean
+                       penal boolean not null,
+                       contest boolean,
+                       countAttack int,
+                       countDefend int,
+                       check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
 );
 
 create table Inscription (
