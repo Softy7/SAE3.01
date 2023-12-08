@@ -37,21 +37,33 @@ create table Articles (
 );
 
 create table Run (
-                     title text unique not null primary key,
+                     idRun serial not null primary key,
+                     title text not null,
                      image_data bytea not null,
                      starterPoint text not null,
                      finalPoint text not null,
+                     orderRun int not null,
                      maxBet int not null check (maxBet>=0)
 );
 
 create table Match (
+                       idMatch serial not null primary key,
                        attack text not null references Team,
                        defend text not null references team,
                        betTeamKept int,
-                       goal boolean,
-                       annee int not null primary key,
-                       runTitle text not null references run,
-                       draw boolean not null
+                       goal int,
+                       annee int not null,
+                       idRun serial not null references run,
+                       penal boolean not null,
+                       contest boolean,
+                       countAttack int,
+                       countDefend int,
+                       countMoves int,
+                       check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
+);
+
+create table Bet (
+
 );
 
 create table Inscription (
@@ -97,3 +109,12 @@ from articles
 order by datePublication;
 
 SELECT * FROM Guests WHERE Team is null;
+
+select Team.teamname from Team
+where Team.teamName not in (
+Select Team.teamname from Team
+left join Match on Team.teamname = Match.attack
+where idRun = 1
+union (select Team.teamname from Team
+left join Match on Team.teamname = Match.defend
+where idRun = 1));
