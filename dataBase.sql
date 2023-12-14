@@ -46,17 +46,20 @@ create table Run (
 );
 
 create table Match (
+                       idmatch serial primary key,
                        attack text not null references Team,
                        defend text not null references team,
                        betTeamKept int,
                        goal int,
-                       annee int not null primary key,
-                       runTitle text not null references run,
-                       penal boolean not null,
-                       contest boolean,
-                       countAttack int,
-                       countDefend int,
-                       check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
+                       score int not null,
+                       runTitle text not null references run
+);
+
+create table bet(
+                    username text not null references Guests,
+                    idmatch int not null references Match,
+                    betcap int,
+                    primary key(username,idmatch)
 );
 
 create table Inscription (
