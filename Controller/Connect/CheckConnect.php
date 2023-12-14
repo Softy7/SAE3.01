@@ -1,15 +1,21 @@
 <?php
 session_start();
 require_once('../../Model/Capitain.php');
+echo 1;
 require_once('../../Model/AdminCapitain.php');
+echo 2;
 require_once('../../Model/PlayerAdministrator.php');
+echo 3;
 require_once('../../Model/Player.php');
+echo 4;
 require_once('../../Model/Member.php');
+echo 5;
 require_once('../../Model/Administrator.php');
-require_once('../../Model/Team.php');
+echo 6;
 require_once('../../ConnexionDataBase.php');
+echo 8;
 require_once('../launch.php');
-
+echo 9;
 //require_once permet de récuperer les fichiers une seul fois ce qui évite des problème de mémoire.
 
 if (!$_SESSION['connected']) {
