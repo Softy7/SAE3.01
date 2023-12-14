@@ -30,8 +30,8 @@ if ($_SESSION['connected']) {
         <!--voir score-->
         <?php
         if($_SESSION['captain']==1){ ?>
-            <button id="parier">parier</button>
-            <button id="entrerScore">entrerScore</button>
+            <button onclick="window.location.href='../Capitain/Bet.php'" id="parier">parier</button>
+            <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
             <?php
         }
     }
