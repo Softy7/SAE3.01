@@ -59,7 +59,7 @@ class Player extends Member {
     }
 
     public function createTeam($teamName, $playerUsername, $bdd){
-        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
+        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0,0)");
         $requete->bindParam(':teamName',$teamName);
         $requete->execute();
 
