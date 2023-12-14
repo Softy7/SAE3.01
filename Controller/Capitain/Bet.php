@@ -35,9 +35,8 @@ if (isset($_POST["pari"])) {
     echo $idMatch;
     echo $_POST['pari'];
     $requete1->execute();
-    echo 4;
-    if ($req[0][3] == null) {
-        $requete2 = $bdd->prepare("UPDATE Match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+    if (requete[2]==null){
+        $requete2=$bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2 AND betteamkept=:bet");
         $requete2->bindParam(":equipe1", $equipe1);
         $requete2->bindParam(":equipe2", $equipe2);
         $requete2->bindParam(":bet", $_POST['pari']);
