@@ -147,6 +147,13 @@ class Administrator extends Member
         }
     }
 
+    function getOneMatch($bdd, $id) {
+        $req = $bdd->prepare("select * from Match where idmatch = :id");
+        $req->bindValue(':id', $id);
+        $req->execute();
+        return $req->fetchAll();
+    }
+
     function getRun($bdd) {
         $req = $bdd->prepare('select * from run order by orderrun');
         $req->execute();
@@ -172,6 +179,28 @@ class Administrator extends Member
         $req->bindValue(":idr", $idR);
         $req->execute();
         return $req->fetchAll();
+    }
+
+    function getContest($bdd, $id) {
+        $req = $bdd->prepare("select * from Match where idmatch = :id");
+        $req->bindValue(':id', $id);
+        $req->execute();
+        return $req->fetchAll();
+    }
+
+    function setContest($bdd, $id, $result) {
+        $req = $bdd->prepare("update Match set goal = :result, contest = null where idmatch = :id");
+        $req->bindValue(':result', $result);
+        $req->bindValue(':id', $id);
+        $req->execute();
+    }
+
+    function setScoreContest($bdd, $id, $st1, $st2) {
+        $req = $bdd->prepare("update Match set countattack = :st1, countdefend = :st2, contest = null where idmatch = :id");
+        $req->bindValue(':st1', $st1);
+        $req->bindValue(':st2', $st2);
+        $req->bindValue(':id', $id);
+        $req->execute();
     }
 
     function getTeamInRun($bdd, $idr) {

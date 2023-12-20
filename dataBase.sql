@@ -48,8 +48,8 @@ create table Run (
 
 create table Match (
                        idMatch serial not null primary key,
-                       attack text not null references Team,
-                       defend text not null references team,
+                       attack text references Team,
+                       defend text references team,
                        betTeamKept int,
                        goal int,
                        annee int not null,

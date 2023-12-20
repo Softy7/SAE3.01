@@ -32,21 +32,23 @@ foreach ($run as $r) {
         <t>Aucune rencontre n'est définie...</t>
         <?php
     } foreach($matchs as $match) {
+        ?><form action="../../Controller/AdminFunctions/getMatch.php" method="post"><?php
         if ($match[8] == 1) {
-            ?><th><?php echo " Chôle: ",$match[1], " | Contesté | Déchôle : ", $match[2]?><input type="submit" value="Rentrer Score"></th><?php
+            ?><th><?php echo " Chôle: ",$match[1], " | Contesté | Déchôle : ", $match[2], " "?>
+            <input type="submit" name="_contest_<?php echo $match[0]?>"  value="+"></th><?php
         } else if ($match[6] == $r[0]) {
             if ($match[4] == 1) {
                 ?><th><?php echo " Chôle: ",$match[1], " | G : P | Déchôle : ", $match[2]?></th><?php
             } else if ($match[3] == 2) {
                 ?><th><?php echo " Chôle: ",$match[1], " | P : G | Déchôle : ", $match[2]?><?php
-            } else if ($match[6] != null) {
+            } else if ($match[6] != null && $match[9] != null && $match[10]!=null) {
                 ?><th><?php echo " Chôle: ",$match[1], " | ", $match[9]," : ",$match[10], " | Déchôle : ", $match[2]?></th><?php
             } else {
                 ?><th><?php echo " Chôle: ",$match[1], " |  :  | Déchôle : ", $match[2]?></th><?php
             }
         }
     }
-    ?></tr>
+        ?></form></tr>
 
     <?php
 }
@@ -55,9 +57,6 @@ foreach ($run as $r) {
 <?php
 if ($run != null) {
     ?>
-<form action="ViewRunForMatch.php" method="post">
-    <input type="submit" value="Créer une rencontre">
-</form>
 <?php
 }
 } else {
