@@ -28,7 +28,7 @@ create table Capitain (
 );
 
 create table Articles (
-                        idArticle serial not null primary key,
+                          idArticle serial not null primary key,
                           title text not null,
                           contenu text not null,
                           writer text not null references Guests,
@@ -37,7 +37,8 @@ create table Articles (
 );
 
 create table Run (
-                     title text unique not null primary key,
+                     idRun serial not null primary key,
+                     title text not null,
                      image_data bytea not null,
                      starterPoint text not null,
                      finalPoint text not null,
@@ -46,17 +47,23 @@ create table Run (
 );
 
 create table Match (
-                       attack text not null references Team,
-                       defend text not null references team,
+                       idMatch serial not null primary key,
+                       attack text references Team,
+                       defend text references team,
                        betTeamKept int,
                        goal int,
-                       annee int not null primary key,
-                       runTitle text not null references run,
+                       annee int not null,
+                       idRun serial not null references run,
                        penal boolean not null,
                        contest boolean,
                        countAttack int,
                        countDefend int,
+                       countMoves int,
                        check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
+);
+
+create table Bet (
+
 );
 
 create table Inscription (
@@ -102,3 +109,12 @@ from articles
 order by datePublication;
 
 SELECT * FROM Guests WHERE Team is null;
+
+select Team.teamname from Team
+where Team.teamName not in (
+    Select Team.teamname from Team
+                                  left join Match on Team.teamname = Match.attack
+    where idRun = 1
+    union (select Team.teamname from Team
+                                         left join Match on Team.teamname = Match.defend
+           where idRun = 1));
