@@ -188,10 +188,11 @@ class Administrator extends Member
         return $req->fetchAll();
     }
 
-    function setContest($bdd, $id, $result) {
-        $req = $bdd->prepare("update Match set goal = :result, contest = null where idmatch = :id");
+    function setContest($bdd, $id, $result, $moves) {
+        $req = $bdd->prepare("update Match set goal = :result, countmoves = :moves, contest = null where idmatch = :id");
         $req->bindValue(':result', $result);
         $req->bindValue(':id', $id);
+        $req->bindValue(':moves', $moves);
         $req->execute();
     }
 

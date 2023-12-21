@@ -25,7 +25,7 @@ $run = $user->getRun($bdd);
         ?><t>Aucun parcours n'existe... Veuillez créer un parcours afin de créer une rencontre.</t><?php
     }
 foreach ($run as $r) {
-          ?><tr><th><?php echo "Parcours: ", $r[1]; ?></th>
+          ?><tr><th><?php echo "Parcours: ", $r[1]; if ($r[6] == 0) { echo " | Penalty";} else {echo " | Pari Max: ", $r[6];} ?></th>
         <?php
     if ($matchs == null) {
         ?>
@@ -38,9 +38,9 @@ foreach ($run as $r) {
             <input type="submit" name="_contest_<?php echo $match[0]?>"  value="+"></th><?php
         } else if ($match[6] == $r[0]) {
             if ($match[4] == 1) {
-                ?><th><?php echo " Chôle: ",$match[1], " | G : P | Déchôle : ", $match[2]?></th><?php
-            } else if ($match[3] == 2) {
-                ?><th><?php echo " Chôle: ",$match[1], " | P : G | Déchôle : ", $match[2]?><?php
+                ?><th><?php echo " Chôle: ",$match[1], " | G : P | Déchôle : ", $match[2], " | Pari: ", $match['3'], " | Coups déchôles: ", $match[11]?></th><?php
+            } else if ($match[4] == 2) {
+                ?><th><?php echo " Chôle: ",$match[1], " | P : G | Déchôle : ", $match[2], " | Pari: ", $match['3'], " | Coups déchôles: ", $match[11]?><?php
             } else if ($match[6] != null && $match[9] != null && $match[10]!=null) {
                 ?><th><?php echo " Chôle: ",$match[1], " | ", $match[9]," : ",$match[10], " | Déchôle : ", $match[2]?></th><?php
             } else {
@@ -53,7 +53,7 @@ foreach ($run as $r) {
     <?php
 }
 ?></table>
-<button onclick="window.location.href='../../Controller/Connect/CheckConnect.php';">Retour</button>
+<button onclick="window.location.href='../HomeTournaments/HomeTournaments.php';">Retour</button>
 <?php
 if ($run != null) {
     ?>
