@@ -1,6 +1,10 @@
 <?php
 session_start();
-require_once('../../ConnexionDataBase.php');
+
+require_once ('../../Model/AdminCapitain.php');
+require_once ('../../Controller/launch.php');
+require_once ('../../ConnexionDataBase.php');
+
 if ($_SESSION['isAdmin'] == 1) {
 
     ?>

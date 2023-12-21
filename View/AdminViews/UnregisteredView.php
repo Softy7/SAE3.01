@@ -4,7 +4,7 @@ require_once('../../ConnexionDataBase.php');
 
 if ($_SESSION['isAdmin'] == 1) {
     $bdd = __init__();
-    $req = $bdd->prepare("SELECT username, mail, name, firstname, birthday FROM Guests WHERE isRegistered = false and isDeleted = true");
+    $req = $bdd->prepare("SELECT username, mail, name, firstname, birthday FROM Guests WHERE isDeleted = true");
     $req->execute();
     $resultat = $req->fetchAll();
     ?>
