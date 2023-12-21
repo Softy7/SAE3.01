@@ -244,6 +244,13 @@ class Administrator extends Member
         $req->bindValue(":data", $data, PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
         $req->bindValue(":o", $o);
+
+    function addRun($link, $data, $pdd, $pda, $nbpm, $bdd){
+        $req = $bdd->prepare("INSERT INTO run VALUES (:link, :data, :pdd, :pda, :paris)");
+        $req->bindValue(":link", $link);
+        $req->bindValue(":data", $data, PDO::PARAM_LOB);
+        $req->bindValue(":pdd", $pdd);
+        $req->bindValue(":pda", $pda);
         $req->bindValue(":paris", $nbpm);
         $req->execute();
     }
@@ -267,7 +274,22 @@ function updateRun($link, $data, $pdd, $pda, $remplacer, $nbpm, $bdd)
     $req->execute;
 }
 
-    /**/
+    function deleteRun($link,$bdd){
+        $req = $bdd->prepare("DELETE * From run where name= :link ");
+        $req-> bindValue(":link",$link);
+        $req->execute;
+    }
+
+    function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd){
+    $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm AND image_data=:data And starterPoint=:pdd And starterPoint=:pda  where name= :remplacer ");
+    $req-> bindValue(":link",$link);
+    $req-> bindValue(":data",$data);
+    $req-> bindValue(":pdd",$pdd);
+    $req-> bindValue(":pda",$pda);
+    $req-> bindValue(":paris",$nbpm);
+    $req-> bindValue(":remplacer",$remplacer);
+    $req->execute;
+    }
 
 
 

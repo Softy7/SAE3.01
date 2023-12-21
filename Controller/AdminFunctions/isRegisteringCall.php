@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 require_once('../../ConnexionDataBase.php');
 require_once('../../vendor/autoload.php');
 require_once('../launch.php');
-require_once('../../Model/PlayerAdministrator.php');
+require_once('../../Model/AdminCapitain.php');
 
 
 $bdd = __init__();

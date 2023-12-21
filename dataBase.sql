@@ -28,7 +28,7 @@ create table Capitain (
 );
 
 create table Articles (
-                        idArticle serial not null primary key,
+                          idArticle serial not null primary key,
                           title text not null,
                           contenu text not null,
                           writer text not null references Guests,
@@ -112,9 +112,18 @@ SELECT * FROM Guests WHERE Team is null;
 
 select Team.teamname from Team
 where Team.teamName not in (
+
 Select Team.teamname from Team
 left join Match on Team.teamname = Match.attack
 where idRun = 1
 union (select Team.teamname from Team
 left join Match on Team.teamname = Match.defend
 where idRun = 1));
+
+    Select Team.teamname from Team
+                                  left join Match on Team.teamname = Match.attack
+    where idRun = 1
+    union (select Team.teamname from Team
+                                         left join Match on Team.teamname = Match.defend
+           where idRun = 1));
+
