@@ -1,4 +1,4 @@
-Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run cascade;
+Drop table if exists bet,Guests, Team, Capitain, Match, Articles, Inscription, Run cascade;
 
 create table Team (
                       teamName text unique not null primary key,
@@ -28,7 +28,7 @@ create table Capitain (
 );
 
 create table Articles (
-                        idArticle serial not null primary key,
+                          idArticle serial not null primary key,
                           title text not null,
                           contenu text not null,
                           writer text not null references Guests,
@@ -46,21 +46,25 @@ create table Run (
 );
 
 create table Match (
+                       idmatch serial primary key,
                        attack text not null references Team,
                        defend text not null references team,
                        betTeamKept int,
-                       goal int,
-                       annee int not null primary key,
-                       runTitle text not null references run,
-                       penal boolean not null,
-                       contest boolean,
-                       countAttack int,
-                       countDefend int,
-                       check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
+                       goal int not null,
+                       score int not null,
+                       runTitle text ,
+                       contestation boolean
+);
+
+create table bet(
+                    username text not null references Guests,
+                    idmatch int not null references Match,
+                    betcap int,
+                    primary key(username,idmatch)
 );
 
 create table Inscription (
-    open boolean unique not null primary key
+                             open boolean unique not null primary key
 );
 
 insert into Inscription
@@ -69,12 +73,13 @@ values (true);
 
 /* Jeu de test*/
 insert into Guests
-values ('Softy16', 'ewanrecquignies@gmail.com','Michel','Ewan','2004-11-12', 'N1nt3nd0#',true,true,true,false),
-       ('OptimusPrime3000', 'optimus@gmail.com','Prime','Optimus','2004-11-12', 'N1nt3nd0#',True,false,true,false),
-       ('Kirby', '1@gmail.com','Faes','Hugo','2004-11-12', 'N1nt3nd0#',True,false,true,true),
-       ('TaGueuleThomas', '2@gmail.com','Meriaux','Thomas','2004-11-12', 'N1nt3nd0#',false,false,true,false),
-       ('Valider', '3@gmail.com','Hostelart','Anthony','2004-11-12', 'N1nt3nd0#',false,false,false,false),
-       ('ADELETE', '4@gmail.com','Hostelart','Anthony','2004-11-12', 'N1nt3nd0#',false,false,false,false);
+values ('Softy16', 'ewanrecquignies@gmail.com','Michel','Ewan','2004-11-12', 'eh',true,false,true,false),
+       ('OptimusPrime3000', 'optimus@gmail.com','Prime','Optimus','2004-11-12', 'eh',True,false,true,false),
+       ('BumbleBee3000', 'bumble@gmail.com','Bee','Bumble','2004-11-12', 'eh',True,false,true,false),
+       ('Kirby', '1@gmail.com','Faes','Hugo','2004-11-12', 'eh',True,false,true,false),
+       ('TaGueuleThomas', '2@gmail.com','Meriaux','Thomas','2004-11-12', 'eh',false,false,true,false),
+       ('FireWolf', '3@gmail.com','Hostelart','Anthony','2004-11-12', 'eh',true,true,true,false),
+       ('Membre', '4@gmail.com','Hostelart','Anthony','2004-11-12', 'eh',false,false,true,false);
 
 /* renvoie les joueurs selon l'équipe */
 select *
@@ -102,3 +107,29 @@ from articles
 order by datePublication;
 
 SELECT * FROM Guests WHERE Team is null;
+
+insert into Team values ('lolTeam',0,0,0),('t1',0,0,0),('t2',0,0,0);
+insert into Capitain values ('FireWolf','lolTeam');
+insert into Capitain values ('OptimusPrime3000','t1');
+insert into Capitain values ('Softy16','t2');
+
+update Guests set Team = 'lolTeam' WHERE username='FireWolf'  ;
+update Guests set Team = 'lolTeam' WHERE username='TaGueuleThomas';
+update Guests set Team = 't1' WHERE username='OptimusPrime3000';
+update Guests set Team = 't1' WHERE username='BumbleBee3000';
+update Guests set Team = 't2' WHERE username='Softy16';
+update Guests set Team = 't2' WHERE username='Kirby';
+
+
+
+insert into Match values (DEFAULT,'lolTeam','t1',3,1,2,null,false);
+insert into Match values (DEFAULT,'lolTeam','t2',null,0,0,null,null);
+insert into Match values (DEFAULT,'t1','t2',1,2,1,null,false);
+
+insert into bet values('FireWolf',1,3);
+insert into bet values('OptimusPrime3000',1,5);
+
+insert into bet values('OptimusPrime3000',3,1);
+insert into bet values('Softy16',3,5);
+
+SELECT * FROM Match ORDER BY idmatch
