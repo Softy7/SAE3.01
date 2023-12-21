@@ -60,8 +60,14 @@ if ($_SESSION['connected']) {
             }
         }
     }
+    if($_SESSION['isAdmin']==1) {
+        ?>
+        <button id="matchs" onclick="window.location.href='../AdminViews/viewMatch.php'">Rencontres</button>
+            <?php
+    }
     ?>
     </body>
+    <button id="return" onclick="window.location.href='../../Controller/Connect/CheckConnect.php'">Retour</button>
     </html>
     <?php
 } else {
