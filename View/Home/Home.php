@@ -1,6 +1,8 @@
 <?php
 session_start();
+require_once('../../ConnexionDataBase.php');
 
+$bdd = __init__();
 if ($_SESSION['connected']) {
     ?>
     <!DOCTYPE html>
@@ -11,7 +13,7 @@ if ($_SESSION['connected']) {
         <link href="Home.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1><?php echo $_SESSION['view'] /*""*/?></h1>
+    <h1><?php echo $_SESSION['view'] ?></h1>
     <p>Bienvenue sur votre espace ! Monsieur <?php echo $_SESSION['username']?></p>
     <form action="../../Controller/Connect/Deconnect.php" method="post">
         <input type="submit" value="Déconnexion" id="deconnexion"/>
@@ -53,7 +55,7 @@ if ($_SESSION['connected']) {
                 if ($_SESSION['teamName'] != null) {
                     ?>
                     <!--bouton ci-dessous à modifier-->
-                    <button onclick="window.location.href='../CreateTeam/Form.php';" id="viewTeam" value="Voir Equipe">Voir Equipe</button>
+                    <button onclick="window.location.href='../PlayerView/ViewTeam.php';" id="viewTeam" value="Voir Equipe">Voir Equipe</button>
                     <?php
                     ?>
                     <button onclick="window.location.href='../Team/LeaveConfirm4.php';" id="leave" value="Quitter Equipe">Quitter Equipe</button>
@@ -129,13 +131,14 @@ if ($_SESSION['connected']) {
             if ($result) {
                 foreach ($result as $row) {
                     echo "<div>";
-                    echo "<h4>".htmlspecialchars($row['title'])."</h4>";
-                    echo "<h4>".htmlspecialchars($row['datepublication.'])."</h4>";
+                    echo htmlspecialchars($row['title'])."<br>";
+                    echo "date: " . $row['datepublication'] . "<br>";
+                    echo "Auteur: ".htmlspecialchars(($row['writer']))."<br>";
                     echo "<textarea readonly='readonly' id='contenu_" . $row['idarticle'] . "' name='contenu_" . $row['idarticle'] . "'>" . htmlspecialchars($row['contenu']) . "</textarea><br>";
                     echo "</div>";
                 }
             } else {
-                echo "Aucune publication trouvée.";
+                echo "Aucune publication trouvée...";
             }
         }
         ?>

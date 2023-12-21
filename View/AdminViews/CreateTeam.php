@@ -7,7 +7,6 @@ require_once('../../Model/AdminCapitain.php');
 require_once('../../Model/Capitain.php');
 
 if ($_SESSION['isAdmin'] == 1) {
-    $bdd = new PDO("pgsql:host=localhost;dbname=postgres", 'postgres', 'v1c70I83');
     $results = launch()->getPlayer(__init__());
 ?>
 <!DOCTYPE html>

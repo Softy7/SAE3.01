@@ -2,10 +2,13 @@
 <html>
 <head>
     <title>Formulaire d'Inscription</title>
+    <link rel="stylesheet" href="connexion.css" media="screen" type="text/css" />
 </head>
 <body>
-<h1>Inscription</h1>
+<div id="container">
+
 <form action="../Controller/Registering/checkInscription.php" method="post">
+    <h1>Inscription</h1>
     Nom: <input type="text" name="name" required><br>
     Prenom: <input type="text" name="firstname" required><br>
     Email: <input type="text" name="email" required><br>
@@ -16,5 +19,6 @@
 
     <input type="submit" value="Inscription">
 </form>
+</div>
 </body>
 </html>

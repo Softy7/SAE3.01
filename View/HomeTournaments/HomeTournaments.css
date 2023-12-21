@@ -23,3 +23,25 @@ input[type="submit"]:hover{
     background-color: azure;
     border-color: azure;
 }
+button:hover{
+    background-color: azure;
+    border-color: azure;
+}
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: skyblue;
+    border-color: skyblue;
+}
+input[type="submit"] {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: skyblue;
+    border-color: skyblue;
+}
+
+input[type="submit"]:hover{
+    background-color: azure;
+    border-color: azure;
+}

@@ -13,6 +13,7 @@ if ($_SESSION['connected']) {
     <body>
     <h1><?php echo $_SESSION['view'] ?></h1>
     <p>Bienvenue sur votre espace de Tournois! Monsieur <?php echo $_SESSION['username']?></p>
+    <button onclick="window.location.href='../../Controller/Connect/CheckConnect.php'" id="retour">Retour</button>
     <form action="../../Controller/Connect/Deconnect.php" method="post">
         <input type="submit" value="Déconnexion" id="deconnexion"/>
     </form>
@@ -34,8 +35,14 @@ if ($_SESSION['connected']) {
             <?php
         }
     }
+    if($_SESSION['isAdmin']==1) {
+        ?>
+        <button id="matchs" onclick="window.location.href='../AdminViews/viewMatch.php'">Rencontres</button>
+            <?php
+    }
     ?>
     </body>
+    <button id="return" onclick="window.location.href='../../Controller/Connect/CheckConnect.php'">Retour</button>
     </html>
     <?php
 } else {

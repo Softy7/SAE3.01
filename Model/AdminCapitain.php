@@ -1,6 +1,7 @@
 <?php
 
-include('PlayerAdministrator.php');
+
+include_once('PlayerAdministrator.php');
 class AdminCapitain extends PlayerAdministrator {
     function __construct($un, $m, $n, $fn, $b, $p, $tn)
     {
@@ -8,11 +9,18 @@ class AdminCapitain extends PlayerAdministrator {
     }
 
     function addPlayerInTeam($player) {
-        $this->team->addPlayer($player);
+        $bdd = __init__();
+        $request=$bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
+        $request->bindValue(':username',$player, PDO::PARAM_STR);
+        $request->execute();
     }
 
     function removePlayerInTeam($player) {
-        $this->team->removePlayer($player);
+        $bdd = __init__();
+        $request=$bdd->prepare("UPDATE Guests set team = null where username = :username");
+        $request->bindValue(':username',$player, PDO::PARAM_STR);
+        $request->execute();
     }
 
     public function deleteTeam(){//dissoudre
@@ -24,14 +32,14 @@ class AdminCapitain extends PlayerAdministrator {
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
-        echo $this->team->name;
-        $prepare->bindValue(':teamname', $this->team->name);
+        echo $this->team;
+        $prepare->bindValue(':teamname', $this->team);
         $prepare->execute();
 
         $request2 = $bdd->prepare("Delete
                                         From Team
                                         where teamname = :teamname");
-        $request2->bindParam(':teamname', $this->team->name);
+        $request2->bindParam(':teamname', $this->team);
         $request2->execute();
         return new PlayerAdministrator($this->username,
             $this->getMail(),
@@ -87,7 +95,7 @@ class AdminCapitain extends PlayerAdministrator {
 
         $request1 = $bdd->prepare("INSERT INTO Capitain VALUES(:playerSelectedUsername,:teamName)");
         $request1->bindValue(':playerSelectedUsername',$playerSelectedUsername);
-        $request1->bindValue(':teamName',$this->team->name);
+        $request1->bindValue(':teamName',$this->team);
         $request1->execute();
 
         /* passer le joueur choisi en cap
@@ -114,5 +122,4 @@ class AdminCapitain extends PlayerAdministrator {
    $req-> blindValues(:remplacer,$remplacer);
    $req->execute;
    }*/
-    /**/
 }
