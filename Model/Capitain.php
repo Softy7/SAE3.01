@@ -44,13 +44,13 @@ class Capitain extends Player {
             $request->bindValue(':username', $this->username, PDO::PARAM_STR);
             $request->execute();
             $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
-            $prepare->bindValue(':teamname', $this->team);
+            $prepare->bindValue(':teamname', $this->team->name);
             $prepare->execute();
 
             $request2 = $bdd->prepare("Delete
                                         From Team
                                         where teamname = :teamname ");
-            $request2->bindParam(':teamname', $this->team);
+            $request2->bindParam(':teamname', $this->team->name);
             $request2->execute();
             return new Player($this->username,
                 $this->getMail(),
@@ -85,17 +85,15 @@ class Capitain extends Player {
         return $players;
     }
 
-    function bet($match){
-        if($match->getTeam1->name == $this->team->name){
-            $match->setBetT1($this->team);
-        }
-        else{
-            $match->setBetT2($this->team);
-        }
+    function betIfEquals(){
+        $min=1;
+        $max=2;
+        $random = rand($min, $max);
+        return $random;
     }
 
     /**
-     * @param Player $playerSelected joueur que le capitain souhaite passer capitain
+     * @param text $playerSelectedUsername le pseudo du joueur que le capitain souhaite passer capitain
      * @return void
      */
     function chooseNewCapitain($playerSelectedUsername){

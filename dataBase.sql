@@ -60,10 +60,17 @@ create table Match (
                        countDefend int,
                        countMoves int,
                        check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
+                       goal int not null,
+                       score int not null,
+                       runTitle text ,
+                       contestation boolean
 );
 
-create table Bet (
-
+create table bet(
+                    username text not null references Guests,
+                    idmatch int not null references Match,
+                    betcap int,
+                    primary key(username,idmatch)
 );
 
 create table Inscription (
@@ -109,21 +116,3 @@ from articles
 order by datePublication;
 
 SELECT * FROM Guests WHERE Team is null;
-
-select Team.teamname from Team
-where Team.teamName not in (
-
-Select Team.teamname from Team
-left join Match on Team.teamname = Match.attack
-where idRun = 1
-union (select Team.teamname from Team
-left join Match on Team.teamname = Match.defend
-where idRun = 1));
-
-    Select Team.teamname from Team
-                                  left join Match on Team.teamname = Match.attack
-    where idRun = 1
-    union (select Team.teamname from Team
-                                         left join Match on Team.teamname = Match.defend
-           where idRun = 1));
-
