@@ -7,8 +7,16 @@ class AdminCapitain extends PlayerAdministrator {
         parent::__construct($un, $m, $n, $fn, $b, $p, $tn);
     }
 
+
     function addPlayerInTeam($player) {
         $this->team->addPlayer($player);
+
+    function addPlayerInTeam($username) {
+        $bdd = __init__();
+        $request=$bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
+        $request->bindValue(':username',$username, PDO::PARAM_STR);
+        $request->execute();
     }
 
     function removePlayerInTeam($player) {
@@ -70,13 +78,11 @@ class AdminCapitain extends PlayerAdministrator {
         $this->team->addPlayer($seachPlayer);
     }
 
-    function bet($match){
-        if($match->getTeam1=$this){
-            $match->setBetT1($this);
-        }
-        else{
-            $match->setBetT2($this);
-        }
+    function betIfEquals(){
+        $min=1;
+        $max=2;
+        $random = rand($min, $max);
+        return $random;
     }
 
     function chooseNewCapitain($playerSelectedUsername){

@@ -6,7 +6,6 @@ require_once('../../Model/PlayerAdministrator.php');
 require_once('../../Model/Player.php');
 require_once('../../Model/Member.php');
 require_once('../../Model/Administrator.php');
-require_once('../../Model/Team.php');
 require_once('../../ConnexionDataBase.php');
 require_once('../launch.php');
 

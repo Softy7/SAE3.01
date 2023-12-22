@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 require_once('../../ConnexionDataBase.php');
 require_once('../../vendor/autoload.php');
 require_once('../launch.php');
-require_once('../../Model/PlayerAdministrator.php');
+require_once('../../Model/AdminCapitain.php');
 
 
 $bdd = __init__();
@@ -61,7 +61,7 @@ if (isset($_POST)) {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.office365.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'cholage.quarouble@outlook.fr'; // adresse e-mail Outlook
+                $mail->Username = 'cholage.quarouble@outlook.fr';
                 $mail->Password = 'CholageQuarouble'; // mot de passe Outlook
                 $mail->SMTPSecure = 'tls';
                 $mail->Port = 587;

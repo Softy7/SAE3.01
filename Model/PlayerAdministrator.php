@@ -1,8 +1,6 @@
 <?php
 
 include_once('Administrator.php');
-include_once('Team.php');
-
 
 class PlayerAdministrator extends Administrator {
     protected $team;
@@ -19,7 +17,7 @@ class PlayerAdministrator extends Administrator {
         $request = $bdd->prepare("update Guests 
                                         set Team = :teamName
                                         where username = :username;");//passe se joueur dans une équipe
-        $request->bindValue(':teamName',$team->name,PDO::PARAM_STR);
+        $request->bindValue(':teamName',$this->team,PDO::PARAM_STR);
         $request->bindValue(':username',$this->username,PDO::PARAM_STR);
         $request->execute();
         $this->team = $team;
@@ -52,7 +50,7 @@ class PlayerAdministrator extends Administrator {
     }
 
     public function createTeam($teamName, $playerUsername, $bdd){
-        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
+        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0,0)");
         $requete->bindParam(':teamName',$teamName);
         $requete->execute();
 
