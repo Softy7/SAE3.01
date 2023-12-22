@@ -49,8 +49,8 @@ class PlayerAdministrator extends Administrator {
         return new Administrator($this->username, $this->getMail(), $this->getName(), ($this->getFirstname()), $this->getBirthday(), $this->getPassword());
     }
 
-    public function createTeam($teamName, $playerUsername, $bdd){
-        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0,0)");
+    public function createTeam($teamName, $playerUsername, $bdd) {
+        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
         $requete->bindParam(':teamName',$teamName);
         $requete->execute();
 

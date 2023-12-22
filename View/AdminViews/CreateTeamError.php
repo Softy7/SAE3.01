@@ -19,6 +19,7 @@ if ($_SESSION['isAdmin'] == 1) {
     </head>
     <body>
     <h1>Cette page sert a créer des équipes "de Force"</h1>
+    <p>Une erreur est survenue, le même joueur apparaît plusieurs fois.</p>
     <form action="../../Controller/AdminFunctions/CreateTeam.php" method='post' name="createTeamForm">
         <label>Nom d'équipe : </label><input Type="text" name="nameTeam" required="required"/><br>
         <label>Capitaine : </label><select required="required" name="cap">

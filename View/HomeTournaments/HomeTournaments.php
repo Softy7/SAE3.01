@@ -1,8 +1,13 @@
 <?php
 session_start();
 require_once('../../ConnexionDataBase.php');
+require_once('../../Model/AdminCapitain.php');
+require_once('../../Model/Capitain.php');
+require_once('../../Controller/launch.php');
 
-$bdd=__init__();
+$db=__init__();
+$user = launch();
+
 if ($_SESSION['connected']) {
     ?>
     <!DOCTYPE html>
@@ -28,33 +33,28 @@ if ($_SESSION['connected']) {
 
     if($_SESSION['isPlayer']==1){
         ?>
-        <!--voir match-->
-        <!--voir score-->
         <?php
         if($_SESSION['captain']==1){ ?>
-            <button onclick="window.location.href='../Capitain/Bet.php'" id="parier">parier</button>
-            <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
+            <button onclick="window.location.href='../Capitain/Bet.php'" id="parier">Parier</button>
+            <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">Résultat</button>
             <?php
         }
     }
+    $results = $user->getMatchs($db);
     if ($_SESSION['isPlayer']!=1){
-        $requete=$bdd->prepare("SELECT * FROM Match ORDER BY idmatch");
-        $requete->execute();
-        $resultats=$requete->fetchAll();
-        foreach ($resultats as $res){
+        foreach ($results as $res){
             if($res[4]==0){
 
         ?>
                 <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> n'a pas encore été joué</h1>
-        <!--voir match-->
-        <!--voir score-->
+
     <?php }
             else{
                 if($res[4]==1){
                     ?>
 
                                 <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> a été joué<br>L'equipe qui été en attaque a gagné avec <?php echo $res[5]; ?> décholes</h1>
-            <?php }elseif($res[4]==2){?>
+            <?php } else if ($res[4]==2){?>
                     <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> a été joué<br>L'equipe qui été en défence a gagné </h1>
                 <?php }
             }

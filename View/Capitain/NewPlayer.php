@@ -48,7 +48,6 @@ foreach ($resultat as $result){
     </tbody>
 </table>
     <div id="bouton">
-        <!--met le en dessous le bouton-->
         <button onclick="window.location.href='../Home/Home.php';" value="Home">Retour sur votre espace</button>
     </div>
 </div>

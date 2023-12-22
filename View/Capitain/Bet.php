@@ -10,7 +10,7 @@ $user = launch();
 $team=$user->getTeam();
 if ($_SESSION['connected']) {
 
-    $req=$bdd->prepare("SELECT idmatch, attack, defend FROM Match WHERE (score = 0) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
+    $req=$bdd->prepare("SELECT idmatch, attack, defend FROM Match WHERE (goal = 0) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
     $req->bindParam(':equipeCap',$team);
     $req->bindParam(':teamCap',$team);
     $req->execute();
@@ -20,9 +20,9 @@ if ($_SESSION['connected']) {
     $req2->bindParam(':cap',$user->username);
     $req2->bindParam(':idmatch',$resultats[0][0]);
     $req2->execute();
-    $resultats2=$req2->fetchAll();
+    $result2=$req2->fetchAll();
 
-    if ($resultats2[0][0]==""){
+    if ($result2[0][0]==""){
 
 
 ?>
@@ -38,7 +38,7 @@ if ($_SESSION['connected']) {
 
 <form action="../../Controller/Capitain/Bet.php" method="post">
 
-    <label>Entrer en combien de coup de déchole vous penser gagner,<br> le plus petit pari des deux capitaine définira l'équipe qui chole</label>
+    <label>Entrer en combien de coup de déchole vous pensez gagner,<br> le plus petit pari des deux capitaine définira l'équipe qui chôle</label>
     <input id="pari" type="number" name="pari">
     <input id="submit" type="submit" name="valider">
 

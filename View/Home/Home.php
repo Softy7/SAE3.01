@@ -54,7 +54,6 @@ if ($_SESSION['connected']) {
             if ($_SESSION['captain'] != 1) {
                 if ($_SESSION['teamName'] != null) {
                     ?>
-                    <!--bouton ci-dessous à modifier-->
                     <button onclick="window.location.href='../PlayerView/ViewTeam.php';" id="viewTeam" value="Voir Equipe">Voir Equipe</button>
                     <?php
                     ?>
@@ -108,7 +107,7 @@ if ($_SESSION['connected']) {
             <form action="../AdminViews/UnregisteredView.php" method="post">
                 <input type="submit" value="Voir désinscrits" id="viewUnregistered"/>
             </form>
-            <form action="../AdminViews/UnregisteredView.php" method="post">
+            <form action="../AdminViews/RunView.php" method="post">
                 <input type="submit" value="gérer parcours" id="gererParcours"/>
             </form>
             <button onclick="window.location.href='../AdminViews/CreateTeam.php';" value="CreateByForce" id="CreateByForce">Création forcée d'équipe</button>

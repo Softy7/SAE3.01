@@ -8,7 +8,7 @@ $user = launch();
 $bdd = __init__();
 
 if ($user instanceof Administrator) {
-$matchs = $user->getMatch($bdd, null);
+$matchs = $user->getMatchs($bdd);
 $run = $user->getRun($bdd);
 
 ?><!DOCTYPE html>
@@ -34,7 +34,7 @@ foreach ($run as $r) {
     } foreach($matchs as $match) {
         ?><form action="../../Controller/AdminFunctions/getMatch.php" method="post"><?php
         if ($match[8] == 1) {
-            ?><th><?php echo " Chôle: ",$match[1], " | Contesté | Déchôle : ", $match[2], " "?>
+            ?><th><?php echo $match[1], " | Contesté | ", $match[2]?>
             <input type="submit" name="_contest_<?php echo $match[0]?>"  value="+"></th><?php
         } else if ($match[6] == $r[0]) {
             if ($match[4] == 1) {
