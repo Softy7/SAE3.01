@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+ require_once('../../ConnexionDataBase.php');
+ //require_once ('../../View/AdminViews/RunView.css');
+
+
 require_once ('../../Model/AdminCapitain.php');
 require_once ('../../Controller/launch.php');
 require_once ('../../ConnexionDataBase.php');
@@ -25,8 +29,8 @@ if ($_SESSION['isAdmin'] == 1) {
             function confirmerPublicationRun(){
                 return confirm("Êtes-vous sûr de vouloir publier votre texte ?");
             }
-            function remplirChamps(titre,lien,pdd,pda,paris) {
-                if (confirmerModification(id)) {
+            function remplirChampsRun(titre,lien,pdd,pda,paris) {
+                if (confirmerModificationRun(id)) {
                     document.getElementById("titre").value = titre;
                     document.getElementById("lien").value = lien;
                     document.getElementById("pdd").value = pdd;
@@ -45,7 +49,7 @@ if ($_SESSION['isAdmin'] == 1) {
         <label for="titre">Titre :</label>
         <input type="text" id="titre" name="titre" required><br>
         <label for="parcours">Parcours:</label>
-        <input type="file" id="lien" name="lien" required><br>
+        <input type="file" id="lien" name="lien" accept="image/*" required><br>
         <label for="Départ">Départ :</label>
         <input type="text" id="pdd" name="pdd" required><br>
         <label for="Arrivé">Arrivé :</label>
@@ -73,26 +77,18 @@ if ($_SESSION['isAdmin'] == 1) {
 
                     echo "<div>";
                     echo "Titre: <input type='text' id='titre_" . $row['title'] . "' name='titre_" . $row['title'] . "' value='" . htmlspecialchars($row['title']) . "'><br>";
-                    $imageData = $row['donnees'];  // Assurez-vous que 'donnees' est le nom correct de votre colonne
-
-// Utilisez stream_get_contents pour convertir la ressource en une chaîne de caractères
-                    $imageString = stream_get_contents($imageData);
-
-// Maintenant, vous pouvez utiliser $imageString avec getimagesizefromstring
-                    $imageSize = getimagesizefromstring($imageString);
-                    $imageMimeType = $imageSize['mime'];
-                    echo "Lien: <img id='parcours" . $row['title'] . "' src='data:" . $imageMimeType . ";base64," . base64_encode($row['image_data']) . "' alt='Image' /><br>";
-                    /*echo "Lien: <input id='parcours" . $row['title'] . "' name='parcours" . $row['title'] . "'>" . htmlspecialchars($row['image_data']) . "</input><br>";*/
-                    echo "Point de depart: <input id='pdd" . $row['title'] . "' name='point de départ" . $row['title'] . "'>" . htmlspecialchars($row['starterPoint']) . "</input><br>";
-                    echo "Point d'arrive: <input id='pda" . $row['title'] . "' name='point d arrive" . $row['title'] . "'>" . htmlspecialchars($row['finalPoint']) . "</input><br>";
-                    echo "Paris Max: <input id='paris" . $row['title'] . "' name='parisMax" . $row['title'] . "'>" . htmlspecialchars($row['maxBet']) . "</input><br>";
-                    echo "<button onclick='return remplirChamps(" . $row['idarticle'] . ", \"" . htmlspecialchars($row['title']) . "\", \"" . htmlspecialchars($row['contenu']) . "\")' type='submit' name='modifier_" . $row['idarticle'] . "'>Modifier</button>";
-                    echo "<button onclick='return confirmerSuppression(" . $row['idarticle'] . ")' type='submit' name='supprimer' value='" . $row['idarticle'] . "'>Supprimer</button>";
+                    echo "Image : <img src='" . $row['path'] . "'><br>";
+                    echo "Point de depart: <input id='pdd" . $row['title'] . "' name='point de départ" . $row['title'] . "'>" . htmlspecialchars($row['starterpoint']) . "</input><br>";
+                    echo "Point d'arrive: <input id='pda" . $row['title'] . "' name='point d arrive" . $row['title'] . "'>" . htmlspecialchars($row['finalpoint']) . "</input><br>";
+                    echo "Paris Max: <input id='paris" . $row['title'] . "' name='parisMax" . $row['title'] . "'>" . htmlspecialchars($row['maxbet']) . "</input><br>";
+                    echo "<button onclick='return remplirChampsRun(" . $row['title'] . ", \"" . htmlspecialchars($row['title']) . "\", \"" . htmlspecialchars($row['title']) . "\")' type='submit' name='modifier_" . $row['title'] . "'>Modifier</button>";
+                    echo "<button onclick='return confirmerSuppressionRun(" . $row['title'] . ")' type='submit' name='supprimer' value='" . $row['title'] . "'>Supprimer</button>";
                     echo "</div><br>";
                 }
             } else {
                 echo "Aucune publication trouvée.";
             }
+
         }
         ?>
     </form>

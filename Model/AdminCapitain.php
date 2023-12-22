@@ -1,12 +1,15 @@
 <?php
 
-
-include_once('PlayerAdministrator.php');
+include('PlayerAdministrator.php');
 class AdminCapitain extends PlayerAdministrator {
     function __construct($un, $m, $n, $fn, $b, $p, $tn)
     {
         parent::__construct($un, $m, $n, $fn, $b, $p, $tn);
     }
+
+
+    function addPlayerInTeam($player) {
+        $this->team->addPlayer($player);
 
     function addPlayerInTeam($username) {
         $bdd = __init__();
@@ -17,10 +20,7 @@ class AdminCapitain extends PlayerAdministrator {
     }
 
     function removePlayerInTeam($player) {
-        $bdd = __init__();
-        $request=$bdd->prepare("UPDATE Guests set team = null where username = :username");
-        $request->bindValue(':username',$player, PDO::PARAM_STR);
-        $request->execute();
+        $this->team->removePlayer($player);
     }
 
     public function deleteTeam(){//dissoudre
@@ -32,14 +32,14 @@ class AdminCapitain extends PlayerAdministrator {
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
-        echo $this->team;
-        $prepare->bindValue(':teamname', $this->team);
+        echo $this->team->name;
+        $prepare->bindValue(':teamname', $this->team->name);
         $prepare->execute();
 
         $request2 = $bdd->prepare("Delete
                                         From Team
                                         where teamname = :teamname");
-        $request2->bindParam(':teamname', $this->team);
+        $request2->bindParam(':teamname', $this->team->name);
         $request2->execute();
         return new PlayerAdministrator($this->username,
             $this->getMail(),
@@ -93,31 +93,37 @@ class AdminCapitain extends PlayerAdministrator {
 
         $request1 = $bdd->prepare("INSERT INTO Capitain VALUES(:playerSelectedUsername,:teamName)");
         $request1->bindValue(':playerSelectedUsername',$playerSelectedUsername);
-        $request1->bindValue(':teamName',$this->team);
+        $request1->bindValue(':teamName',$this->team->name);
         $request1->execute();
 
         /* passer le joueur choisi en cap
          * setCap le nouveau cap
          * on passe l ancien cap en joueur. */
     }
-    /*function addRun($link,$nbpm,$bdd){
-       $req = $bdd->prepare("INSERT INTO run VALUES :link,:paris ");
-       $req-> blindValues(:link,$link);
-       $req-> blindValues(:paris,$nbpm);
-       $req->execute;
-   }
+    function addRun($link, $data, $pdd, $pda, $nbpm, $bdd){
+        $req = $bdd->prepare("INSERT INTO run VALUES (:link, :data, :pdd, :pda, :paris)");
+        $req->bindValue(":link", $link);
+        $req->bindValue(":data", $data, PDO::PARAM_LOB);
+        $req->bindValue(":pdd", $pdd);
+        $req->bindValue(":pda", $pda);
+        $req->bindValue(":paris", $nbpm);
+        $req->execute();
+    }
 
-   function deleteRun($link,$bdd){
-       $req = $bdd->prepare("DELETE * From run where name= :link ");
-       $req-> blindValues(:link,$link);
-       $req->execute;
-   }
+    function deleteRun($link,$bdd){
+        $req = $bdd->prepare("DELETE From run where title= :link ");
+        $req-> bindValue(":link",$link);
+        $req->execute();
+    }
 
-   function updateRun($link,$remplacer,$nbpm,$bdd){
-   $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm where name= :remplacer ");
-   $req-> blindValues(:link,$link);
-   $req-> blindValues(:paris,$nbpm);
-   $req-> blindValues(:remplacer,$remplacer);
-   $req->execute;
-   }*/
+    function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd){
+        $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm AND image_data=:data And starterPoint=:pdd And starterPoint=:pda  where name= :remplacer ");
+        $req-> bindValue(":link",$link);
+        $req-> bindValue(":data",$data);
+        $req-> bindValue(":pdd",$pdd,PDO::PARAM_LOB);
+        $req-> bindValue(":pda",$pda);
+        $req-> bindValue(":paris",$nbpm);
+        $req-> bindValue(":remplacer",$remplacer);
+        $req->execute;
+    }
 }

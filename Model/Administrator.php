@@ -248,7 +248,7 @@ class Administrator extends Member
     function addRun($link, $data, $pdd, $pda, $nbpm, $bdd){
         $req = $bdd->prepare("INSERT INTO run VALUES (:link, :data, :pdd, :pda, :paris)");
         $req->bindValue(":link", $link);
-        $req->bindValue(":data", $data, PDO::PARAM_LOB);
+        $req->bindValue(":data", $data,PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
         $req->bindValue(":pda", $pda);
         $req->bindValue(":paris", $nbpm);
@@ -275,9 +275,9 @@ function updateRun($link, $data, $pdd, $pda, $remplacer, $nbpm, $bdd)
 }
 
     function deleteRun($link,$bdd){
-        $req = $bdd->prepare("DELETE * From run where name= :link ");
+        $req = $bdd->prepare("DELETE From run where title= :link ");
         $req-> bindValue(":link",$link);
-        $req->execute;
+        $req->execute();
     }
 
     function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd){
@@ -288,7 +288,7 @@ function updateRun($link, $data, $pdd, $pda, $remplacer, $nbpm, $bdd)
     $req-> bindValue(":pda",$pda);
     $req-> bindValue(":paris",$nbpm);
     $req-> bindValue(":remplacer",$remplacer);
-    $req->execute;
+    $req->execute();
     }
 
 
