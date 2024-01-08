@@ -1,6 +1,6 @@
 <?php
 
 function __init__() {
-    return new PDO('pgsql:host=[host];dbname=[dbname]','[username]','[password]');
+    return new PDO('pgsql:host=localhost;dbname=postgres','postgres','ThomasMathieu1810');
 }
 

@@ -1,24 +1,31 @@
 <?php
 require_once('../launch.php');
-require_once('../../Model/AdminCapitain.php');
-require_once('../../Model/Capitain.php');
+require_once('../../Model/Player.php');
 require_once ("../../ConnexionDataBase.php");
+require_once ("../../Model/AdminCapitain.php");
+require_once ("../../Model/Capitain.php");
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once('../../vendor/autoload.php');
+
 session_start();
 $bdd = __init__();
-
+$use = $_SESSION['username'];
 $user = launch();
-$team = $_SESSION['teamName'];
 
 if (!empty($_POST)) {
     foreach ($_POST as $key => $value) {
-        if (strpos($key, 'Ask_')!==false) {
+        if (strpos($key, 'Ask_') !== false) {
             $username = str_replace('Ask_', '', $key);
-            $user->askPlayer($username, $team);
+            echo $username;
+
+            $req= $bdd->prepare("SELECT teamname FROM capitain WHERE username = '$username'");
+            $req->execute();
+            $reqTeam = $req->fetchAll()[0][0];
+
+            $user->askPlayer($use, $reqTeam);
 
             $reqMail = $bdd->prepare("SELECT mail FROM guests WHERE username = '$username'");
             $reqMail->execute();
@@ -42,18 +49,18 @@ if (!empty($_POST)) {
                 $mail->setFrom('cholage.quarouble@outlook.fr', 'Cholage Quarouble');
                 $mail->addAddress($email, $username);
                 $mail->isHTML(true);
-                $mail->Subject = 'Invitation dans une équipe';
-                $mail->Body = 'Le Capitaine '.$_SESSION['username'].' vous invite a rejoindre son équipe nommé '.$team.', vous pouvez voir la demande sur votre espace';
+                $mail->Subject = 'Demande a rejoindre équipe';
+                $mail->Body = 'Le Joueur ' . $use . ' demande a rejoindre votre équipe, vous pouvez voir la demande sur votre espace';
 
                 // Envoyer le message
                 $mail->send();
-                echo "<script>alert('Le Joueur a reçu une demande avec succès.');</script>";
+                echo "<script>alert('Le Captitaine a reçu une demande avec succès.');</script>";
             } catch (Exception $e) {
                 echo "<script>alert('Echec de la demande : {$mail->ErrorInfo}');</script>";
             }
 
             sleep(1);
-            header("location: ../../View/Capitain/NewPlayer.php");
+            header("location: ../../View/Registering/AskJoin.php");
         }
     }
 

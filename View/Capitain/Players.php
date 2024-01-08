@@ -3,7 +3,6 @@ require_once('../../Model/Capitain.php');
 require_once('../../Model/AdminCapitain.php');
 require_once('../../Controller/launch.php');
 require_once('../../ConnexionDataBase.php');
-session_start();
 if ($_SESSION['captain'] == 1) {
 $user = launch();
 $teamMates = $user->getTeammates(__init__());

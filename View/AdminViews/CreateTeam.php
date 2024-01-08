@@ -1,13 +1,15 @@
 <?php
-session_start();
 
 require_once('../../ConnexionDataBase.php');
 require_once('../../Controller/launch.php');
 require_once('../../Model/AdminCapitain.php');
 require_once('../../Model/Capitain.php');
+require_once('../../ConnexionDataBase.php');
+session_start();
 
-if ($_SESSION['isAdmin'] == 1) {
-    $results = launch()->getPlayer(__init__());
+if ($_SESSION['isAdmin']) {
+    $bdd = __init__();
+    $results = launch()->getPlayer($bdd);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,9 +19,9 @@ if ($_SESSION['isAdmin'] == 1) {
 </head>
 <body>
 <h1>cette page sert a créer des équipes "de Force"</h1>
-<form action="../../Controller/AdminFunctions/CreateTeam.php" method='post'>
-    <label>Nom d'équipe : </label><input Type="text" value="nameTeam" required="required"/><br>
-    <label>Capitaine : </label><select required="required" id="cap">
+<form action="../../Controller/AdminFunctions/CreateTeam.php" method='post' name="createTeamForm">
+    <label>Nom d'équipe : </label><input Type="text" name="nameTeam" required="required"/><br>
+    <label>Capitaine : </label><select required="required" name="cap">
         <option value="">Choisissez</option><?php
         foreach ($results as $res){
             if ($res[3] == null){
@@ -28,7 +30,7 @@ if ($_SESSION['isAdmin'] == 1) {
                 <?php
             }
         }?></select><br>
-    <label>Joueur 1 : </label><select required="required" id="Player1">
+    <label>Joueur 1 : </label><select required="required" name="Player1">
         <option value="">Choisissez</option><?php
         foreach ($results as $res){
             if ($res[3] == null){
@@ -37,7 +39,7 @@ if ($_SESSION['isAdmin'] == 1) {
                 <?php
             }
         }?></select><br>
-    <label>Joueur 2 : </label><select required="required" id="Player2">
+    <label>Joueur 2 : </label><select required="required" name="Player2">
         <option value="">Choisissez</option><?php
         foreach ($results as $res){
             if ($res[3] == null){
@@ -46,7 +48,7 @@ if ($_SESSION['isAdmin'] == 1) {
                 <?php
             }
         }?></select><br>
-    <label>Joueur 3 : </label><select id="Player3">
+    <label>Joueur 3 : </label><select name="Player3">
         <option value="">Non obligatoire</option><?php
         foreach ($results as $res){
             if ($res[3] == null){
@@ -57,11 +59,13 @@ if ($_SESSION['isAdmin'] == 1) {
         }?></select><br>
     <input type="submit" value="Créer" name="ok"/>
 </form>
+<?php
+?>
 <button onclick="window.location.href='../Home/Home.php';" value="Home">Retour sur votre espace</button>
 </body>
 </html>
 <?php
 } else {
-    header('location: ../Guest_Home.html');
+    header('location: ../../Controller/Connect/CheckConnect.php');
 }
 ?>

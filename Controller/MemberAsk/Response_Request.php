@@ -1,24 +1,31 @@
 <?php
+require_once('../../Model/Player.php');
 require_once('../launch.php');
-require_once('../../Model/AdminCapitain.php');
+
 // Inclusion de la bibliothèque PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require_once('../../vendor/autoload.php');
 require_once('../../ConnexionDataBase.php');
-
-$user = $_SESSION['del'];
+session_start();
+$username = $_SESSION['username'];
 $bdd = __init__();
 if (isset($_POST)) {
     foreach ($_POST as $key => $value) {
-        if (strpos($key, 'insert_') !== false) {
-            $username = str_replace('insert_', '', $key);
-            launch()->resetDeleted($username, $bdd);
+        if (strpos($key, 'yes_') !== false) {
+            $team = str_replace('yes_', '', $key);
+            $Mail=$bdd->prepare("SELECT mail, Capitain.username FROM capitain join guests ON team='$team' Where Guests.username = Capitain.username");
+            $Mail->execute();
+            $email = $Mail->fetchAll();
+            echo $email[0][0];
+            echo $email[0][1];
 
-            $reqMail = $bdd->prepare("SELECT mail FROM guests WHERE username = '$username'");
-            $reqMail->execute();
-            $email = $reqMail->fetchAll()[0][0];
+            launch()->addPlayer($team, $username);
+
+            $supp=$bdd->prepare("Delete from request WHERE username = '$username' ");
+            $supp->execute();
+
             // créé mail de réponse
             $mail = new PHPMailer(true);
             $mail->CharSet = 'UTF-8';
@@ -36,10 +43,10 @@ if (isset($_POST)) {
 
                 // Destinataire et contenu du message
                 $mail->setFrom('cholage.quarouble@outlook.fr', 'Cholage Quarouble');
-                $mail->addAddress($email, $username);
+                $mail->addAddress($email[0][0], $email[0][1]);
                 $mail->isHTML(true);
-                $mail->Subject = 'Réintégration au site';
-                $mail->Body = 'Un administrateur vous a réintégré au site, vous pouvez a nouveau vous connecter';
+                $mail->Subject = 'un nouveau joueur vous a rejoint';
+                $mail->Body = $username.' a accepter de rejoindre votre équipe ! Vous pouvez le voir dans votre espace';
 
                 // Envoyer le message
                 $mail->send();
@@ -47,11 +54,13 @@ if (isset($_POST)) {
             } catch (Exception $e) {
                 echo "Une erreur est survenue lors de l'envoi du message : {$mail->ErrorInfo}";
             }
-        } elseif (strpos($key, 'dessert_') !== false) {
-            $username = str_replace('dessert_', '', $key);
-            $reqMail = $bdd->prepare("SELECT mail FROM guests WHERE username = '$username'");
-            $reqMail->execute();
-            $email = $reqMail->fetchAll()[0][0];
+        } elseif (strpos($key, 'no_') !== false) {
+            $team = str_replace('no_', '', $key);
+            $supp=$bdd->prepare("Delete from request WHERE username = '$username' AND team = '$team' ");
+            $supp->execute();
+            $Mail=$bdd->prepare("SELECT mail, Capitain.username FROM capitain join guests ON team='$team'");
+            $Mail->execute();
+            $email = $Mail->fetchAll();
             //créé mail de reponse
             $mail = new PHPMailer(true);
             $mail->CharSet = 'UTF-8';
@@ -69,10 +78,10 @@ if (isset($_POST)) {
 
                 // Destinataire et contenu du message
                 $mail->setFrom('cholage.quarouble@outlook.fr', 'Cholage Quarouble');
-                $mail->addAddress($email, $username);
+                $mail->addAddress($email[0][0], $email[0][1]);
                 $mail->isHTML(true);
-                $mail->Subject = 'Désincription totale';
-                $mail->Body = 'Votre désinscription a été définitivement effectuée pour un administrateur, pour vous reconnectez, vous devrez recréer un compte';
+                $mail->Subject = 'Refus de recrutement';
+                $mail->Body = $username.' a refusé de rejoindre votre équipe';
 
                 // Envoyer le message
                 $mail->send();
@@ -80,8 +89,7 @@ if (isset($_POST)) {
             } catch (Exception $e) {
                 echo "Une erreur est survenue lors de l'envoi du message : {$mail->ErrorInfo}";
             }
-            launch()->deletePermenantly($username, $bdd);
         }
     }
 }
-header("location: ../../View/AdminViews/UnregisteredView.php");
+header("location: ../../View/Registering/TeamRequest.php");

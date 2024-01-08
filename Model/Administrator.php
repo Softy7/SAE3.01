@@ -46,11 +46,50 @@ class Administrator extends Member
         return $req->fetchall();
     }
 
-    function getPlayer($bdd)
+    function upgradeMember($bdd, $username){
+        $req = $bdd->prepare("UPDATE Guests set isAdmin = true WHERE username = '$username'");
+        $req->execute();
+    }
+
+    function getMember($bdd, $player)
     {
-        $req = $bdd->prepare("select username ,firstname, name, team from Guests where isDeleted = false AND isregistered = true AND isplayer = true ORDER BY team");
+        $req = $bdd->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND isplayer = true AND username != '$player' ORDER BY team");
         $req->execute();
         return $req->fetchall();
+    }
+
+    function createTeamByStrench($team, $cap, $P1, $bdd){
+        $this->createTeam($team, $cap, $bdd);
+        $this->addPlayerBis($team, $P1);
+    }
+
+    public function createTeam($teamName, $playerUsername, $bdd)
+    {
+        $requete = $bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
+        $requete->bindParam(':teamName', $teamName);
+        $requete->execute();
+
+        $requete0 = $bdd->prepare("INSERT INTO Capitain VALUES (:capUsername,:teamName)");
+        $requete0->bindParam(':capUsername', $this->username);
+        $requete0->bindParam(':teamName', $teamName);
+        $requete0->execute();
+
+        $requete1 = $bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:playerUsername");
+        $requete1->bindParam(':teamName', $teamName);
+        $requete1->bindParam(':playerUsername', $playerUsername);
+        $requete1->execute();
+
+        $requete2 = $bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:thisUsername");
+        $requete2->bindParam(':teamName', $teamName);
+        $requete2->bindParam(':thisUsername', $this->username);
+        $requete2->execute();
+    }
+    function addPlayerBis($teamname, $player){
+        $bdd = __init__();
+        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
+        $request->bindValue(':username', $player, PDO::PARAM_STR);
+        $request->execute();
     }
 
     /**
@@ -147,14 +186,16 @@ class Administrator extends Member
         }
     }
 
-    function getOneMatch($bdd, $id) {
+    function getOneMatch($bdd, $id)
+    {
         $req = $bdd->prepare("select * from Match where idmatch = :id");
         $req->bindValue(':id', $id);
         $req->execute();
         return $req->fetchAll();
     }
 
-    function getRun($bdd) {
+    function getRun($bdd)
+    {
         $req = $bdd->prepare('select * from run order by orderrun');
         $req->execute();
         return $req->fetchAll();
@@ -174,21 +215,24 @@ class Administrator extends Member
         return $req[0][0];
     }
 
-    function getMatchInRun($bdd,$idR) {
+    function getMatchInRun($bdd, $idR)
+    {
         $req = $bdd->prepare("select * from Match where idrun = :idr");
         $req->bindValue(":idr", $idR);
         $req->execute();
         return $req->fetchAll();
     }
 
-    function getContest($bdd, $id) {
+    function getContest($bdd, $id)
+    {
         $req = $bdd->prepare("select * from Match where idmatch = :id");
         $req->bindValue(':id', $id);
         $req->execute();
         return $req->fetchAll();
     }
 
-    function setContest($bdd, $id, $result, $moves) {
+    function setContest($bdd, $id, $result, $moves)
+    {
         $req = $bdd->prepare("update Match set goal = :result, countmoves = :moves, contest = null where idmatch = :id");
         $req->bindValue(':result', $result);
         $req->bindValue(':id', $id);
@@ -196,7 +240,8 @@ class Administrator extends Member
         $req->execute();
     }
 
-    function setScoreContest($bdd, $id, $st1, $st2) {
+    function setScoreContest($bdd, $id, $st1, $st2)
+    {
         $req = $bdd->prepare("update Match set countattack = :st1, countdefend = :st2, contest = null where idmatch = :id");
         $req->bindValue(':st1', $st1);
         $req->bindValue(':st2', $st2);
@@ -204,7 +249,8 @@ class Administrator extends Member
         $req->execute();
     }
 
-    function getTeamInRun($bdd, $idr) {
+    function getTeamInRun($bdd, $idr)
+    {
         $req = $bdd->prepare("select Attack, Defend from Match where idrun = :idr");
         $req->bindValue(':idr', $idr);
         $req->execute();
@@ -217,7 +263,8 @@ class Administrator extends Member
         return $tab;
     }
 
-    function getTeamsNotInRun($bdd, $idr) {
+    function getTeamsNotInRun($bdd, $idr)
+    {
         $req = $bdd->prepare("select Team.teamname from Team
                 where Team.teamName not in (
                 Select Team.teamname from Team
@@ -232,65 +279,70 @@ class Administrator extends Member
 
     }
 
-    function getTeams($bdd) {
+    function getTeams($bdd)
+    {
         $req = $bdd->prepare("select teamname from team");
         $req->execute();
         return $req->fetchAll();
     }
 
-    function addRun($link, $data, $pdd, $pda, $nbpm, $o, $bdd) {
+    function addRun($link, $data, $pdd, $pda, $nbpm, $o, $bdd)
+    {
         $req = $bdd->prepare("INSERT INTO run (title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (:link, :data, :pdd, :pda, :paris, :o)");
         $req->bindValue(":link", $link);
         $req->bindValue(":data", $data, PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
         $req->bindValue(":o", $o);
 
-    function addRun($link, $data, $pdd, $pda, $nbpm, $bdd){
-        $req = $bdd->prepare("INSERT INTO run VALUES (:link, :data, :pdd, :pda, :paris)");
-        $req->bindValue(":link", $link);
-        $req->bindValue(":data", $data, PDO::PARAM_LOB);
-        $req->bindValue(":pdd", $pdd);
-        $req->bindValue(":pda", $pda);
-        $req->bindValue(":paris", $nbpm);
-        $req->execute();
+        function addRun($link, $data, $pdd, $pda, $nbpm, $bdd)
+        {
+            $req = $bdd->prepare("INSERT INTO run VALUES (:link, :data, :pdd, :pda, :paris)");
+            $req->bindValue(":link", $link);
+            $req->bindValue(":data", $data, PDO::PARAM_LOB);
+            $req->bindValue(":pdd", $pdd);
+            $req->bindValue(":pda", $pda);
+            $req->bindValue(":paris", $nbpm);
+            $req->execute();
+        }
+
+        function deleteRun($link, $bdd)
+        {
+            $req = $bdd->prepare("DELETE From run where title= :link ");
+            $req->bindValue(":link", $link);
+            $req->execute;
+        }
+
+        function updateRun($link, $data, $pdd, $pda, $remplacer, $nbpm, $bdd)
+        {
+            $req = $bdd->prepare("UPDATE run SET title= :link and maxBet= :nbpm AND image_data=:data And starterPoint=:pdd And finalPoint=:pda  where title= :remplacer ");
+            $req->bindValue(":link", $link);
+            $req->bindValue(":data", $data);
+            $req->bindValue(":pdd", $pdd);
+            $req->bindValue(":pda", $pda);
+            $req->bindValue(":paris", $nbpm);
+            $req->bindValue(":remplacer", $remplacer);
+            $req->execute;
+        }
+
+        function deleteRun($link, $bdd)
+        {
+            $req = $bdd->prepare("DELETE * From run where name= :link ");
+            $req->bindValue(":link", $link);
+            $req->execute;
+        }
+
+        function updateRun($link, $data, $pdd, $pda, $remplacer, $nbpm, $bdd)
+        {
+            $req = $bdd->prepare("UPDATE run SET title= :link and maxBet= :nbpm AND image_data=:data And starterPoint=:pdd And starterPoint=:pda  where title= :remplacer ");
+            $req->bindValue(":link", $link);
+            $req->bindValue(":data", $data);
+            $req->bindValue(":pdd", $pdd);
+            $req->bindValue(":pda", $pda);
+            $req->bindValue(":paris", $nbpm);
+            $req->bindValue(":remplacer", $remplacer);
+            $req->execute;
+        }
+
+
     }
-
-function deleteRun($link, $bdd)
-{
-    $req = $bdd->prepare("DELETE From run where title= :link ");
-    $req->bindValue(":link", $link);
-    $req->execute;
-}
-
-function updateRun($link, $data, $pdd, $pda, $remplacer, $nbpm, $bdd)
-{
-    $req = $bdd->prepare("UPDATE run SET title= :link and maxBet= :nbpm AND image_data=:data And starterPoint=:pdd And finalPoint=:pda  where title= :remplacer ");
-    $req->bindValue(":link", $link);
-    $req->bindValue(":data", $data);
-    $req->bindValue(":pdd", $pdd);
-    $req->bindValue(":pda", $pda);
-    $req->bindValue(":paris", $nbpm);
-    $req->bindValue(":remplacer", $remplacer);
-    $req->execute;
-}
-
-    function deleteRun($link,$bdd){
-        $req = $bdd->prepare("DELETE * From run where name= :link ");
-        $req-> bindValue(":link",$link);
-        $req->execute;
-    }
-
-    function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd){
-    $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm AND image_data=:data And starterPoint=:pdd And starterPoint=:pda  where name= :remplacer ");
-    $req-> bindValue(":link",$link);
-    $req-> bindValue(":data",$data);
-    $req-> bindValue(":pdd",$pdd);
-    $req-> bindValue(":pda",$pda);
-    $req-> bindValue(":paris",$nbpm);
-    $req-> bindValue(":remplacer",$remplacer);
-    $req->execute;
-    }
-
-
-
 }

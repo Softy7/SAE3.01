@@ -21,6 +21,13 @@ create table Guests (
                         Team text
 );
 
+create table Request (
+                         username text unique not null,
+                         isPlayerAsk boolean not null,
+                         Team text references Team,
+                         primary key (username, Team)
+);
+
 create table Capitain (
                           username text unique not null,
                           teamName text unique not null references Team,
