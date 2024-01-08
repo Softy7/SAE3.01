@@ -28,7 +28,7 @@ $PasswordC = $_POST['passwordC'];
             $stmt->bindValue(':Birth', $Birth);
             $stmt->bindValue(':Password', $Password);
             $stmt->execute();
-            header('location: ../../View/Registering/AcceptedRegisteringWebsite.php');
+            header('location: ../../View/Registering/AcceptedRegistering.php');
         } else {
             header("location: ../../View/Registering/DeclinedRegisteringWebsite.php");
         }

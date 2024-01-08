@@ -3,9 +3,10 @@ session_start();
 require_once('../../ConnexionDataBase.php');
 if ($_SESSION['captain'] == 1) {
 $bdd = __init__();
-$req = $bdd->prepare("SELECT name, firstname, username FROM Guests WHERE Team is null and isPlayer = true and isDeleted = false");
+$req = $bdd->prepare("SELECT name, firstname, username FROM Guests WHERE Team is null and isPlayer = true");
 $req->execute();
 $resultat = $req->fetchAll();
+$team = $_SESSION['teamName']
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,12 +34,26 @@ foreach ($resultat as $result){
             <td><?php echo $result[0]?></td>
             <td><?php echo $result[1]?></td>
             <td>
+    <?php
+    $reqAsk = $bdd->prepare("SELECT Team, isplayerask FROM request WHERE username = '$result[2]' AND team = '$team'");
+    $reqAsk->execute();
+    $res = $reqAsk->fetchAll();
+    if($res==null){
+    ?>
     <form action="../../Controller/Capitain/addPlayer.php" method='post'>
-
-            <label><?php echo $result[2]?></label>
-            <input id="add" type='submit' name="add_team_<?php echo $result[2]; ?>" value="+"/>
-
+        <input id="add" type='submit' name="Ask_<?php echo $result[2]; ?>" value="recruter"/>
     </form>
+    <?php
+    }else if(!$res[0][1]){
+        echo "Vous avez déjà demander a recruter ce joueur";
+    }else if($res[0][1]){
+        echo "Ce joueur demande déjà a vous rejoindre";
+        ?>
+        <button onclick="window.location.href='ViewRequest.php';" id="PlayerRequest" value="Voir demande recru">Voir les Demandes d'enrollement</button>
+        <?php
+    }
+    ?>
+    </td>
             </td>
 
         </tr>

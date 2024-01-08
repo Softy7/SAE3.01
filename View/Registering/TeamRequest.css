@@ -30,9 +30,9 @@ button{
     margin-top: 20px;
 
 }
-#bouton{
-    text-align:right;
-    transform: translate(-560px);
+
+p{
+    text-align:center;
 }
 
 #add:hover{
@@ -44,9 +44,4 @@ button{
 button:hover{
     color: white;
     background-color: slategray;
-}
-
-#Bis{
-    border-right: white;
-    border-top: white;
 }

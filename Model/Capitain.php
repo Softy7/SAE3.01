@@ -1,6 +1,5 @@
 <?php
 include_once('Player.php');
-
 /**
  *
  */
@@ -20,22 +19,37 @@ class Capitain extends Player {
         parent::__construct($un, $m, $n, $fn, $b, $p, $tn);
     }
 
-    function addPlayerInTeam($player) {
+    function addPlayerInTeam($player, $team)
+    {
         $bdd = __init__();
-        $request=$bdd->prepare("UPDATE Guests set team = null where username = :username");
-        $request->bindValue(':username',$player, PDO::PARAM_STR);
-        $request->execute();
-    }
-
-    function removePlayerInTeam($player) {
-        $bdd = __init__();
-        $request=$bdd->prepare("UPDATE Guests set team = null where username = :username");
+        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $team, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
     }
 
 
-    public function deleteTeam(){//dissoudre
+    function removePlayerInTeam($player) {
+        $this->team->removePlayer($player);
+    }
+
+    public function askPlayer($player, $team){
+        $bdd = __init__();
+        $request = $bdd->prepare("INSERT INTO request VALUES (:Player, false, :team)");
+        $request->bindValue(':team', $team, PDO::PARAM_STR);
+        $request->bindValue(':Player', $player, PDO::PARAM_STR);
+        $request->execute();
+    }
+
+    function addPlayer($teamname, $player){
+        $bdd = __init__();
+        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
+        $request->bindValue(':username', $player, PDO::PARAM_STR);
+        $request->execute();
+    }
+
+    public function deleteTeam($team){//dissoudre
             $bdd = __init__();
 
             $request = $bdd->prepare("Delete 
@@ -44,12 +58,13 @@ class Capitain extends Player {
             $request->bindValue(':username', $this->username, PDO::PARAM_STR);
             $request->execute();
             $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
+            $prepare->bindValue(':teamname', $team);
             $prepare->bindValue(':teamname', $this->team->name);
             $prepare->execute();
-
             $request2 = $bdd->prepare("Delete
                                         From Team
                                         where teamname = :teamname ");
+            $request2->bindParam(':teamname', $team);
             $request2->bindParam(':teamname', $this->team->name);
             $request2->execute();
             return new Player($this->username,
@@ -106,8 +121,8 @@ class Capitain extends Player {
 
         $request1 = $bdd->prepare("INSERT INTO Capitain VALUES(:playerSelectedUsername,:teamName)");
         $request1->bindValue(':playerSelectedUsername',$playerSelectedUsername);
-        $request1->bindValue(':teamName',$this->team);
+        $request1->bindValue(':teamName',$this->team->name);
         $request1->execute();
-        /**/
+
     }
 }
