@@ -20,7 +20,7 @@ $results = launch()->getMember($bdd, $_SESSION['username'])
 <body>
 <h1>Voici les membres inscrits au site :</h1>
 <?php
-echo "<table><tr><th>pseudo</th><th>Nom</th><th>prénom</th><th>Joueur</th><th>équipe</th><th>Admin</th></tr>";
+echo "<table><tr><th>Pseudo</th><th>Nom</th><th>Prénom</th><th>Joueur</th><th>Son équipe</th><th>Est admin ?</th></tr>";
 foreach ($results as $res){
     echo"<tr><td>$res[0]</td>";
     echo"<td>$res[1]</td>";
@@ -31,13 +31,13 @@ foreach ($results as $res){
         echo"<td>non</td>";
     }if ($res[3] != null) {
         echo"<td>$res[3]</td>";
-    }else{
-        echo"<td>aucune</td>";
+    }else {
+        echo"<td>Aucune</td>";
     }if ($res[4] != null) {
-        echo"<td>c'est un admin</td>";
+        echo"<td>Admin</td>";
     }else{
         ?>
-        <td>non   <form action='ConfirmAdmin.php' method="post">
+        <td>Non<form action='ConfirmAdmin.php' method="post">
                     <input type='submit' name="Upgrade_<?php echo $res[0]; ?>" value="Promouvoir">
             </form>
         </td>

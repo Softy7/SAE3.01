@@ -1,7 +1,8 @@
 <?php
-require_once('../../Model/Player.php');
+require_once('../../Model/Capitain.php');
 require_once('../launch.php');
 require_once('../../Model/AdminCapitain.php');
+session_start();
 
 // Inclusion de la bibliothèque PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
@@ -10,7 +11,6 @@ use PHPMailer\PHPMailer\Exception;
 require_once('../../vendor/autoload.php');
 require_once('../../ConnexionDataBase.php');
 
-session_start();
 $user = $_SESSION['username'];
 $team = $_SESSION['teamName'];
 $bdd = __init__();

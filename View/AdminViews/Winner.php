@@ -7,7 +7,7 @@ if ($_SESSION['isAdmin'] == 1) {
 <head>
     <meta charset="UTF-8">
     <title>Cholage Club Quaroule.fr</title>
-    <link href="viewMatch.css" rel="stylesheet">
+    <link href="../../Tests/viewMatch.css" rel="stylesheet">
 </head>
 <body>
 <h1>Résultat Final Match</h1>

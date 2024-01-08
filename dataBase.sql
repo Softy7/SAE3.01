@@ -1,4 +1,4 @@
-Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run cascade;
+Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Request cascade;
 
 create table Team (
                       teamName text unique not null primary key,
@@ -18,7 +18,7 @@ create table Guests (
                         isAdmin boolean not null,
                         isRegistered boolean not null,
                         isDeleted boolean not null,
-                        Team text
+                        Team text references Team
 );
 
 create table Request (
@@ -67,10 +67,6 @@ create table Match (
                        countDefend int,
                        countMoves int,
                        check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
-                       goal int not null,
-                       score int not null,
-                       runTitle text ,
-                       contestation boolean
 );
 
 create table bet(

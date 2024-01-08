@@ -6,10 +6,6 @@ class AdminCapitain extends PlayerAdministrator {
     {
         parent::__construct($un, $m, $n, $fn, $b, $p, $tn);
     }
-
-    function addPlayerInTeam($player) {
-        $this->team->addPlayer($player);
-    }
   
     function addPlayerInTeam($username) {
         $bdd = __init__();
@@ -20,8 +16,11 @@ class AdminCapitain extends PlayerAdministrator {
 
     }
 
-    function removePlayerInTeam($player) {
-        $this->team->removePlayer($player);
+    function removePlayerInTeam($username) {
+        $bdd = __init__();
+        $request=$bdd->prepare("delete from Guests where username = :username");
+        $request->bindValue(':username',$username, PDO::PARAM_STR);
+        $request->execute();
     }
 
     public function askPlayer($player, $team){
@@ -31,13 +30,12 @@ class AdminCapitain extends PlayerAdministrator {
         $request->bindValue(':Player', $player, PDO::PARAM_STR);
         $request->execute();
     }
+
     function addPlayer($teamname, $player){
         $bdd = __init__();
         $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
-        $request=$bdd->prepare("delete from Guests where username = :username");
-        $request->bindValue(':username',$player, PDO::PARAM_STR);
         $request->execute();
     }
 
@@ -50,14 +48,13 @@ class AdminCapitain extends PlayerAdministrator {
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
-        echo $this->team->name;
-        $prepare->bindValue(':teamname', $this->team->name);
+        $prepare->bindValue(':teamname', $this->team);
         $prepare->execute();
 
         $request2 = $bdd->prepare("Delete
                                         From Team
                                         where teamname = :teamname");
-        $request2->bindParam(':teamname', $this->team->name);
+        $request2->bindParam(':teamname', $this->team);
         $request2->execute();
         return new PlayerAdministrator($this->username,
             $this->getMail(),
@@ -68,7 +65,7 @@ class AdminCapitain extends PlayerAdministrator {
             null);
     }
 
-    function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
+    function searchPlayer($search/*recherche nom,prénom ou username,*/){
         $players = array();
         $bdd = __init__();
         $lines = array("username", "name", "firstname");
@@ -92,16 +89,6 @@ class AdminCapitain extends PlayerAdministrator {
         return $players;
     }
 
-    function bet($match){
-        if($match->getTeam1=$this){
-            $match->setBetT1($this);
-        }
-        else{
-            $match->setBetT2($this);
-        }
-    function addPlayer($seachPlayer){
-        $this->team->addPlayer($seachPlayer);
-    }
 
     function betIfEquals(){
         $min=1;

@@ -53,7 +53,8 @@ class Administrator extends Member
 
     function getMember($bdd, $player)
     {
-        $req = $bdd->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND isplayer = true AND username != '$player' ORDER BY team");
+        $req = $bdd->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND isplayer = true AND username != :player ORDER BY team");
+        $req->bindValue(':player', $player);
         $req->execute();
         return $req->fetchall();
     }
@@ -156,6 +157,11 @@ class Administrator extends Member
         $req->execute();
     }
 
+    function getPlayer($db) {
+        $req = $db->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND isplayer = true ORDER BY team");
+        $req->execute();
+        return $req->fetchAll();
+    }
     function createMatch($bdd, $t1, $t2, $year, $run)
     {
         $check = $bdd->prepare("Select maxbet from run where idrun = :runID");
@@ -334,10 +340,5 @@ class Administrator extends Member
         $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
-    }
-
-    function createTeamByStrench($team, $cap, $P1, $bdd){
-        $this->createTeamF($team, $cap, $bdd);
-        $this->addPlayerF($team, $P1);
     }
 }

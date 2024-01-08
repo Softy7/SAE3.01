@@ -82,6 +82,14 @@ class PlayerAdministrator extends Administrator {
         return $request->fetchAll();
     }
 
+    public function askPlayer($player, $team){
+        $bdd = __init__();
+        $request = $bdd->prepare("INSERT INTO request VALUES (:Player, true, :team)");
+        $request->bindValue(':team', $team, PDO::PARAM_STR);
+        $request->bindValue(':Player', $player, PDO::PARAM_STR);
+        $request->execute();
+    }
+
     public function scearchName($teamName,$bdd){
         $requete = $bdd->prepare("SELECT * FROM Team WHERE teamName=:teamName");
         $requete->bindParam(':teamName',$teamName);
