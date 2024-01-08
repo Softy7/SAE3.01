@@ -10,6 +10,15 @@ class AdminCapitain extends PlayerAdministrator {
     function addPlayerInTeam($player) {
         $this->team->addPlayer($player);
     }
+  
+    function addPlayerInTeam($username) {
+        $bdd = __init__();
+        $request=$bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
+        $request->bindValue(':username',$username, PDO::PARAM_STR);
+        $request->execute();
+
+    }
 
     function removePlayerInTeam($player) {
         $this->team->removePlayer($player);
@@ -27,6 +36,8 @@ class AdminCapitain extends PlayerAdministrator {
         $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
+        $request=$bdd->prepare("delete from Guests where username = :username");
+        $request->bindValue(':username',$player, PDO::PARAM_STR);
         $request->execute();
     }
 
@@ -88,6 +99,15 @@ class AdminCapitain extends PlayerAdministrator {
         else{
             $match->setBetT2($this);
         }
+    function addPlayer($seachPlayer){
+        $this->team->addPlayer($seachPlayer);
+    }
+
+    function betIfEquals(){
+        $min=1;
+        $max=2;
+        $random = rand($min, $max);
+        return $random;
     }
 
     function chooseNewCapitain($playerSelectedUsername){
