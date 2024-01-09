@@ -150,7 +150,7 @@ class Administrator extends Member {
     }*/
 
     function addRun($link, $data, $pdd, $pda, $nbpm, $bdd){
-        $req = $bdd->prepare("INSERT INTO run VALUES (:link, :data, :pdd, :pda, :paris)");
+        $req = $bdd->prepare("INSERT INTO run VALUES (default,:link, :data, :pdd, :pda, :paris)");
         $req->bindValue(":link", $link);
         $req->bindValue(":data", $data,PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
@@ -166,16 +166,24 @@ class Administrator extends Member {
     }
 
     function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd){
-    $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm AND image_data=:data And starterPoint=:pdd And starterPoint=:pda  where name= :remplacer ");
+        $req = $bdd->prepare("UPDATE run SET title = :link, maxBet = :nbpm, path = :data, starterPoint = :pdd, finalPoint = :pda WHERE title = :remplacer");
     $req-> bindValue(":link",$link);
-    $req-> bindValue(":data",$data);
+    $req-> bindValue(":data",$data,PDO::PARAM_LOB);
     $req-> bindValue(":pdd",$pdd);
     $req-> bindValue(":pda",$pda);
-    $req-> bindValue(":paris",$nbpm);
+    $req-> bindValue(":nbpm",$nbpm);
     $req-> bindValue(":remplacer",$remplacer);
     $req->execute();
     }
     /**/
+
+    function searchFile($title,$bdd){
+        $req = $bdd->prepare("select path from run where title = :title");
+        $req-> bindValue(":title",$title);
+        $req->execute();
+        $req=$req->fetchall();
+        return $req[0][0];
+    }
 
 
 
