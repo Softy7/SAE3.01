@@ -1,4 +1,4 @@
-Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run cascade;
+Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Request cascade;
 
 create table Team (
                       teamName text unique not null primary key,
@@ -18,7 +18,14 @@ create table Guests (
                         isAdmin boolean not null,
                         isRegistered boolean not null,
                         isDeleted boolean not null,
-                        Team text
+                        Team text references Team
+);
+
+create table Request (
+                         username text unique not null,
+                         isPlayerAsk boolean not null,
+                         Team text references Team,
+                         primary key (username, Team)
 );
 
 create table Capitain (
@@ -62,8 +69,11 @@ create table Match (
                        check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
 );
 
-create table Bet (
-
+create table bet(
+                    username text not null references Guests,
+                    idmatch int not null references Match,
+                    betcap int,
+                    primary key(username,idmatch)
 );
 
 create table Inscription (
@@ -109,12 +119,3 @@ from articles
 order by datePublication;
 
 SELECT * FROM Guests WHERE Team is null;
-
-select Team.teamname from Team
-where Team.teamName not in (
-    Select Team.teamname from Team
-                                  left join Match on Team.teamname = Match.attack
-    where idRun = 1
-    union (select Team.teamname from Team
-                                         left join Match on Team.teamname = Match.defend
-           where idRun = 1));

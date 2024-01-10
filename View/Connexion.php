@@ -3,19 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Connection</title>
+    <link rel="stylesheet" href="connexion.css" media="screen" type="text/css" />
 
 </head>
 <body>
+<div id="container">
 <form action="../Controller/Connect/CheckConnect.php" method="post">
-  <label>veuiller donner votre identifiant et mot de passe :</label><br />
-  <label>identifiant: </label>
+  <h2><label>Veuiller donner votre identifiant et mot de passe :</label></h2><br/>
+  <label>Identifiant: </label>
   <input name="id" type="text" />
 
-  <label>mot de passe: </label>
+  <label>Mot de passe: </label>
   <input name="MDP" type="password" /><br />
 
   <input type="submit" value="Connexion" name="ok"/>
 </form>
+</div>
 </body>
 </html>
 

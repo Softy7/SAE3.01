@@ -1,14 +1,14 @@
 <?php
-session_start();
 require_once('../../Model/Capitain.php');
 require_once('../../Model/AdminCapitain.php');
 require_once('../../Model/PlayerAdministrator.php');
 require_once('../../Model/Player.php');
 require_once('../../Model/Member.php');
 require_once('../../Model/Administrator.php');
-require_once('../../Model/Team.php');
 require_once('../../ConnexionDataBase.php');
 require_once('../launch.php');
+
+session_start();
 
 //require_once permet de récuperer les fichiers une seul fois ce qui évite des problème de mémoire.
 
@@ -24,12 +24,13 @@ $bdd = __init__();
 
 $request = $bdd->prepare("SELECT username, mail, name, firstname, birthday, password, isPlayer, isAdmin, team
                                 FROM Guests 
-                                WHERE username = :user 
-                                  AND password = :password 
+                                WHERE username = :user
+                                  AND password = :password
                                   AND isRegistered = true
                                   AND isDeleted = false");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre et regarde si l'utilisateur ne s'est pas désinscrit au préalable
 $request->bindValue(':user',$user);
 $request->bindValue(':password',$password);
+
 $request->execute();
 $result = $request->fetchAll();
 

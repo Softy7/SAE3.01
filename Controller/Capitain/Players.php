@@ -4,6 +4,7 @@ require_once('../../Model/Capitain.php');
 require_once('../../Model/AdminCapitain.php');
 require_once('../../ConnexionDataBase.php');
 require_once('../launch.php');
+require_once('../../ConnexionDataBase.php');
 $user = launch();
 
 if (!empty($_POST)) {
@@ -15,7 +16,7 @@ if (!empty($_POST)) {
         }
         if (strpos($key, 'remove_player_')!==false) {
             $username = str_replace('remove_player_', '', $key);
-            $user0 = new Player($username, null, null, null, null, null, $user->getTeam());
+            $user0 = new Player($username, null, null, null, null, null, $_SESSION['teamName']);
             $user0->unsetTeam();
             header("location: ../../View/Capitain/Players.php");
         }

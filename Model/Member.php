@@ -85,4 +85,10 @@ class Member {
         $req->execute();
         /**/
     }
+
+    public function getMatchs($db) {
+        $req = $db->prepare('Select Match.* from Match join public.run r on r.idrun = Match.idrun order by orderrun');
+        $req->execute();
+        return $req->fetchAll();
+    }
 }

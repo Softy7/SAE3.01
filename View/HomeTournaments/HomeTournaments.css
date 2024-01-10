@@ -45,3 +45,18 @@ input[type="submit"]:hover{
     background-color: azure;
     border-color: azure;
 }
+
+table {
+    border-collapse: collapse;
+    margin : auto;
+    background-color: white;
+}
+
+td,th {
+    border: 1px solid black;
+    padding: 15px;
+}
+
+th {
+    font-weight: bolder;
+}
