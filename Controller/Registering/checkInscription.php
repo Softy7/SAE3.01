@@ -14,12 +14,15 @@ $PasswordC = $_POST['passwordC'];
         header("location: ../../View/Registering/DeclinedRegisteringWebsite.php");
         exit;
     } else {
+
         $stmt = $conn->prepare("select username, mail from Guests where username = :User or mail = :email;");
         $stmt->bindValue(':User', $User);
         $stmt->bindValue(':email', $email);
         $stmt->execute();
         $stmt = $stmt->fetchAll();
         if ($stmt == null) {
+            $Password=password_hash($Password, PASSWORD_DEFAULT);
+
             $stmt = $conn->prepare("INSERT INTO Guests VALUES (:User, :email, :name, :FirstName, :Birth, :Password, false, false, false, false, null)");
             $stmt->bindValue(':User', $User);
             $stmt->bindValue(':email', $email);
