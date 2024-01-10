@@ -38,31 +38,18 @@ button:hover{
     border-radius: 20px;
 }
 
-#correct {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #ffffff;
-    border-color: black;
-    border-radius: 5px;
-}
-
 input {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: red;
+    background-color: limegreen;
     border-color: black;
-    border-radius: 5px;
+    border-radius: 20px;
 }
 
 input:hover {
-    padding: 10px 20px;
+    padding: 11px 21px;
     cursor: pointer;
-    background-color: #bd181f;
+    background-color: greenyellow;
+    border-radius: 20px;
     border-color: black;
-    border-radius: 5px;
-}
-
-#line {
-    background-color: #ffffff;
-    border-radius: 5px;
 }

@@ -33,7 +33,7 @@ foreach ($run as $r) {
         <?php
     } else {
         foreach($matchs as $match) {
-            ?><form action="../Controller/AdminFunctions/getMatch.php" method="post"><?php
+            ?><form action="../Controller/AdminFunctions/getRun.php" method="post"><?php
             if ($match[8] == 1) {
                 ?><th><?php echo $match[1], " | Contesté | ", $match[2]?>
                 <input type="submit" name="_contest_<?php echo $match[0]?>"  value="+"></th><?php

@@ -183,16 +183,16 @@ class Administrator extends Member
     {
         if ($t == null) {
             $req = $bdd->prepare("select * from Match 
-                                  join public.run r on Match.idmatch = r.idrun
+                                  join public.run r on r.idrun = Match.idrun
                                   order by r.orderrun");
             $req->execute();
             return $req->fetchAll();
         } else {
-            $req = $bdd->prepare('select * from Match 
-                                  join public.run r on Match.idmatch = r.idrun
+            $req = $bdd->prepare("select * from Match 
+                                  join public.run r on r.idrun = Match.idrun
                                   where attack = :t or defend = :t
-                                  order by r.orderrun');
-            $req->bindValue(":t", $t);
+                                  order by r.orderrun");
+            $req->bindValue(":t", $t, PDO::PARAM_STR);
             $req->execute();
             return $req->fetchAll();
         }
