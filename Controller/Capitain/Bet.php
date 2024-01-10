@@ -17,7 +17,7 @@ $requete->execute();
 $req=$requete->fetchAll();
 
 $idMatch=$req[0][0];
-echo $idMatch;
+
 if ($req[0][2] != $user->getTeam()) {
     $equipe1 = $req[0][1];
     $equipe2 = $req[0][2];

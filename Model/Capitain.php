@@ -85,13 +85,6 @@ class Capitain extends Player {
         return $players;
     }
 
-    function betIfEquals(){
-        $min=1;
-        $max=2;
-        $random = rand($min, $max);
-        return $random;
-    }
-
     /**
      * @param text $playerSelectedUsername le pseudo du joueur que le capitain souhaite passer capitain
      * @return void
@@ -110,4 +103,89 @@ class Capitain extends Player {
         $request1->execute();
         /**/
     }
+
+
+
+    function getMatchNotPlayed($bdd){
+        $requete=$bdd->prepare("SELECT * FROM Match WHERE (score = 0) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
+        $requete->bindParam(':equipeCap',$this->getTeam());
+        $requete->bindParam(':teamCap',$this->getTeam());
+        $requete->execute();
+        $req=$requete->fetchAll();
+        return $req;
+    }
+
+    function enterScore($bdd,$nbDechole,$gameResult,$idMatch){
+        $requete = $bdd->prepare("Update Match SET score=:score, goal=:win WHERE idmatch=:idMatch");
+        $requete->bindParam(':score',$nbDechole);
+        $requete->bindParam(':win', $gameResult);
+        $requete->bindParam(':idMatch', $idMatch);
+        $requete->execute();
+    }
+
+    function confirmation($bdd,$contestation,$idMatch){
+        $requete = $bdd->prepare("Update Match SET contestation=:contestation WHERE idmatch=:idMatch");
+        $requete->bindParam(':contestation', $contestation);
+        $requete->bindParam(':idMatch', $idMatch);
+        $requete->execute();
+    }
+
+    function getMatchNotValidated($bdd){
+        $requete=$bdd->prepare("SELECT * FROM Match WHERE (contestation IS null) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
+        $requete->bindParam(':equipeCap',$this->getTeam());
+        $requete->bindParam(':teamCap',$this->getTeam());
+        $requete->execute();
+        $req=$requete->fetchAll();
+        return $req;
+    }
+
+    function insertIntoBet($bdd,$idMatch,$bet){
+        $requete = $bdd->prepare("INSERT INTO bet VALUES(:cap,:idmatch,:pari)");
+        $requete->bindParam(':cap', $this->username);
+        $requete->bindParam(':idmatch', $idMatch);
+        $requete->bindParam(':pari', $bet);
+        $requete->execute();
+    }
+
+    function betIfEquals($bdd,$idMatch,$bet,$team2){
+        $min=1;
+        $max=2;
+        $random = rand($min, $max);
+        if ($random==1){
+            $requete = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+            $requete->bindParam(":equipe1", $this->getTeam());
+            $requete->bindParam(":equipe2", $team2);
+            $requete->bindParam(":bet", $bet);
+            $requete->bindParam(':idMatch',$idMatch);
+            $requete->execute();
+        }
+        elseif ($random==2){
+            $requete = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+            $requete->bindParam(":equipe1", $team2);
+            $requete->bindParam(":equipe2", $this->getTeam());
+            $requete->bindParam(":bet", $bet);
+            $requete->bindParam(':idMatch',$idMatch);
+            $requete->execute();
+        }
+
+    }
+
+    function bet($bdd,$idMatch,$bet,$team2){
+        $requete = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+        $requete->bindParam(":equipe1", $this->getTeam());
+        $requete->bindParam(":equipe2", $team2);
+        $requete->bindParam(":bet", $bet);
+        $requete->bindParam(':idMatch',$idMatch);
+        $requete->execute();
+    }
+
+    function getBet($bdd,$idMatch){
+        $req=$bdd->prepare("SELECT * FROM bet WHERE (idmatch=:idmatch)");
+        $req->bindParam(':idmatch',$idMatch);
+        $req->execute();
+        $resultats=$req->fetchAll();
+        return $resultats;
+    }
+
+
 }

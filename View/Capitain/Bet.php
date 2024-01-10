@@ -22,7 +22,7 @@ if ($_SESSION['connected']) {
     $req2->execute();
     $resultats2=$req2->fetchAll();
 
-    if ($resultats2[0][0]==""){
+    if ($resultats2[0][0]=="" || $resultats2[0][0]!= $user->username && $resultats2[1][0]==""){
 
 
 ?>

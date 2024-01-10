@@ -85,4 +85,12 @@ class Member {
         $req->execute();
         /**/
     }
+
+    function viewMatch($bdd){
+        $requete=$bdd->prepare("SELECT * FROM Match ORDER BY idmatch");
+        $requete->execute();
+        $resultats=$requete->fetchAll();
+        return $resultats;
+    }
+
 }

@@ -5,16 +5,12 @@ require_once('../../Model/Capitain.php');
 require_once('../../Model/AdminCapitain.php');
 require_once('../../ConnexionDataBase.php');
 
-
 $bdd=__init__();
 $user = launch();
 $team=$user->getTeam();
 if ($_SESSION['connected']) {
-    $req=$bdd->prepare("SELECT * FROM Match WHERE (contestation IS null) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
-    $req->bindParam(':equipeCap',$team);
-    $req->bindParam(':teamCap',$team);
-    $req->execute();
-    $resultats=$req->fetchAll();
+    $resultats=$user->getMatchNotValidated($bdd);
+
     if ($resultats[0][1]=="$team"){
     ?>
 
