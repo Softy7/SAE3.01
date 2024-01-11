@@ -70,12 +70,19 @@ if ($_SESSION['connected']) {
                 <h1>Vous avez parié que vous pouvez gagné en <?php echo $bets[0][2]; ?> coup de déchole, votre adversaire a pari qu'ils gagneront en <?php echo $bets[1][2]; ?> pour le match <?php echo $Matchs[0][0]; ?></h1>
                 <?php
                 $Matchs=$user->getMatchNotValidated($bdd);
-                //le parie du capitaine est le plus petit
-                if($bets[0][2]<$bets[1][2]){
+                //le parie du capitaine est le plus petit et le score n a pas encore été entrer
+                if($bets[0][2]<$bets[1][2] && !$user->checkScoreEntered($bdd)){
                     ?>
                     <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
                     <?php
                 }
+                //le parie du capitaine est le plus petit et le score a été entrer
+                elseif($bets[0][2]<$bets[1][2] && $user->checkScoreEntered($bdd)){
+                    $Matchs=$user->getMatchNotValidated($bdd);?>
+                    <p>vous avez entré que vous avez <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][5]; ?> coups de déchole</p>
+                    <?php
+                }
+
 
                 //le parie du capitaine est le plus grand et le score n'a pas été entré
                 elseif ($bets[0][2]>$bets[1][2] && $Matchs[0][4]==0){?>
@@ -84,15 +91,22 @@ if ($_SESSION['connected']) {
                 }
 
                 //le parie du capitaine est le plus grand et le score a été entré
-                elseif ($bets[0][2]>$bets[1][2] && $Matchs[0][4]!=0){?>
-                    <p>le capitaine a entré qu'il a <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $bets[0][5]; ?> coups de déchole</p>
+                elseif ($bets[0][2]>$bets[1][2] && $Matchs[0][4]!=0 ){?>
+                    <p>le capitaine a entré qu'il a <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][5]; ?> coups de déchole</p>
                     <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">confirmation</button>
                     <?php
                 }
 
-                //le pari est du capitaine est égale et le capitaine attaque
-                elseif ($bets[0][2]==$bets[1][2] && $Matchs[0][1]==$user->username){?>
+                //le pari est du capitaine est égale et le capitaine attaque et le score n'a pas été entrer
+                elseif ($bets[0][2]==$bets[1][2] && $Matchs[0][1]==$user->username && !$user->checkScoreEntered($bdd)){?>
                     <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
+                    <?php
+                }
+                //le pari est du capitaine est égale et le capitaine attaque et le score a été entrer
+                elseif ($bets[0][2]==$bets[1][2] && $Matchs[0][1]==$user->username && $user->checkScoreEntered($bdd)){
+                    $Matchs=$user->getMatchNotValidated($bdd);
+                    ?>
+                    <p>vous avez entré que vous avez <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][5]; ?> coups de déchole</p>
                     <?php
                 }
 
@@ -115,9 +129,16 @@ if ($_SESSION['connected']) {
                 <?php
                 $Matchs=$user->getMatchNotValidated($bdd);
 
-                //le parie du capitaine est le plus petit
-                if($bets[1][2]<$bets[0][2]){ ?>
+                //le parie du capitaine est le plus petit et le score n'a pas été entrer
+                if($bets[1][2]<$bets[0][2] && !$user->checkScoreEntered($bdd)){ ?>
                     <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
+                    <?php
+                }
+                //le parie du capitaine est le plus petit et le score a été entrer
+                elseif($bets[1][2]<$bets[0][2] && $user->checkScoreEntered($bdd)){
+                    $Matchs=$user->getMatchNotValidated($bdd);
+                    ?>
+                    <p>vous avez entré que vous avez <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][5]; ?> coups de déchole</p>
                     <?php
                 }
 
@@ -135,11 +156,17 @@ if ($_SESSION['connected']) {
                 }
 
                 //le pari est du capitaine est égale et le capitaine attaque
-                elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][1]==$user->username){?>
+                elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][1]==$user->username && !$user->checkScoreEntered($bdd)){?>
                     <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
                     <?php
                 }
 
+                elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][1]==$user->username && $user->checkScoreEntered($bdd)){
+                    $Matchs=$user->getMatchNotValidated($bdd);
+                    ?>
+                    <p>vous avez entré que vous avez <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][5]; ?> coups de déchole</p>
+                    <?php
+                }
                 //le pari est du capitaine est égale, l'équipe du capitaine defend et le score a été entré
                 elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][4]==0){?>
                     <p>le score n'a pas encore été entrée</p>
@@ -148,7 +175,7 @@ if ($_SESSION['connected']) {
 
                 //le pari est du capitaine est égale, l'équipe du capitaine defend et le score a été entré
                 elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][4]!=0){?>
-                    <p>le capitaine a entré qu'il a <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $bets[0][5]; ?> coups de déchole</p>
+                    <p>le capitaine a entré qu'il a <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][5]; ?> coups de déchole</p>
                     <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">confirmation</button>
                     <?php
                 }

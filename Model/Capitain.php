@@ -187,5 +187,15 @@ class Capitain extends Player {
         return $resultats;
     }
 
+    function checkScoreEntered($bdd){
+        $matchsNotValidated=$this->getMatchNotValidated($bdd);
+        $matchNotPlayed=$this->getMatchNotPlayed($bdd);
+        if ($matchsNotValidated[0][0]==$matchNotPlayed[0][0]){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 
 }
