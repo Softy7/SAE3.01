@@ -25,23 +25,17 @@ $bdd = __init__();
 $request = $bdd->prepare("SELECT username, mail, name, firstname, birthday, password, isPlayer, isAdmin, team
                                 FROM Guests 
                                 WHERE username = :user
-                                  AND password = :password
                                   AND isRegistered = true
                                   AND isDeleted = false");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre et regarde si l'utilisateur ne s'est pas désinscrit au préalable
 $request->bindValue(':user',$user);
-$request->bindValue(':password',$password);
 
 $request->execute();
 $result = $request->fetchAll();
 
-$request = $bdd->prepare("SELECT username, teamName
-                                FROM capitain 
-                                WHERE username = :user ");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre et regarde si l'utilisateur ne s'est pas désinscrit au préalable
-$request->bindValue(':user',$user);
-$request->execute();
-$result1 = $request->fetchAll();
-
 if ($result != null) {// si la requete ci-dessus a trouver un membre, joueur ou un administrateur
+    $hashedPasswordDB = $result[0][5];
+
+    if (password_verify($password, $hashedPasswordDB)) {
     $_SESSION['username'] = $result[0][0];
     $_SESSION['mail'] = $result[0][1];
     $_SESSION['name'] = $result[0][2];
@@ -52,6 +46,14 @@ if ($result != null) {// si la requete ci-dessus a trouver un membre, joueur ou 
     $_SESSION['isAdmin'] = $result[0][7];
     $_SESSION['connected'] = true;
     $_SESSION['teamName'] = $result[0][8];
+
+
+        $request = $bdd->prepare("SELECT username, teamName
+                                FROM capitain 
+                                WHERE username = :user ");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre et regarde si l'utilisateur ne s'est pas désinscrit au préalable
+        $request->bindValue(':user',$user);
+        $request->execute();
+        $result1 = $request->fetchAll();
 
     if ($result1 == null) {
         $_SESSION['captain'] = 0;
@@ -73,10 +75,11 @@ if ($result != null) {// si la requete ci-dessus a trouver un membre, joueur ou 
     } else if ($user instanceof Member) {
         $_SESSION['view'] = 'Espace Membre';
     }
-    header("location: ../../View/Home/Home.php");
+    header("location: ../../View/Home/Home.php");}else{
+        header("location: ../../View/Guest_Home.html");
+    }
 } else if ($_SESSION['try']){
     header("location: ../../View/NotAccepted.html");
 } else {
-    header("location: ../../View/Guest_Home.html");
-}
+    header("location: ../../View/NotAccepted.html");}
 exit;
