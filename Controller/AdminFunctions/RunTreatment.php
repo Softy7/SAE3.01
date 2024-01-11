@@ -16,7 +16,7 @@ if (!$bdd) {
         $bet= $_POST['bet'];
         $uploadDir = '../../View/AdminViews/image/';
         echo $uploadDir;
-        $uploadFile = $uploadDir . basename($_FILES['lien']['name']);
+        $uploadFile = $uploadDir.basename($_FILES['lien']['name']);
         echo $uploadFile;
         if (move_uploaded_file($_FILES['lien']['tmp_name'], $uploadFile)) {
             echo 'Le fichier est valide et a été téléchargé avec succès.';
@@ -48,6 +48,15 @@ if (!$bdd) {
             $newPda = $_POST['pda_' . $title];
             $newBet = $_POST['bet_' . $title];
             $user->updateRun($newTitle,$newData,$newPdd,$newPda,$title,$newBet,$bdd);
+        if (strpos($key, 'modifier') === 0) {
+            $idarticle = substr($key, 9);
+            $nTitre = $_POST['titre'];
+            $nData = $_POST['lien'];
+            $nPdd = $_POST['pdd'];
+            $nPda = $_POST['pda'];
+            $nBet = $_POST['bet'];
+            $user->updateRun($nTitre,$nData,$nPdd,$nPda,$idarticle,$nBet,$bdd);
+
         } elseif (isset($_POST['supprimer']) && $_POST['supprimer'] == $value) {
             $title = $_POST['supprimer'];
             $user->deleteRun($title, $bdd);

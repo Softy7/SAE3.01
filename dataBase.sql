@@ -1,4 +1,4 @@
-Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run cascade;
+Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Request cascade;
 
 create table Team (
                       teamName text unique not null primary key,
@@ -18,7 +18,14 @@ create table Guests (
                         isAdmin boolean not null,
                         isRegistered boolean not null,
                         isDeleted boolean not null,
-                        Team text
+                        Team text references Team
+);
+
+create table Request (
+                         username text unique not null,
+                         isPlayerAsk boolean not null,
+                         Team text references Team,
+                         primary key (username, Team)
 );
 
 create table Capitain (
@@ -28,7 +35,7 @@ create table Capitain (
 );
 
 create table Articles (
-                        idArticle serial not null primary key,
+                          idArticle serial not null primary key,
                           title text not null,
                           contenu text not null,
                           writer text not null references Guests,
@@ -37,21 +44,36 @@ create table Articles (
 );
 
 create table Run (
-                     title text unique not null primary key,
+                     idRun serial not null primary key,
+                     title text not null,
                      image_data bytea not null,
                      starterPoint text not null,
                      finalPoint text not null,
+                     orderRun int not null,
                      maxBet int not null check (maxBet>=0)
 );
 
 create table Match (
-                       attack text not null references Team,
-                       defend text not null references team,
+                       idMatch serial not null primary key,
+                       attack text references Team,
+                       defend text references team,
                        betTeamKept int,
-                       goal boolean,
-                       annee int not null primary key,
-                       runTitle text not null references run,
-                       draw boolean not null
+                       goal int,
+                       annee int not null,
+                       idRun serial not null references run,
+                       penal boolean not null,
+                       contest boolean,
+                       countAttack int,
+                       countDefend int,
+                       countMoves int,
+                       check((not penal and countAttack IS NULL and countDefend IS NULL) or goal = 0)
+);
+
+create table bet(
+                    username text not null references Guests,
+                    idmatch int not null references Match,
+                    betcap int,
+                    primary key(username,idmatch)
 );
 
 create table Inscription (

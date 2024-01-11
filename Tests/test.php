@@ -1,7 +1,5 @@
 <?php
 require_once('../Model/Player.php');
-require_once('../Model/Team.php');
-require_once('../Model/Team.php');
 
 $bdd= new PDO ("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
 $c = new Player('capitaine','mail@gmail.com','Christ','Jesus','2004-03-16','bonjour', null);

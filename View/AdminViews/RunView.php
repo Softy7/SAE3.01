@@ -1,7 +1,14 @@
 <?php
 session_start();
+
  require_once('../../ConnexionDataBase.php');
  //require_once ('../../View/AdminViews/RunView.css');
+
+
+require_once ('../../Model/AdminCapitain.php');
+require_once ('../../Controller/launch.php');
+require_once ('../../ConnexionDataBase.php');
+
 if ($_SESSION['isAdmin'] == 1) {
 
     ?>
@@ -41,14 +48,22 @@ if ($_SESSION['isAdmin'] == 1) {
     <form action="../../Controller/AdminFunctions/RunTreatment.php" method="post" onsubmit="return confirmerPublicationRun();" enctype="multipart/form-data">
         <label for="titre">Titre :</label>
         <input type="text" id="titre" name="titre" required><br>
+
         <label for="parcours">Parcours:</label>
         <input type="file" id="lien" name="lien" accept="image/*" required><br>
+
         <label for="Départ">Départ :</label>
         <input type="text" id="pdd" name="pdd" required><br>
+
         <label for="Arrivé">Arrivé :</label>
         <input type="text" id="pda" name="pda" required><br>
+
         <label for="Paris Maximum">Paris Maximun :</label>
         <input type="number" id="bet" name="bet" required><br>
+
+        <label for="Order">Ordre Parcours:</label>
+        <input type="number" id="order" name="order" required><br>
+
         <br>
         <input type="submit" name="publier" value="Publier">
     </form>
@@ -71,10 +86,12 @@ if ($_SESSION['isAdmin'] == 1) {
                     echo "<div>";
                     echo "Titre: <input type='text' id='titre_" . $row['title'] . "' name='titre_" . $row['title'] . "' value='" . htmlspecialchars($row['title']) . "'><br>";
                     echo "Image : <img src='" . $row['path'] . "'><br>";
+                  
                     echo "Image à mettre: <input type='file' id='lien' name='lien' accept='image/*'><br>";
                     echo "Point de depart: <input type='text' id='pdd" . $row['title'] . "' name='pdd_" . $row['title'] . "' value='" . htmlspecialchars($row['starterpoint']) . "'> <br>";
                     echo "Point d'arrive: <input type='text' id='pda" . $row['title'] . "' name='pda_" . $row['title'] . "' value='" . htmlspecialchars($row['finalpoint']) . "'> <br>";
                     echo "Paris Max: <input type='text' id='paris" . $row['title'] . "' name='bet_" . $row['title'] . "' value='" . htmlspecialchars($row['maxbet']) . "'> <br>";
+
                     echo "<button onclick='return remplirChampsRun(" . $row['title'] . ", \"" . htmlspecialchars($row['title']) . "\", \"" . htmlspecialchars($row['title']) . "\")' type='submit' name='modifier_" . $row['title'] . "'>Modifier</button>";
                     echo "<button onclick='return confirmerSuppressionRun(" . $row['title'] . ")' type='submit' name='supprimer' value='" . $row['title'] . "'>Supprimer</button>";
                     echo "</div><br>";

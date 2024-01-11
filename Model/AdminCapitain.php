@@ -6,13 +6,37 @@ class AdminCapitain extends PlayerAdministrator {
     {
         parent::__construct($un, $m, $n, $fn, $b, $p, $tn);
     }
+  
+    function addPlayerInTeam($username) {
+        $bdd = __init__();
+        $request=$bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
+        $request->bindValue(':username',$username, PDO::PARAM_STR);
+        $request->execute();
 
-    function addPlayerInTeam($player) {
-        $this->team->addPlayer($player);
     }
 
-    function removePlayerInTeam($player) {
-        $this->team->removePlayer($player);
+    function removePlayerInTeam($username) {
+        $bdd = __init__();
+        $request=$bdd->prepare("delete from Guests where username = :username");
+        $request->bindValue(':username',$username, PDO::PARAM_STR);
+        $request->execute();
+    }
+
+    public function askPlayer($player, $team){
+        $bdd = __init__();
+        $request = $bdd->prepare("INSERT INTO request VALUES (:Player, false, :team)");
+        $request->bindValue(':team', $team, PDO::PARAM_STR);
+        $request->bindValue(':Player', $player, PDO::PARAM_STR);
+        $request->execute();
+    }
+
+    function addPlayer($teamname, $player){
+        $bdd = __init__();
+        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
+        $request->bindValue(':username', $player, PDO::PARAM_STR);
+        $request->execute();
     }
 
     public function deleteTeam(){//dissoudre
@@ -24,14 +48,13 @@ class AdminCapitain extends PlayerAdministrator {
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
-        echo $this->team->name;
-        $prepare->bindValue(':teamname', $this->team->name);
+        $prepare->bindValue(':teamname', $this->team);
         $prepare->execute();
 
         $request2 = $bdd->prepare("Delete
                                         From Team
                                         where teamname = :teamname");
-        $request2->bindParam(':teamname', $this->team->name);
+        $request2->bindParam(':teamname', $this->team);
         $request2->execute();
         return new PlayerAdministrator($this->username,
             $this->getMail(),
@@ -42,7 +65,7 @@ class AdminCapitain extends PlayerAdministrator {
             null);
     }
 
-    function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
+    function searchPlayer($search/*recherche nom,prénom ou username,*/){
         $players = array();
         $bdd = __init__();
         $lines = array("username", "name", "firstname");
@@ -66,17 +89,12 @@ class AdminCapitain extends PlayerAdministrator {
         return $players;
     }
 
-    function addPlayer($seachPlayer){
-        $this->team->addPlayer($seachPlayer);
-    }
 
-    function bet($match){
-        if($match->getTeam1=$this){
-            $match->setBetT1($this);
-        }
-        else{
-            $match->setBetT2($this);
-        }
+    function betIfEquals(){
+        $min=1;
+        $max=2;
+        $random = rand($min, $max);
+        return $random;
     }
 
     function chooseNewCapitain($playerSelectedUsername){
@@ -94,30 +112,25 @@ class AdminCapitain extends PlayerAdministrator {
          * setCap le nouveau cap
          * on passe l ancien cap en joueur. */
     }
-    function addRun($link, $data, $pdd, $pda, $nbpm, $bdd){
-        $req = $bdd->prepare("INSERT INTO run VALUES (:link, :data, :pdd, :pda, :paris)");
-        $req->bindValue(":link", $link);
-        $req->bindValue(":data", $data, PDO::PARAM_LOB);
-        $req->bindValue(":pdd", $pdd);
-        $req->bindValue(":pda", $pda);
-        $req->bindValue(":paris", $nbpm);
-        $req->execute();
-    }
+    /*function addRun($link,$nbpm,$bdd){
+       $req = $bdd->prepare("INSERT INTO run VALUES :link,:paris ");
+       $req-> blindValues(:link,$link);
+       $req-> blindValues(:paris,$nbpm);
+       $req->execute;
+   }
 
-    function deleteRun($link,$bdd){
-        $req = $bdd->prepare("DELETE From run where title= :link ");
-        $req-> bindValue(":link",$link);
-        $req->execute();
-    }
+   function deleteRun($link,$bdd){
+       $req = $bdd->prepare("DELETE * From run where name= :link ");
+       $req-> blindValues(:link,$link);
+       $req->execute;
+   }
 
-    function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd){
-        $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm AND image_data=:data And starterPoint=:pdd And starterPoint=:pda  where name= :remplacer ");
-        $req-> bindValue(":link",$link);
-        $req-> bindValue(":data",$data);
-        $req-> bindValue(":pdd",$pdd,PDO::PARAM_LOB);
-        $req-> bindValue(":pda",$pda);
-        $req-> bindValue(":paris",$nbpm);
-        $req-> bindValue(":remplacer",$remplacer);
-        $req->execute;
-    }
+   function updateRun($link,$remplacer,$nbpm,$bdd){
+   $req = $bdd->prepare("UPDATE run SET name= :link and maxBet= :nbpm where name= :remplacer ");
+   $req-> blindValues(:link,$link);
+   $req-> blindValues(:paris,$nbpm);
+   $req-> blindValues(:remplacer,$remplacer);
+   $req->execute;
+   }*/
+    /**/
 }

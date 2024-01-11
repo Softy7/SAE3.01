@@ -1,8 +1,7 @@
 <?php
+require_once ("../../ConnexionDataBase.php");
 session_start();
-require_once('../../ConnexionDataBase.php');
 
-$bdd = __init__();
 if ($_SESSION['connected']) {
     ?>
     <!DOCTYPE html>
@@ -13,7 +12,7 @@ if ($_SESSION['connected']) {
         <link href="Home.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1><?php echo $_SESSION['view'] ?></h1>
+    <h1><?php echo $_SESSION['view'] /*""*/?></h1>
     <p>Bienvenue sur votre espace ! Monsieur <?php echo $_SESSION['username']?></p>
     <form action="../../Controller/Connect/Deconnect.php" method="post">
         <input type="submit" value="Déconnexion" id="deconnexion"/>
@@ -54,7 +53,6 @@ if ($_SESSION['connected']) {
             if ($_SESSION['captain'] != 1) {
                 if ($_SESSION['teamName'] != null) {
                     ?>
-                    <!--bouton ci-dessous à modifier-->
                     <button onclick="window.location.href='../PlayerView/ViewTeam.php';" id="viewTeam" value="Voir Equipe">Voir Equipe</button>
                     <?php
                     ?>
@@ -63,6 +61,8 @@ if ($_SESSION['connected']) {
                 }
                 else {
             ?>
+                    <button onclick="window.location.href='../Registering/AskJoin.php';" value="RejoindreEquipe" id="AskTeam">Rejoindre Equipe</button>
+                    <button onclick="window.location.href='../Registering/TeamRequest.php';" value="VoirDemande" id="JoinTeam">Voir Demande de recrutement</button>
             <button onclick="window.location.href='../CreateTeam/Form.php';" value="Créer Equipe" id="CreateTeam">Créer une équipe</button>
             <?php
                 }
@@ -74,10 +74,11 @@ if ($_SESSION['connected']) {
                 <form action='../Capitain/NewPlayer.php' method="post">
                     <input type='submit' value="Recruter un joueur" id="addPlayerTeam">
                 </form>
+                <button onclick="window.location.href='../Capitain/ViewRequest.php';" value="voirEnrolle" id="ViewReq">Voir Demande d'enrollement</button>
                 <?php
 
             ?>
-                <form action='../Capitain/Players.php' method="post">
+                <form action='../PlayerView/ViewTeam.php' method="post">
                     <input type='submit' value="Voir effectif" id="viewTeam">
                 </form>
                 <?php
@@ -86,7 +87,10 @@ if ($_SESSION['connected']) {
     }
         if ($_SESSION['isAdmin'] == 1) {
             ?>
-            <button onclick="window.location.href='../AdminViews/viewAllPlayer.php';" value="ViewPlayer" id="ViewPlayer">Voir les joueurs</button>
+            <button onclick="window.location.href='../AdminViews/viewAllMember.php';" value="ViewPlayer" id="ViewPlayer">Voir les joueurs</button>
+            <?php
+            ?>
+            <button onclick="window.location.href='../AdminViews/TournamentView.php';" value="TournamentView" id="TournamentView">Gestion Tournoi</button>
             <?php
             if ($_SESSION['openn'] == 1) {
                 echo "<form action='../../Controller/Registering/RegisterOpen.php' method='post'>
@@ -131,14 +135,13 @@ if ($_SESSION['connected']) {
             if ($result) {
                 foreach ($result as $row) {
                     echo "<div>";
-                    echo htmlspecialchars($row['title'])."<br>";
-                    echo "date: " . $row['datepublication'] . "<br>";
-                    echo "Auteur: ".htmlspecialchars(($row['writer']))."<br>";
+                    echo "<h4>".htmlspecialchars($row['title'])."</h4>";
+                    echo "<h4>".htmlspecialchars($row['datepublication.'])."</h4>";
                     echo "<textarea readonly='readonly' id='contenu_" . $row['idarticle'] . "' name='contenu_" . $row['idarticle'] . "'>" . htmlspecialchars($row['contenu']) . "</textarea><br>";
                     echo "</div>";
                 }
             } else {
-                echo "Aucune publication trouvée...";
+                echo "Aucune publication trouvée.";
             }
         }
         ?>

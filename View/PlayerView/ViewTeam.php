@@ -4,7 +4,7 @@ require_once('../../Model/AdminCapitain.php');
 require_once('../../Controller/launch.php');
 require_once('../../ConnexionDataBase.php');
 session_start();
-if ($_SESSION['captain'] != 1) {
+if ($_SESSION['isPlayer']) {
     $user = launch();
     $teamMates = $user->getTeammates(__init__());
     ?>
@@ -31,5 +31,5 @@ foreach($teamMates as $team) {
 <button onclick="window.location.href='../../Controller/Connect/CheckConnect.php';">Retour</button>
     <?php
 } else {
-    header('location: ../Guest_home.html');
+    header('location: ../Home/home.php');
 }
