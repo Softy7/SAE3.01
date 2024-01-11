@@ -68,7 +68,7 @@ if ($_SESSION['isAdmin'] == 1) {
         <input type="submit" name="publier" value="Publier">
     </form>
     <h2>Parcours Existants</h2>
-    <form action="../../Controller/AdminFunctions/RunTreatment.php" method="post">
+    <form action="../../Controller/AdminFunctions/RunTreatment.php" method="post" enctype="multipart/form-data">
         <?php
         $bdd = __init__();
 
@@ -86,10 +86,12 @@ if ($_SESSION['isAdmin'] == 1) {
                     echo "<div>";
                     echo "Titre: <input type='text' id='titre_" . $row['title'] . "' name='titre_" . $row['title'] . "' value='" . htmlspecialchars($row['title']) . "'><br>";
                     echo "Image : <img src='" . $row['path'] . "'><br>";
-                    echo "Point de depart: <input id='pdd" . $row['title'] . "' name='point de départ" . $row['title'] . "'>" . htmlspecialchars($row['starterpoint']) . "</input><br>";
-                    echo "Point d'arrive: <input id='pda" . $row['title'] . "' name='point d arrive" . $row['title'] . "'>" . htmlspecialchars($row['finalpoint']) . "</input><br>";
-                    echo "Paris Max: <input id='paris" . $row['title'] . "' name='parisMax" . $row['title'] . "'>" . htmlspecialchars($row['maxbet']) . "</input><br>";
-                    echo "Ordre Parcours: <input id='order" . $row['title'] . "' name='parisMax" . $row['title'] . "'>" . htmlspecialchars($row['maxbet']) . "</input><br>";
+                  
+                    echo "Image à mettre: <input type='file' id='lien' name='lien' accept='image/*'><br>";
+                    echo "Point de depart: <input type='text' id='pdd" . $row['title'] . "' name='pdd_" . $row['title'] . "' value='" . htmlspecialchars($row['starterpoint']) . "'> <br>";
+                    echo "Point d'arrive: <input type='text' id='pda" . $row['title'] . "' name='pda_" . $row['title'] . "' value='" . htmlspecialchars($row['finalpoint']) . "'> <br>";
+                    echo "Paris Max: <input type='text' id='paris" . $row['title'] . "' name='bet_" . $row['title'] . "' value='" . htmlspecialchars($row['maxbet']) . "'> <br>";
+
                     echo "<button onclick='return remplirChampsRun(" . $row['title'] . ", \"" . htmlspecialchars($row['title']) . "\", \"" . htmlspecialchars($row['title']) . "\")' type='submit' name='modifier_" . $row['title'] . "'>Modifier</button>";
                     echo "<button onclick='return confirmerSuppressionRun(" . $row['title'] . ")' type='submit' name='supprimer' value='" . $row['title'] . "'>Supprimer</button>";
                     echo "</div><br>";

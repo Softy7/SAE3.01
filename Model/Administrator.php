@@ -162,22 +162,6 @@ class Administrator extends Member
         $req->execute();
         return $req->fetchAll();
     }
-    function createMatch($bdd, $t1, $t2, $year, $run)
-    {
-        $check = $bdd->prepare("Select maxbet from run where idrun = :runID");
-        $check->bindValue(':runId', $run);
-        $check->execute();
-        $check = $check->fetchAll()[0][0];
-        if ($check == 0) {
-            $req = $bdd->prepare("insert into Match (attack, defend, betteamkept, goal, annee, idrun, penal, contest, countattack, countdefend, countmoves) 
-                              values (:t1, :t2, null, null, :year, :runID, true, null, null, null, null)");
-            $req->bindValue(':t1', $t1);
-            $req->bindValue(':t2', $t2);
-            $req->bindValue(':year', $year);
-            $req->bindValue('runID', $run);
-            $req->execute();
-        }
-    }
 
     function getMatch($bdd, $t = null)
     {
@@ -326,6 +310,16 @@ class Administrator extends Member
         $req->execute();
     }
 
+    function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd){
+        $req = $bdd->prepare("UPDATE run SET title = :link, maxBet = :nbpm, path = :data, starterPoint = :pdd, finalPoint = :pda WHERE title = :remplacer");
+    $req-> bindValue(":link",$link);
+    $req-> bindValue(":data",$data,PDO::PARAM_LOB);
+    $req-> bindValue(":pdd",$pdd);
+    $req-> bindValue(":pda",$pda);
+    $req-> bindValue(":nbpm",$nbpm);
+    $req-> bindValue(":remplacer",$remplacer);
+    $req->execute();
+
     public function createTeamF($teamName, $capiUsername, $bdd) {
         $requete = $bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
         $requete->bindParam(':teamName', $teamName);
@@ -338,6 +332,15 @@ class Administrator extends Member
         $requete1->bindParam(':teamName', $teamName);
         $requete1->bindParam(':playerUsername', $capiUsername);
         $requete1->execute();
+
+    }
+
+    function searchFile($title,$bdd){
+        $req = $bdd->prepare("select path from run where title = :title");
+        $req-> bindValue(":title",$title);
+        $req->execute();
+        $req=$req->fetchall();
+        return $req[0][0];
     }
 
     function addPlayerF($teamname, $player)
