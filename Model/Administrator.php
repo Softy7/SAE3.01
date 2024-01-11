@@ -179,7 +179,7 @@ class Administrator extends Member
         }
     }
 
-    function getMatch($bdd, $t)
+    function getMatch($bdd, $t = null)
     {
         if ($t == null) {
             $req = $bdd->prepare("select * from Match 
@@ -206,11 +206,18 @@ class Administrator extends Member
         return $req->fetchAll();
     }
 
-    function getRun($bdd)
+    function getRun($bdd,$idr = null)
     {
+        if ($idr == null) {
         $req = $bdd->prepare('select * from run order by orderrun');
         $req->execute();
         return $req->fetchAll();
+        } else {
+            $req = $bdd->prepare('select * from run where idrun = :idr');
+            $req->bindValue(':idr', $idr);
+            $req->execute();
+            return $req->fetchAll();
+        }
     }
 
     /**
@@ -341,4 +348,50 @@ class Administrator extends Member
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
     }
+
+    function createMatchs($bdd)
+    {
+        $countTeam = $bdd->prepare("Select count(*) from team");
+        $countTeam->execute();
+        $countTeam = $countTeam->fetchAll()[0];
+        $runs = $this->getRun($bdd);
+        $teams = $this->getTeams($bdd);
+        if ($countTeam[0] % 2 != 0) {
+            return false;
+        } else {
+            $middle = $countTeam[0] / 2;
+            foreach ($runs as $r) {
+                for ($i = 0; $i < $middle; $i++) {
+                    $t1 = $teams[$i]['teamname'];
+                    $j = $countTeam[0] - 1 - $i;
+                    $t2 = $teams[$j]['teamname'];
+                    $match = array($t1, $t2, $r[0]);
+                    if ($r[6] == 0) {
+                        $request = $bdd->prepare("INSERT INTO match VALUES (DEFAULT, :attack, :defend, null, null, :year, :idrun, true, null, null, null, 0)");
+                    } else {
+                        $request = $bdd->prepare("INSERT INTO match VALUES (DEFAULT, :attack, :defend, null, 0, :year, :idrun, false, null, null, null, null)");
+                    }
+                    $date = date("Y");
+                    $request->bindParam(':attack', $match[0]);
+                    $request->bindParam(':defend', $match[1]);
+                    $request->bindParam(':year', $date);
+                    $request->bindParam(':idrun', $match[2]);
+                    $request->execute();
+                }
+                $tmp = $teams[1];
+                for ($i = 1; $i < $countTeam[0] - 1; $i++) {
+                    $teams[$i] = $teams[$i + 1];
+                }
+                $teams[$countTeam[0] - 1] = $tmp;
+            }
+            return true;
+        }
+    }
+
+    function destroyTournament($bdd){
+        $requete = $bdd->prepare("DELETE FROM match");
+        $requete->execute();
+    }
+
+    function checkAllMatch($bdd) {}
 }

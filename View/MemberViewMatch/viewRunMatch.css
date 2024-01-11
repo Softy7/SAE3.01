@@ -10,7 +10,9 @@ td,th {
 
 header{
     background-color: #cccccc;
-    color: red;
+    color: #000000;
+    border-radius: 9px;
+    font-family: sans-serif;
 }
 
 th {
@@ -20,6 +22,13 @@ th {
 main {
     background-color: #cccccc;
     color: black;
+    border-radius: 9px;
+    font-family: sans-serif;
+    font-size: 20px;
+}
+
+body {
+    background-color: aliceblue;
 }
 
 button{
@@ -28,6 +37,7 @@ button{
     background-color: red;
     border-color: black;
     border-radius: 20px;
+    font-size: 20px;
 }
 
 button:hover{
@@ -36,6 +46,7 @@ button:hover{
     background-color: #bd181f;
     border-color: black;
     border-radius: 20px;
+    font-size: 20px;
 }
 
 input {
@@ -44,6 +55,7 @@ input {
     background-color: limegreen;
     border-color: black;
     border-radius: 20px;
+    font-size: 20px;
 }
 
 input:hover {
@@ -52,4 +64,5 @@ input:hover {
     background-color: greenyellow;
     border-radius: 20px;
     border-color: black;
+    font-size: 20px;
 }

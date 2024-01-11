@@ -12,8 +12,12 @@ foreach ($_POST as $key => $value) {
         $id = str_replace('_idRun_', '', $key);
         $match = $user->getMatchInRun($bdd, $id);
         $_SESSION["match"] = $match;
-        $run = $user->getRun($bdd);
-        $_SESSION['run'] = "Parcours non trouvé";
+        $run = $user->getRun($bdd, $id);
+        if ($run != null) {
+            $_SESSION['run'] = $run[0][1];
+        } else {
+            $_SESSION['run'] = "Parcours non trouvé";
+        }
         foreach ($run as $r) {
             if ($r[0] == $id) {
                 if ($r[6] == 0) {

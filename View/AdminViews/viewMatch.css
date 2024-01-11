@@ -6,11 +6,17 @@ table {
 td,th {
     border: 1px;
     padding: 15px;
+    font-family: sans-serif;
+    font-size: 20px;
 }
-
+body {
+    background-color: aliceblue;
+}
 header{
     background-color: #cccccc;
-    color: red;
+    color: #000000;
+    border-radius: 9px;
+    font-family: sans-serif;
 }
 
 th {
@@ -20,6 +26,8 @@ th {
 main {
     background-color: #cccccc;
     color: black;
+    border-radius: 9px;
+    font-family: sans-serif;
 }
 
 button{
@@ -28,6 +36,8 @@ button{
     background-color: red;
     border-color: black;
     border-radius: 20px;
+    font-size: 24px;
+    font-family: sans-serif;
 }
 
 button:hover{
@@ -36,6 +46,8 @@ button:hover{
     background-color: #bd181f;
     border-color: black;
     border-radius: 20px;
+    font-size: 24px;
+    font-family: sans-serif;
 }
 
 #correct {
@@ -44,6 +56,8 @@ button:hover{
     background-color: #ffffff;
     border-color: black;
     border-radius: 5px;
+    font-size: 24px;
+    font-family: sans-serif;
 }
 
 input {
@@ -52,6 +66,8 @@ input {
     background-color: red;
     border-color: black;
     border-radius: 5px;
+    font-size: 24px;
+    font-family: sans-serif;
 }
 
 input:hover {
@@ -60,9 +76,13 @@ input:hover {
     background-color: #bd181f;
     border-color: black;
     border-radius: 5px;
+    font-size: 24px;
+    font-family: sans-serif;
 }
 
 #line {
     background-color: #ffffff;
     border-radius: 5px;
+    font-size: 24px;
+    font-family: sans-serif;
 }

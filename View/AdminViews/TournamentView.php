@@ -1,71 +1,73 @@
 <?php
-require_once('../../Controller/AdminFunctions/TournamentTreatment.php');
+
+require_once('../../Controller/launch.php');
+require_once('../../Model/AdminCapitain.php');
+require_once('../../ConnexionDataBase.php');
+
 session_start();
-
+$user = launch();
 if ($_SESSION['isAdmin'] == 1) {
+
     $bdd = __init__();
-function printTournoi($tournoi) {
-    foreach ($tournoi as $parcours => $rencontres) {
-        echo "$parcours<br>";
-        foreach ($rencontres as $rencontre) {
-            echo "$rencontre[0]-$rencontre[1]<br>";
-        }echo "</table><br>";
-    }
-}
-$request = $bdd->prepare("SELECT teamname FROM team");
-$request->execute();
-$equipes_fetch = $request->fetchAll();
+    $run = $user->getRun($bdd);
+    $match = $user->getMatch($bdd);
 
-$request = $bdd->prepare("SELECT title FROM run");
-$request->execute();
-$parcours_fetch = $request->fetchAll();
+    ?><!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset=UTF-8">
+    <title>Cholage Club Quaroule.fr</title>
+    <link href="viewMatch.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <center><h1>Génération Tournoi</h1></center>
+</header>
+<main>
+    <?php
 
-$parcours = array();
-foreach ($parcours_fetch as $element) {
-    $parcours[] = $element['title'];
-}
+    if ($match == null) {
+        $teams = count($user->getTeams($bdd));
+        $cruns = count($user->getRun($bdd));
 
-$equipes = array();
-foreach ($equipes_fetch as $element) {
-    $equipes[] = $element['teamname'];
-}
-if (isset($_POST['delete'])) {
-    supprimerTableMatch($bdd);
-}
-if (isset($_POST['insert'])) {
-    $tournoi = organiserTournoi($equipes, $parcours);
-    remplirTableMatch($tournoi,$bdd);
-}
-if (isset($_POST['back'])) {
-    header('../../Home/Home.php');
-    exit();
-}
+        if (($teams%2 == 0)&&($cruns>0)) {?>
+            <table><tr><th><form action="../../Controller/AdminFunctions/TournamentTreatment.php" method="post">
+                <input type="submit" name="generate" value="Générer Tournoi">
+            </form></th></tr></table>
+            <?php
+        } else {
+            ?>
+            <table><tr><th>Génération Impossible. <?php echo $teams, " Equipes et ", $cruns, " Parcours présents."?></th></tr></table>
+            <?php
+        }
+    } else {
 
-?>
-
-<form method="post">
-    <input type="submit" name="show"
-           value="Visualiser le tournoi"/>
-
-    <input type="submit" name="delete"
-           value="Supprimer le tournoi"/>
-
-    <input type="submit" name="insert"
-           value="Générer le tournoi"/>
-    <input type="submit" name="back"
-           value="retour"/>
-</form>
+        ?>
+        <table><tr><th><form action="../../Controller/AdminFunctions/TournamentTreatment.php" method="post">
+            <input type="submit" name="destroy" value="Détruire Tournoi">
+            </form></th></tr></table>
+        <?php
+        foreach ($run as $r) {
+            ?>
+            <table><tr><th>Parcours: <?php echo $r[1]?></th></tr></table>
+            <?php
+            foreach ($match as $m) {
+                if ($m[6] == $r[0]) {
+                    if ($m[4] == 1) {
+                        ?><table><tr><th><input type="submit" id="correct" value="<?php echo $m[1], " 1 - 0 ", $m[2], ' Pari:',$m[3], ' Coups:', $m[11]?>"></th></tr></table><?php
+                    } else if ($m[4] == 2) {
+                        ?><table><tr><th><input type="submit" id="correct" value="<?php echo $m[1], " 0 - 1 ", $m[2], ' Pari:',$m[3], ' Coups:',$m[11]?>"</th></tr></table><?php
+                    } else if ($m[7] != null && $m[9] != null && $m[10]!=null) {
+                        ?><table><tr><th><input type="submit" id="correct" value="<?php echo $m[1], ' ', $m[9]," - ", $m[10], ' ', $m[2]?>"</th></tr></table><?php
+                    } else {
+                        ?><table><tr><th><input type="submit" id="correct" value="<?php echo $m[1], " - ", $m[2]?>"</th></tr></table><?php
+                    }
+                }
+            }
+        }
+        } ?>
+    <table><tr><th><button onclick="window.location.href='../../Controller/Connect/CheckConnect.php';">Retour</button></th></tr></table></main>
 <?php
-if (isset($_POST['show'])) {
-    $tournoi = organiserTournoi($equipes, $parcours);
-    printTournoi($tournoi);
-    echo '<form method="post">
-            <input type="submit" name="close" value="Fermer la visualisation"/>
-          </form>';
-}
-
-if (isset($_POST['close'])) {
-    header('Location: '. $_SERVER['PHP_SELF']);
-    exit();
-}
+} else {
+    header('location: ../Guest_Home.html');
 }

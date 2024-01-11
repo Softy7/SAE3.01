@@ -89,6 +89,9 @@ if ($_SESSION['connected']) {
             ?>
             <button onclick="window.location.href='../AdminViews/viewAllMember.php';" value="ViewPlayer" id="ViewPlayer">Voir les joueurs</button>
             <?php
+            ?>
+            <button onclick="window.location.href='../AdminViews/TournamentView.php';" value="TournamentView" id="TournamentView">Gestion Tournoi</button>
+            <?php
             if ($_SESSION['openn'] == 1) {
                 echo "<form action='../../Controller/Registering/RegisterOpen.php' method='post'>
             <input type='submit' value='Fermer Inscriptions' id='boutonEtatInscription'/>
