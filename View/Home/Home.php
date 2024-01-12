@@ -134,7 +134,38 @@ if ($_SESSION['connected']) {
                     echo htmlspecialchars($row['title'])."<br>";
                     echo "date: " . $row['datepublication'] . "<br>";
                     echo "Auteur: ".htmlspecialchars(($row['writer']))."<br>";
-                    echo "<textarea readonly='readonly' id='contenu_" . $row['idarticle'] . "' name='contenu_" . $row['idarticle'] . "'>" . htmlspecialchars($row['contenu']) . "</textarea><br>";
+                    echo "<h4>";
+                    echo "". htmlspecialchars($row['contenu']) . "<br>";
+                    echo "</h4>";
+                    echo "</div>";
+                }
+            } else {
+                echo "Aucune publication trouvée...";
+            }
+        }
+        ?>
+    </div>
+    <div id="parcours">
+        <h2>Parcours:</h2>
+        <?php
+        $bdd = __init__();
+
+        if (!$bdd) {
+            echo "Erreur de connexion à la base de données.";
+        } else {
+            $request = $bdd->prepare("SELECT * FROM run ORDER BY idrun");
+            $request->execute();
+            $result = $request->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                foreach ($result as $row) {
+                    echo "<div>";
+                    echo htmlspecialchars($row['title'])."<br>";
+                    echo "Image : <img src='" . $row['path'] . "'><br>";
+                    echo "Point de départ: ".htmlspecialchars(($row['starterpoint']))."<br>";
+                    echo "Point d'arrivée: ".htmlspecialchars(($row['finalpoint']))."<br>";
+                    echo "Paris max: ".htmlspecialchars(($row['maxbet']))."<br>";
+                    //echo "<textarea readonly='readonly' id='contenu_" . $row['idarticle'] . "' name='contenu_" . $row['idarticle'] . "'>" . htmlspecialchars($row['contenu']) . "</textarea><br>";
                     echo "</div>";
                 }
             } else {
