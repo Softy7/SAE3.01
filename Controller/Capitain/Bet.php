@@ -78,5 +78,3 @@ if (isset($_POST["pari"])) {
         header('location: ../../View/HomeTournaments/HomeTournaments.php');
     }
 }
-?>
-
