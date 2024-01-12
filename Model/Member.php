@@ -1,6 +1,6 @@
 <?php
-
-class Member {
+include('Connexion.php');
+class Member extends Connexion {
     public $username;
     private $mail;
     private $name;
@@ -10,6 +10,7 @@ class Member {
 
     function __construct($un/*username*/, $m/*mail*/, $n/*nom*/, $fn/*prénom*/, $b/*date de naissance*/, $p/*mots de passe*/)
     {
+        parent::__construct();
         $this->username = $un;
         $this->mail = $m;
         $this->name = $n;

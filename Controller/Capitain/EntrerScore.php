@@ -10,7 +10,7 @@ $bdd = __init__();
 $user = launch();
 $team=$user->getTeam();
 
-$requete=$bdd->prepare("SELECT * FROM Match WHERE (contestation IS null) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
+$requete=$bdd->prepare("SELECT * FROM Match WHERE (contest IS null) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
 $requete->bindParam(':equipeCap',$team);
 $requete->bindParam(':teamCap',$team);
 $requete->execute();
@@ -22,17 +22,11 @@ echo $idMatch;
 if (isset($_POST["nbdechole"])) {
     $requete1 = $bdd->prepare("Update Match SET score=:score, goal=:win WHERE idmatch=:idMatch");
     $requete1->bindParam(':score', $_POST["nbdechole"]);
-    if (isset($_POST["win"])){
-        $won=1;
-        $requete1->bindParam(':win', $won);
-    }else{
-
-        $lost=2;
-        $requete1->bindParam(':win', $lost);
+    if (isset($_POST["win"])) {
+        $requete1->bindParam(':win', 1);
+    } else {
+        $requete1->bindParam(':win', 2);
     }
-    echo 'won : ';
-    echo $won;
-    echo ' ';
 
     echo 'score : ';
     echo $_POST["nbdechole"];

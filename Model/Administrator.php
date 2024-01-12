@@ -310,15 +310,17 @@ class Administrator extends Member
         $req->execute();
     }
 
-    function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd){
+    function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd)
+    {
         $req = $bdd->prepare("UPDATE run SET title = :link, maxBet = :nbpm, path = :data, starterPoint = :pdd, finalPoint = :pda WHERE title = :remplacer");
-    $req-> bindValue(":link",$link);
-    $req-> bindValue(":data",$data,PDO::PARAM_LOB);
-    $req-> bindValue(":pdd",$pdd);
-    $req-> bindValue(":pda",$pda);
-    $req-> bindValue(":nbpm",$nbpm);
-    $req-> bindValue(":remplacer",$remplacer);
-    $req->execute();
+        $req->bindValue(":link", $link);
+        $req->bindValue(":data", $data, PDO::PARAM_LOB);
+        $req->bindValue(":pdd", $pdd);
+        $req->bindValue(":pda", $pda);
+        $req->bindValue(":nbpm", $nbpm);
+        $req->bindValue(":remplacer", $remplacer);
+        $req->execute();
+    }
 
     public function createTeamF($teamName, $capiUsername, $bdd) {
         $requete = $bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");

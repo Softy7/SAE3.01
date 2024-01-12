@@ -12,6 +12,7 @@ session_start();
 
 <form action="../../Controller/Registering/checkInscription.php" method="post">
     <h1>Adhésion</h1>
+    <?php echo $_SESSION['message']?>
     Nom: <input type="text" name="name"><br>
     Prenom: <input type="text" name="firstname"><br>
     Email: <input type="text" name="email"><br>
