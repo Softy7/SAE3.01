@@ -47,7 +47,7 @@ if ($_SESSION['connected']) {
     <title>Cholage Club Quaroule.fr</title>
 </head>
 <body>
-    <h1>vous avez déjà parié <?php if(bets[0][0]==$user->username){echo $bets[0][2];} else{echo $bets[1][2];}?> pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
+    <h1>vous avez déjà parié <?php if($bets[0][0]==$user->username){echo $bets[0][2];} else{echo $bets[1][2];}?> pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
     <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">retour</button>
 </body>
 </html>
