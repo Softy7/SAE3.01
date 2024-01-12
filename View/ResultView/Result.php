@@ -1,6 +1,12 @@
 <?php
 session_start();
 require_once('../../ConnexionDataBase.php');
+require_once('../../Model/AdminCapitain.php');
+require_once('../../Model/Capitain.php');
+require_once('../../Model/Administrator.php');
+require_once('../../Model/Player.php');
+require_once('../../Model/PlayerAdministrator.php');
+require_once('../../Model/Member.php');
 require_once('../../Controller/launch.php');
 
 $db = __init__();
@@ -18,10 +24,8 @@ function compareEquipes($equipe1, $equipe2) {
     return $equipe2[3] - $equipe1[3];
 }
 
-$resultats = [];
-
-foreach ($user->getTeams($db) as $equipe) {
-    $resultats[] = $user->RelsultCalculation($db, $equipe);
+foreach ($user->getTeams($db) as $team) {
+    $resultats[] = $user->RelsultCalculation($db, $team[0]);
 }
 
 usort($resultats, 'compareEquipes');
@@ -46,16 +50,20 @@ usort($resultats, 'compareEquipes');
         <th>Distinction</th>
     </tr>
     <?php $classement = 1;
-    $meilleurAttaquant = null;
-    $meilleurDefenseur = null;
+    $meilleursAttaquants = [];
+    $meilleursDefenseurs = [];
 
     foreach ($resultats as $res) {
-        if ($meilleurAttaquant === null || $res[2] > $meilleurAttaquant[2]) {
-            $meilleurAttaquant = $res;
+        if (empty($meilleursAttaquants) || $res[2] > $meilleursAttaquants[0][2]) {
+            $meilleursAttaquants = [$res];
+        } elseif ($res[2] == $meilleursAttaquants[0][2]) {
+            $meilleursAttaquants[] = $res;
         }
 
-        if ($meilleurDefenseur === null || $res[3] > $meilleurDefenseur[3]) {
-            $meilleurAttaquant = $res;
+        if (empty($meilleursDefenseurs) || $res[3] > $meilleursDefenseurs[0][3]) {
+            $meilleursDefenseurs = [$res];
+        } elseif ($res[3] == $meilleursDefenseurs[0][3]) {
+            $meilleursDefenseurs[] = $res;
         }
     }
     foreach ($resultats as $result) { ?>
@@ -67,18 +75,22 @@ usort($resultats, 'compareEquipes');
             <td><?= $result[3] ?></td>
             <td>
                 <?php
-                if($classement == 1){
-                echo "'Roi du fut' : vainqueurs ";
+                if($classement == 2){
+                    echo "|Roi du fut ";
                 }
-                if($result === $meilleurAttaquant){
-                    echo "'Videur de fut' : Meilleurs attaquant ";
+                if(in_array($result, $meilleursAttaquants)){
+                    echo "|Videur de fut ";
                 }
-                if($result === $meilleurDefenseur){
-                    echo "'Gardien du fut' : Meilleurs Défenseur";
+                if(in_array($result, $meilleursDefenseurs)){
+                    echo "|Gardien du fut ";
                 } ?>
             </td>
         </tr>
     <?php } ?>
 </table>
+<h4>index :</h4>
+<p>Roi du fut = vainqueurs <br/>
+    Videur de fut = Meilleurs attaquant<br/>
+    Gardien du fut = Meilleurs Défenseur<br/></p>
 </body>
 </html>

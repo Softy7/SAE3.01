@@ -137,7 +137,8 @@ class Administrator extends Member
         $req->execute();
     }
 
-    function TournamentEnd($bdd){
+    function TournamentEnd($bdd): bool
+    {
         $req1 = $bdd->prepare("SELECT match.idrun, count(attack), count(defend) FROM match GROUP BY match.idrun");
         $req1->execute();
         $req1->fetchall();
@@ -147,10 +148,22 @@ class Administrator extends Member
         $req3 = $bdd->prepare("Select idrun from run");
         $req3->execute();
         $req3->fetchall();
-        if(sizeof($req1) == sizeof($req3)){
+        $count1=0;
+        $count2=0;
+        $count3=0;
+        foreach($req1 as $re1) {
+            $count1++;
+        }
+        foreach($req2 as $re2){
+            $count2++;
+        }
+        foreach($req3 as $re3){
+            $count3++;
+        }
+        if($count1 == $count3){
             foreach($req1 as $r1){
                 $count = $r1[1] + $r1[2];
-                if (sizeof($req2) != $count){
+                if ($count2 != $count){
                     return false;
                 }
             }
@@ -159,24 +172,28 @@ class Administrator extends Member
         return false;
     }
 
-    function RelsultCalculation($bdd, $team){
-        $resAttack = $bdd->prepare("select goal from match where attack = '$team' AND goal = 1 AND penal = false");
+    function RelsultCalculation($bdd, $team): array
+    {
+        $resAttack = $bdd->prepare("select count(goal) as count_goal from match where attack = :team AND goal = 1 AND penal = false");
+        $resAttack->bindValue(':team', $team, PDO::PARAM_STR);
         $resAttack->execute();
-        $resAttack->fetchall();
-        $WinAttack = sizeof($resAttack);
+        $WinAttack = $resAttack->fetch()['count_goal'];
 
-        $resDefend = $bdd->prepare("select goal from match where defend = '$team' AND goal = 2 AND penal = false");
+        $resDefend = $bdd->prepare("select count(goal) as count_goal from match where defend = :team AND goal = 2 AND penal = false");
+        $resDefend->bindValue(':team', $team, PDO::PARAM_STR);
         $resDefend->execute();
-        $resDefend->fetchall();
-        $WinDefend = sizeof($resDefend);
+        $WinDefend = $resDefend->fetch()['count_goal'];
 
-        $resPalAttack = $bdd->prepare("select idrun from match where attack = '$team' AND countattack <= match.countdefend AND penal = true");
+        $resPalAttack = $bdd->prepare("select count(idrun) as count_idrun from match where attack = :team AND countattack <= match.countdefend AND penal = true");
+        $resPalAttack->bindValue(':team', $team, PDO::PARAM_STR);
         $resPalAttack->execute();
-        $resPalAttack->fetchall();
-        $resPalDefend = $bdd->prepare("select idrun from match where defend = '$team' AND countattack >= match.countdefend AND penal = true");
+        $resPalDefend = $bdd->prepare("select count(idrun) as count_idrun from match where defend = :team AND countattack >= match.countdefend AND penal = true");
+        $resPalDefend->bindValue(':team', $team, PDO::PARAM_STR);
         $resPalDefend->execute();
-        $resPalDefend->fetchall();
-        $WinPal = sizeof($resPalAttack)+sizeof($resPalDefend);
+        $WinAttackPal = $resPalAttack->fetch()['count_idrun'];
+        $WinDefendPal = $resPalDefend->fetch()['count_idrun'];
+
+        $WinPal = $WinAttackPal + $WinDefendPal;
 
         $TotalWin = $WinAttack + $WinDefend + $WinPal;
 
