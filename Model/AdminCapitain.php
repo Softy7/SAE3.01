@@ -160,7 +160,8 @@ class AdminCapitain extends PlayerAdministrator {
         $random = rand($min, $max);
         if ($random==1){
             $requete4 = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
-            $requete4->bindParam(":equipe1", $this->getTeam());
+            $t1 = $this->getTeam();
+            $requete4->bindParam(":equipe1", $t1);
             $requete4->bindParam(":equipe2", $team2);
             $requete4->bindParam(":bet", $bet);
             $requete4->bindParam(':idMatch',$idMatch);
@@ -168,8 +169,9 @@ class AdminCapitain extends PlayerAdministrator {
         }
         elseif ($random==2){
             $requete5 = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+            $t1 = $this->getTeam();
             $requete5->bindParam(":equipe1", $team2);
-            $requete5->bindParam(":equipe2", $this->getTeam());
+            $requete5->bindParam(":equipe2", $t1);
             $requete5->bindParam(":bet", $bet);
             $requete5->bindParam(':idMatch',$idMatch);
             $requete5->execute();
@@ -179,7 +181,8 @@ class AdminCapitain extends PlayerAdministrator {
 
     function bet($bdd,$idMatch,$bet,$team2){
         $requete3 = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
-        $requete3->bindParam(":equipe1", $this->getTeam());
+        $t1 = $this->getTeam();
+        $requete3->bindParam(":equipe1", $t1);
         $requete3->bindParam(":equipe2", $team2);
         $requete3->bindParam(":bet", $bet);
         $requete3->bindParam(':idMatch',$idMatch);
@@ -202,7 +205,7 @@ class AdminCapitain extends PlayerAdministrator {
     }
 
     function enterScore($bdd,$nbDechole,$gameResult,$idMatch){
-        $requete = $bdd->prepare("Update Match SET score=:score, goal=:win WHERE idmatch=:idMatch");
+        $requete = $bdd->prepare("Update Match SET countmoves=:score, goal=:win WHERE idmatch=:idMatch");
         $requete->bindParam(':score',$nbDechole);
         $requete->bindParam(':win', $gameResult);
         $requete->bindParam(':idMatch', $idMatch);
@@ -218,7 +221,7 @@ class AdminCapitain extends PlayerAdministrator {
     }
 
     function confirmation($bdd,$contestation,$idMatch){
-        $requete = $bdd->prepare("Update Match SET contestation=:contestation WHERE idmatch=:idMatch");
+        $requete = $bdd->prepare("Update Match SET contest=:contestation WHERE idmatch=:idMatch");
         $requete->bindParam(':contestation', $contestation);
         $requete->bindParam(':idMatch', $idMatch);
         $requete->execute();

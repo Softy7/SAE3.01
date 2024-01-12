@@ -200,7 +200,7 @@ if ($_SESSION['connected']) {
             }
         }
     }
-    $results = $user->getMatchs($db);
+    $results = $user->getMatchs($bdd);
     if ($_SESSION['isPlayer']!=1){
         $resultats=$user->viewMatch($bdd);
         foreach ($resultats as $res){
@@ -208,7 +208,7 @@ if ($_SESSION['connected']) {
             if($res[4]==0){
 
         ?>
-                <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> n'a pas encore été joué</h1>
+                <h1>Match: <?php echo $res[1]; ?> - <?php echo $res[2]; ?> Parcours: <?php echo $res[6]; ?>à jouer</h1>
 
     <?php }
             else{

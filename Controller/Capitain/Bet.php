@@ -24,7 +24,7 @@ if ($req[0][2] != $user->getTeam()) {
 
 if (isset($_POST["pari"])) {
     $user->insertIntoBet($bdd,$idMatch,$_POST["pari"]);
-    if (requete[2]==null){
+    if ($req[2]==null){
         $user->bet($bdd,$idMatch,$_POST["pari"],$equipe2);
         header('location: ../../View/HomeTournaments/HomeTournaments.php');
     } elseif ($req[0][3] > $_POST['pari']) {
