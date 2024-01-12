@@ -206,9 +206,9 @@ class Capitain extends Player {
         }
     }
 
-    function checkPenalti($bdd){
+    function checkPenalty($bdd){
         $matchNotPlayed=$this->getMatchNotPlayed($bdd);
-        if ($matchNotPlayed[0][7]){
+        if ($matchNotPlayed[0][7]==1){
             return true;
         }
         else {
