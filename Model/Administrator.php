@@ -137,6 +137,52 @@ class Administrator extends Member
         $req->execute();
     }
 
+    function TournamentEnd($bdd){
+        $req1 = $bdd->prepare("SELECT match.idrun, count(attack), count(defend) FROM match GROUP BY match.idrun");
+        $req1->execute();
+        $req1->fetchall();
+        $req2 = $bdd->prepare("Select teamname from team");
+        $req2->execute();
+        $req2->fetchall();
+        $req3 = $bdd->prepare("Select idrun from run");
+        $req3->execute();
+        $req3->fetchall();
+        if(sizeof($req1) == sizeof($req3)){
+            foreach($req1 as $r1){
+                $count = $r1[1] + $r1[2];
+                if (sizeof($req2) != $count){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    function RelsultCalculation($bdd, $team){
+        $resAttack = $bdd->prepare("select goal from match where attack = '$team' AND goal = 1 AND penal = false");
+        $resAttack->execute();
+        $resAttack->fetchall();
+        $WinAttack = sizeof($resAttack);
+
+        $resDefend = $bdd->prepare("select goal from match where defend = '$team' AND goal = 2 AND penal = false");
+        $resDefend->execute();
+        $resDefend->fetchall();
+        $WinDefend = sizeof($resDefend);
+
+        $resPalAttack = $bdd->prepare("select idrun from match where attack = '$team' AND countattack <= match.countdefend AND penal = true");
+        $resPalAttack->execute();
+        $resPalAttack->fetchall();
+        $resPalDefend = $bdd->prepare("select idrun from match where defend = '$team' AND countattack >= match.countdefend AND penal = true");
+        $resPalDefend->execute();
+        $resPalDefend->fetchall();
+        $WinPal = sizeof($resPalAttack)+sizeof($resPalDefend);
+
+        $TotalWin = $WinAttack + $WinDefend + $WinPal;
+
+        return [$team, $TotalWin, $WinAttack, $WinDefend];
+    }
+
 
     /**
      * ferme les inscription du tournois

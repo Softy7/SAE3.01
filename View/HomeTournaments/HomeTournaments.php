@@ -65,6 +65,11 @@ if ($_SESSION['connected']) {
         <button id="matchs" onclick="window.location.href='../../Tests/viewMatch.php'">Rencontres</button>
             <?php
     }
+    if($user->TournamentEnd($db)){
+        ?>
+        <button id="Result" onclick="window.location.href='../ResultView/Result.php'">Résultat Final</button>
+        <?php
+    }
     ?>
     </body>
     <button id="return" onclick="window.location.href='../../Controller/Connect/CheckConnect.php'">Retour</button>
