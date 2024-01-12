@@ -17,6 +17,7 @@ class Player extends Member {
         parent::__construct($un, $m, $n, $fn, $b, $p);
         $this->team = $t;
     }
+  
     public function getTeam() {
         return $this->team;
     }
@@ -55,7 +56,15 @@ class Player extends Member {
             $this->unsetTeam();
         }
         $this->team = null;
-        return new Administrator($this->username, $this->getMail(), $this->getName(), ($this->getFirstname()), $this->getBirthday(), $this->getPassword());
+        return new Member($this->username, $this->getMail(), $this->getName(), ($this->getFirstname()), $this->getBirthday(), $this->getPassword());
+    }
+
+    function addPlayer($teamname, $player){
+        $bdd = __init__();
+        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
+        $request->bindValue(':username', $player, PDO::PARAM_STR);
+        $request->execute();
     }
 
     public function createTeam($teamName, $playerUsername, $bdd){
@@ -81,6 +90,14 @@ class Player extends Member {
         return new AdminCapitain($this->username, $this->getMail(), $this->getName(), $this->getFirstname(), $this->getBirthday(), $this->getPassword(), $teamName, array($playerUsername));
     }
 
+    public function askPlayer($player, $team){
+        $bdd = __init__();
+        $request = $bdd->prepare("INSERT INTO request VALUES (:Player, true, :team)");
+        $request->bindValue(':team', $team, PDO::PARAM_STR);
+        $request->bindValue(':Player', $player, PDO::PARAM_STR);
+        $request->execute();
+    }
+
     function getTeammates($bdd) {
         $request = $bdd->prepare("Select username from Guests where team = :teamname and username != :username");//retire le capitaine de son equipe
         $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
@@ -100,4 +117,5 @@ class Player extends Member {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
+    /**/
 }

@@ -34,8 +34,6 @@ if ($_SESSION['connected']) {
 
     if($_SESSION['isPlayer']==1){
         ?>
-        <!--voir match-->
-        <!--voir score-->
         <?php
         if($_SESSION['captain']==1){
             $Matchs=$user->getMatchNotValidated($bdd);
@@ -202,32 +200,33 @@ if ($_SESSION['connected']) {
             }
         }
     }
+    $results = $user->getMatchs($db);
     if ($_SESSION['isPlayer']!=1){
         $resultats=$user->viewMatch($bdd);
         foreach ($resultats as $res){
+
             if($res[4]==0){
 
         ?>
                 <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> n'a pas encore été joué</h1>
-        <!--voir match-->
-        <!--voir score-->
+
     <?php }
             else{
                 if($res[4]==1){
                     ?>
 
                                 <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> a été joué<br>L'equipe qui été en attaque a gagné avec <?php echo $res[5]; ?> décholes</h1>
-            <?php }elseif($res[4]==2){?>
+            <?php } else if ($res[4]==2){?>
                     <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> a été joué<br>L'equipe qui été en défence a gagné </h1>
                 <?php }
             }
         }
     }
-    if($_SESSION['isAdmin']==1) {
+
         ?>
-        <button id="matchs" onclick="window.location.href='../AdminViews/viewMatch.php'">Rencontres</button>
-            <?php
-    }
+        <button id="matchs" onclick="window.location.href='../AdminViews/viewRunMatch.php'">Rencontres</button>
+        <?php
+
     ?>
     </body>
     <button id="return" onclick="window.location.href='../../Controller/Connect/CheckConnect.php'">Retour</button>

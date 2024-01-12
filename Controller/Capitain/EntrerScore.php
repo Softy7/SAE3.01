@@ -9,11 +9,13 @@ require_once('../../ConnexionDataBase.php');
 $bdd = __init__();
 $user = launch();
 
+
 $req=$user->getMatchNotValidated($bdd);
 $idMatch=$req[0][0];
 
 
 if (isset($_POST["nbdechole"])) {
+
 
     if (isset($_POST["win"])){
         $won=1;

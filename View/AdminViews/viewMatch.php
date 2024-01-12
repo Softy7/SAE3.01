@@ -1,64 +1,70 @@
 <?php
 session_start();
-require_once ('../../Model/AdminCapitain.php');
-require_once ('../../Controller/launch.php');
-require_once ('../../ConnexionDataBase.php');
+require_once('../../Model/AdminCapitain.php');
+require_once('../../Controller/launch.php');
+require_once('../../ConnexionDataBase.php');
 
 $user = launch();
 $bdd = __init__();
 
 if ($user instanceof Administrator) {
-$matchs = $user->getMatch($bdd, null);
-$run = $user->getRun($bdd);
+$run = $_SESSION['run'];
+$matchs = $_SESSION['match'];
+$bet = $_SESSION['bet'];
+$contests = array();
 
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
+    <meta charset=UTF-8">
     <title>Cholage Club Quaroule.fr</title>
     <link href="viewMatch.css" rel="stylesheet">
-    </head>
+</head>
 <body>
-<h1>Gestion Matchs</h1>
-<table><?php
-    if ($run == null) {
-        ?><t>Aucun parcours n'existe... Veuillez créer un parcours afin de créer une rencontre.</t><?php
-    }
-foreach ($run as $r) {
-          ?><tr><th><?php echo "Parcours: ", $r[1]; if ($r[6] == 0) { echo " | Penalty";} else {echo " | Pari Max: ", $r[6];} ?></th>
-        <?php
+<header>
+<center><h1>Gestion Matchs Parcours: <?php echo $run, ' ',$bet?></h1></center>
+</header>
+<main>
+<?php
     if ($matchs == null) {
         ?>
-        <t>Aucune rencontre n'est définie...</t>
-        <?php
-    } foreach($matchs as $match) {
-        ?><form action="../../Controller/AdminFunctions/getMatch.php" method="post"><?php
-        if ($match[8] == 1) {
-            ?><th><?php echo " Chôle: ",$match[1], " | Contesté | Déchôle : ", $match[2], " "?>
-            <input type="submit" name="_contest_<?php echo $match[0]?>"  value="+"></th><?php
-        } else if ($match[6] == $r[0]) {
-            if ($match[4] == 1) {
-                ?><th><?php echo " Chôle: ",$match[1], " | G : P | Déchôle : ", $match[2], " | Pari: ", $match['3'], " | Coups déchôles: ", $match[11]?></th><?php
-            } else if ($match[4] == 2) {
-                ?><th><?php echo " Chôle: ",$match[1], " | P : G | Déchôle : ", $match[2], " | Pari: ", $match['3'], " | Coups déchôles: ", $match[11]?><?php
-            } else if ($match[6] != null && $match[9] != null && $match[10]!=null) {
-                ?><th><?php echo " Chôle: ",$match[1], " | ", $match[9]," : ",$match[10], " | Déchôle : ", $match[2]?></th><?php
+    <t>Aucune rencontre n'est définie...</t>
+    <?php
+    } else {
+        foreach($matchs as $match) {
+            if ($match[8] != 1) {
+                if ($match[4] == 1) {
+                    ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " 1 - 0 ", $match[2], ' Pari:',$match[3], ' Coups:', $match[11]?>"></th></tr></table><?php
+                } else if ($match[4] == 2) {
+                    ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " 0 - 1 ", $match[2], ' Pari:',$match[3], ' Coups:',$match[11]?>"</th></tr></table><?php
+                } else if ($match[7] != null && $match[9] != null && $match[10]!=null) {
+                    ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], ' ', $match[9]," - ", $match[10], ' ', $match[2]?>"</th></tr></table><?php
+                } else {
+                    ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " - ", $match[2]?>"</th></tr></table><?php
+                }
             } else {
-                ?><th><?php echo " Chôle: ",$match[1], " |  :  | Déchôle : ", $match[2]?></th><?php
+                $contests[] = $match;
             }
         }
-    }
-        ?></form></tr>
-
-    <?php
-}
-?></table>
-<button onclick="window.location.href='../HomeTournaments/HomeTournaments.php';">Retour</button>
+        ?><form action="Winner.php" method="post"><?php
+        foreach($contests as $match) {
+            if ($match[6] != null) {
+                $str = " $match[9] - $match[10] ";
+            } else {
+                $bet = "Pari: $match[3], Coups: $match[11]";
+                if ($match[4] == 1) {
+                    $str = " 1 - 0 ";
+                } else if ($match[4] == 2) {
+                    $str = " 0 - 1 ";
+                } else {
+                    $str = " Erreur ";
+                }
+            }
+            ?><table><tr><th><input type="submit" name="_contest_<?php echo $match[0]?>" value="<?php echo $match[1], $str, $match[2]?>"</th></tr></table><?php
+        } ?></form><?php
+    } ?>
+<table><tr><th><button onclick="window.location.href='viewRunMatch.php';">Retour</button></th></tr></table></main>
 <?php
-if ($run != null) {
-    ?>
-<?php
-}
 } else {
     header('location: ../Guest_home.html');
 }

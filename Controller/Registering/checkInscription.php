@@ -1,7 +1,11 @@
 <?php
 require_once('../../ConnexionDataBase.php');
+require_once('../../Model/Connexion.php');
+
 session_start();
-$conn = __init__();
+
+$connexion = new Connexion();
+
 $name = $_POST['name'];
 $FirstName = $_POST['firstname'];
 $email = $_POST['email'];
@@ -10,26 +14,16 @@ $User = $_POST['user'];
 $Password = $_POST['password'];
 $PasswordC = $_POST['passwordC'];
 
-    if ($Password != $PasswordC) {
-        header("location: ../../View/Registering/DeclinedRegisteringWebsite.php");
-        exit;
-    } else {
-        $stmt = $conn->prepare("select username, mail from Guests where username = :User or mail = :email;");
-        $stmt->bindValue(':User', $User);
-        $stmt->bindValue(':email', $email);
-        $stmt->execute();
-        $stmt = $stmt->fetchAll();
-        if ($stmt == null) {
-            $stmt = $conn->prepare("INSERT INTO Guests VALUES (:User, :email, :name, :FirstName, :Birth, :Password, false, false, false, false, null)");
-            $stmt->bindValue(':User', $User);
-            $stmt->bindValue(':email', $email);
-            $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':FirstName', $FirstName);
-            $stmt->bindValue(':Birth', $Birth);
-            $stmt->bindValue(':Password', $Password);
-            $stmt->execute();
-            header('location: ../../View/Registering/AcceptedRegisteringWebsite.php');
-        } else {
-            header("location: ../../View/Registering/DeclinedRegisteringWebsite.php");
-        }
-    }
+$check = $connexion->insertNewGuest($name, $FirstName, $email, $Birth, $User, $Password, $PasswordC);
+switch($check) {
+    case 0:
+        $_SESSION['message'] = "Demande d'adhésion prise en compte. Vous serez recontactés par mail. A très bientôt sur notre site ! Monsieur $name, $FirstName, .";
+        header('location: ../../View/Registering/AcceptedRegisteringWebsite.php');
+    case 1:
+        $_SESSION['message'] = "Demande d'adhésion non validée. Utilisateur existant.";
+    case 2:
+        $_SESSION['message'] = "Demande d'adhésion non validée. Vous devez saisir le même mot de passe ET dans la case du mot de passe ET dans la case de confirmation.";
+    case 3:
+        $_SESSION['message'] = "Demande d'adhésion non validée. Mot de passe trop court.";
+    header("location: ../../View/Registering/RegistRetry.php");
+}

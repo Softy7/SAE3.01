@@ -8,7 +8,7 @@ $user = launch();
 $db = __init__();
 
 if (isset($_POST['__Send__'])) {
-    $match = $_SESSION['match'][0];
+    $match = $_SESSION['OneMatch'][0];
     $db = __init__();
     $user = launch();
     if (isset($_POST['Goal'])&&$_POST['Turn']<=$match[3]) {
