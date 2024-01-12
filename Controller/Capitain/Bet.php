@@ -31,8 +31,8 @@ if (isset($_POST["pari"])) {
         $user->bet($bdd,$idMatch,$_POST["pari"],$equipe2);
         header('location: ../../View/HomeTournaments/HomeTournaments.php');
     } elseif ($req[0][3] == $_POST['pari']) {
-        $random=$user->betIfEquals();
-        header('location: ../../View/HomeTournaments/HomeTournaments.php');
+        $user->betIfEquals();
+            header('location: ../../View/HomeTournaments/HomeTournaments.php');
     }
     else {
         header('location: ../../View/HomeTournaments/HomeTournaments.php');
