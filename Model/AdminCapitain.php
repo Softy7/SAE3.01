@@ -197,6 +197,14 @@ class AdminCapitain extends PlayerAdministrator {
         $requete->execute();
     }
 
+    function enterScorePenal($bdd,$nbCountAttack,$nbCountDefend,$idMatch){
+        $requete = $bdd->prepare("Update Match SET countattack=:countattack, countdefend=:countdefend WHERE idmatch=:idMatch");
+        $requete->bindParam(':countattack',$nbCountAttack);
+        $requete->bindParam(':countdefend', $nbCountDefend);
+        $requete->bindParam(':idMatch', $idMatch);
+        $requete->execute();
+    }
+
     function confirmation($bdd,$contestation,$idMatch){
         $requete = $bdd->prepare("Update Match SET contestation=:contestation WHERE idmatch=:idMatch");
         $requete->bindParam(':contestation', $contestation);
@@ -214,5 +222,16 @@ class AdminCapitain extends PlayerAdministrator {
             return true;
         }
     }
+
+    function checkPenalti($bdd){
+        $matchNotPlayed=$this->getMatchNotPlayed($bdd);
+        if ($matchNotPlayed[0][7]){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
 }

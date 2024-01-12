@@ -107,7 +107,7 @@ class Capitain extends Player {
 
 
     function getMatchNotPlayed($bdd){
-        $requete=$bdd->prepare("SELECT * FROM Match WHERE (score = 0) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
+        $requete=$bdd->prepare("SELECT * FROM Match WHERE (countmoves = 0) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
         $requete->bindParam(':equipeCap',$this->getTeam());
         $requete->bindParam(':teamCap',$this->getTeam());
         $requete->execute();
@@ -116,9 +116,17 @@ class Capitain extends Player {
     }
 
     function enterScore($bdd,$nbDechole,$gameResult,$idMatch){
-        $requete = $bdd->prepare("Update Match SET score=:score, goal=:win WHERE idmatch=:idMatch");
+        $requete = $bdd->prepare("Update Match SET countmoves=:score, goal=:win WHERE idmatch=:idMatch");
         $requete->bindParam(':score',$nbDechole);
         $requete->bindParam(':win', $gameResult);
+        $requete->bindParam(':idMatch', $idMatch);
+        $requete->execute();
+    }
+
+    function enterScorePenal($bdd,$nbCountAttack,$nbCountDefend,$idMatch){
+        $requete = $bdd->prepare("Update Match SET countattack=:countattack, countdefend=:countdefend WHERE idmatch=:idMatch");
+        $requete->bindParam(':countattack',$nbCountAttack);
+        $requete->bindParam(':countdefend', $nbCountDefend);
         $requete->bindParam(':idMatch', $idMatch);
         $requete->execute();
     }
@@ -195,6 +203,16 @@ class Capitain extends Player {
         }
         else{
             return true;
+        }
+    }
+
+    function checkPenalti($bdd){
+        $matchNotPlayed=$this->getMatchNotPlayed($bdd);
+        if ($matchNotPlayed[0][7]){
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
