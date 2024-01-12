@@ -290,6 +290,7 @@ class Administrator extends Member
     }
 
 
+
     function addRun($title, $link, $data, $pdd, $pda, $order, $nbpm, $bdd){
         $req = $bdd->prepare("INSERT INTO run (title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (:title, :link, :pdd, :pda, :order, :paris)");
         $req->bindValue(":title", $title);

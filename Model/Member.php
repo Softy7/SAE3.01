@@ -87,6 +87,13 @@ class Member extends Connexion {
         /**/
     }
 
+    function viewMatch($bdd){
+        $requete=$bdd->prepare("SELECT * FROM Match ORDER BY idmatch");
+        $requete->execute();
+        $resultats=$requete->fetchAll();
+        return $resultats;
+    }
+
     public function getMatchs($db) {
         $req = $db->prepare('Select Match.* from Match join public.run r on r.idrun = Match.idrun order by orderrun');
         $req->execute();
