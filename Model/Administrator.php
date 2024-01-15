@@ -291,10 +291,9 @@ class Administrator extends Member
 
 
 
-    function addRun($title, $link, $data, $pdd, $pda, $order, $nbpm, $bdd){
-        $req = $bdd->prepare("INSERT INTO run (title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (:title, :link, :pdd, :pda, :order, :paris)");
+    function addRun($title,$data, $pdd, $pda, $order, $nbpm, $bdd){
+        $req = $bdd->prepare("INSERT INTO run (title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (:title, :data, :pdd, :pda, :order, :paris)");
         $req->bindValue(":title", $title);
-        $req->bindValue(":link", $link);
         $req->bindValue(":data", $data,PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
         $req->bindValue(":pda", $pda);
@@ -306,14 +305,14 @@ class Administrator extends Member
 
     function deleteRun($id, $bdd)
     {
-        $req = $bdd->prepare("DELETE From run where idrun= :id ");
+        $req = $bdd->prepare("DELETE From run where title= :id ");
         $req->bindValue(":id", $id);
         $req->execute();
     }
 
     function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd)
     {
-        $req = $bdd->prepare("UPDATE run SET title = :link, maxBet = :nbpm, path = :data, starterPoint = :pdd, finalPoint = :pda WHERE title = :remplacer");
+        $req = $bdd->prepare("UPDATE run SET title = :link, maxBet = :nbpm, image_data = :data, starterPoint = :pdd, finalPoint = :pda WHERE title = :remplacer");
         $req->bindValue(":link", $link);
         $req->bindValue(":data", $data, PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
@@ -339,7 +338,7 @@ class Administrator extends Member
     }
 
     function searchFile($title,$bdd){
-        $req = $bdd->prepare("select path from run where title = :title");
+        $req = $bdd->prepare("select image_data from run where title = :title");
         $req-> bindValue(":title",$title);
         $req->execute();
         $req=$req->fetchall();
