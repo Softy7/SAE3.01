@@ -1,6 +1,6 @@
 <?php
-
-class Member {
+include('Connexion.php');
+class Member extends Connexion {
     public $username;
     private $mail;
     private $name;
@@ -10,6 +10,7 @@ class Member {
 
     function __construct($un/*username*/, $m/*mail*/, $n/*nom*/, $fn/*prénom*/, $b/*date de naissance*/, $p/*mots de passe*/)
     {
+        parent::__construct();
         $this->username = $un;
         $this->mail = $m;
         $this->name = $n;
@@ -84,6 +85,13 @@ class Member {
         $req->bindValue(':password',$this->password,PDO::PARAM_STR);
         $req->execute();
         /**/
+    }
+
+    function viewMatch($bdd){
+        $requete=$bdd->prepare("SELECT * FROM Match ORDER BY idmatch");
+        $requete->execute();
+        $resultats=$requete->fetchAll();
+        return $resultats;
     }
 
     public function getMatchs($db) {

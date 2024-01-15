@@ -22,7 +22,7 @@ class Capitain extends Player {
     function addPlayerInTeam($player, $team)
     {
         $bdd = __init__();
-        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request = $this->db->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $team, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
@@ -34,34 +34,33 @@ class Capitain extends Player {
     }
 
     public function askPlayer($player, $team){
-        $bdd = __init__();
-        $request = $bdd->prepare("INSERT INTO request VALUES (:Player, false, :team)");
+
+        $request = $this->db->prepare("INSERT INTO request VALUES (:Player, false, :team)");
         $request->bindValue(':team', $team, PDO::PARAM_STR);
         $request->bindValue(':Player', $player, PDO::PARAM_STR);
         $request->execute();
     }
 
     function addPlayer($teamname, $player){
-        $bdd = __init__();
-        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+
+        $request = $this->db->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
     }
 
     public function deleteTeam($team){//dissoudre
-            $bdd = __init__();
 
-            $request = $bdd->prepare("Delete 
+            $request = $this->db->prepare("Delete 
                                         from capitain
                                         WHERE username = :username ");//retire le capitaine de son equipe
             $request->bindValue(':username', $this->username, PDO::PARAM_STR);
             $request->execute();
-            $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
+            $prepare = $this->db->prepare("UPDATE Guests SET Team=null where Team = :teamname");
             $prepare->bindValue(':teamname', $team);
             $prepare->bindValue(':teamname', $this->team->name);
             $prepare->execute();
-            $request2 = $bdd->prepare("Delete
+            $request2 = $this->db->prepare("Delete
                                         From Team
                                         where teamname = :teamname ");
             $request2->bindParam(':teamname', $team);
@@ -78,10 +77,10 @@ class Capitain extends Player {
 
     function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
         $players = array();
-        $bdd = __init__();
+
         $lines = array("username", "name", "firstname");
         for ($i=0; $i<3; $i++) {
-            $SUN = $bdd->prepare("SELECT username, name, firstname, team 
+            $SUN = $this->db->prepare("SELECT username, name, firstname, team 
                                         FROM Guests 
                                         WHERE :lines = :search");//recherche dans la base de donné
             $SUN->bindParam(':lines',$lines[i]);
@@ -100,29 +99,145 @@ class Capitain extends Player {
         return $players;
     }
 
-    function betIfEquals(){
-        $min=1;
-        $max=2;
-        $random = rand($min, $max);
-        return $random;
-    }
-
     /**
-     * @param text $playerSelectedUsername le pseudo du joueur que le capitain souhaite passer capitain
+     * @param String $playerSelectedUsername le pseudo du joueur que le capitain souhaite passer capitain
      * @return void
      */
     function chooseNewCapitain($playerSelectedUsername){
-        $bdd = __init__();
 
-
-        $request = $bdd->prepare("DELETE FROM capitain WHERE username = :ancienCapUsername");
+        $request = $this->db->prepare("DELETE FROM capitain WHERE username = :ancienCapUsername");
         $request->bindValue(':ancienCapUsername',$this->username);
         $request->execute();
 
-        $request1 = $bdd->prepare("INSERT INTO Capitain VALUES(:playerSelectedUsername,:teamName)");
+        $request1 = $this->db->prepare("INSERT INTO Capitain VALUES(:playerSelectedUsername,:teamName)");
         $request1->bindValue(':playerSelectedUsername',$playerSelectedUsername);
-        $request1->bindValue(':teamName',$this->team->name);
+        $request1->bindValue(':teamName',$this->team);
         $request1->execute();
 
     }
+
+    function nextMatchBet($id) {
+        $req=$this->db->prepare("SELECT maxbet FROM run where idrun = :id ORDER BY(orderrun)");
+        $req->bindParam(':id',$id);
+        $req->execute();
+        return $req->fetchAll()[0][0];
+    }
+
+
+
+    function getMatchNotPlayed($bdd){
+        $requete=$bdd->prepare("SELECT * FROM Match WHERE (countmoves = 0) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
+        $team = $this->getTeam();
+        $requete->bindParam(':equipeCap',$team);
+        $requete->bindParam(':teamCap',$team);
+        $requete->execute();
+        $req=$requete->fetchAll();
+        return $req;
+    }
+
+    function enterScore($bdd,$nbDechole,$gameResult,$idMatch){
+        $requete = $bdd->prepare("Update Match SET countmoves=:score, goal=:win WHERE idmatch=:idMatch");
+        $requete->bindParam(':score',$nbDechole);
+        $requete->bindParam(':win', $gameResult);
+        $requete->bindParam(':idMatch', $idMatch);
+        $requete->execute();
+    }
+
+    function enterScorePenal($bdd,$nbCountAttack,$nbCountDefend,$idMatch){
+        $requete = $bdd->prepare("Update Match SET countattack=:countattack, countdefend=:countdefend WHERE idmatch=:idMatch");
+        $requete->bindParam(':countattack',$nbCountAttack);
+        $requete->bindParam(':countdefend', $nbCountDefend);
+        $requete->bindParam(':idMatch', $idMatch);
+        $requete->execute();
+    }
+
+    function confirmation($bdd,$contestation,$idMatch){
+        $requete = $bdd->prepare("Update Match SET contest=:contestation WHERE idmatch=:idMatch");
+        $requete->bindParam(':contestation', $contestation);
+        $requete->bindParam(':idMatch', $idMatch);
+        $requete->execute();
+    }
+
+    function getMatchNotValidated($bdd){
+        $requete=$bdd->prepare("SELECT * FROM Match WHERE (contest IS null) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
+        $team = $this->getTeam();
+        $requete->bindParam(':equipeCap',$team);
+        $requete->bindParam(':teamCap',$team);
+        $requete->execute();
+        $req=$requete->fetchAll();
+        return $req;
+    }
+
+    function insertIntoBet($bdd,$idMatch,$bet){
+        $requete = $bdd->prepare("INSERT INTO bet VALUES(:cap,:idmatch,:pari)");
+        $requete->bindParam(':cap', $this->username);
+        $requete->bindParam(':idmatch', $idMatch);
+        $requete->bindParam(':pari', $bet);
+        $requete->execute();
+    }
+
+    function betIfEquals($bdd,$idMatch,$bet,$team2){
+        $min=1;
+        $max=2;
+        $random = rand($min, $max);
+        if ($random==1){
+            $requete = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+            $t1 = $this->getTeam();
+            $requete->bindParam(":equipe1", $t1);
+            $requete->bindParam(":equipe2", $team2);
+            $requete->bindParam(":bet", $bet);
+            $requete->bindParam(':idMatch',$idMatch);
+            $requete->execute();
+        }
+        elseif ($random==2){
+            $requete = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+            $t1 = $this->getTeam();
+            $requete->bindParam(":equipe1", $team2);
+            $requete->bindParam(":equipe2", $t1);
+            $requete->bindParam(":bet", $bet);
+            $requete->bindParam(':idMatch',$idMatch);
+            $requete->execute();
+        }
+
+    }
+
+    function bet($bdd,$idMatch,$bet,$team2){
+        $requete = $bdd->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+        $t1 = $this->getTeam();
+        $requete->bindParam(":equipe1", $t1);
+        $requete->bindParam(":equipe2", $team2);
+        $requete->bindParam(":bet", $bet);
+        $requete->bindParam(':idMatch',$idMatch);
+        $requete->execute();
+    }
+
+    function getBet($bdd,$idMatch){
+        $req=$bdd->prepare("SELECT * FROM bet WHERE (idmatch=:idmatch)");
+        $req->bindParam(':idmatch',$idMatch);
+        $req->execute();
+        $resultats=$req->fetchAll();
+        return $resultats;
+    }
+
+    function checkScoreEntered($bdd){
+        $matchsNotValidated=$this->getMatchNotValidated($bdd);
+        $matchNotPlayed=$this->getMatchNotPlayed($bdd);
+        if ($matchsNotValidated[0][0]==$matchNotPlayed[0][0]){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    function checkPenalty($bdd){
+        $matchNotPlayed=$this->getMatchNotPlayed($bdd);
+        if ($matchNotPlayed[0][7]==1){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

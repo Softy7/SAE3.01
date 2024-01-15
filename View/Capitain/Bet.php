@@ -10,20 +10,12 @@ $user = launch();
 $team=$user->getTeam();
 if ($_SESSION['connected']) {
 
-    $req=$bdd->prepare("SELECT idmatch, attack, defend FROM Match WHERE (goal = 0) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
-    $req->bindParam(':equipeCap',$team);
-    $req->bindParam(':teamCap',$team);
-    $req->execute();
-    $resultats=$req->fetchAll();
+    $Matchs=$user->getMatchNotPlayed($bdd);
+    $maxbet = $user->nextMatchBet($Matchs[0][6]);
 
-    $req2=$bdd->prepare("SELECT * FROM bet WHERE (username=:cap) AND (idmatch=:idmatch)");
-    $req2->bindParam(':cap',$user->username);
-    $req2->bindParam(':idmatch',$resultats[0][0]);
-    $req2->execute();
-    $result2=$req2->fetchAll();
+    $bets=$user->getBet($bdd,$Matchs[0][0]);
 
-    if ($result2[0][0]==""){
-
+    if ($bets == null || $bets[0][0] != $user->username){
 
 ?>
 
@@ -34,11 +26,11 @@ if ($_SESSION['connected']) {
     <title>Cholage Club Quaroule.fr</title>
 </head>
 <body>
-<h1>Parier pour le match de <?php echo $resultats[0][1];?> contre <?php echo $resultats[0][2];?></h1>
+<h1>Match: <?php echo $Matchs[0][1];?> - <?php echo $Matchs[0][2];?></h1>
 
 <form action="../../Controller/Capitain/Bet.php" method="post">
 
-    <label>Entrer en combien de coup de déchole vous pensez gagner,<br> le plus petit pari des deux capitaine définira l'équipe qui chôle</label>
+    <label>Pari (max: <?php echo $maxbet ?>:</label>
     <input id="pari" type="number" name="pari">
     <input id="submit" type="submit" name="valider">
 
@@ -56,8 +48,8 @@ if ($_SESSION['connected']) {
     <title>Cholage Club Quaroule.fr</title>
 </head>
 <body>
-    <h1>vous avez déjà parié pour le match de <?php echo $resultats[0][1]; ?> contre <?php echo $resultats[0][2]; ?></h1>
-    <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">retour</button>
+    <h1>Pari rentré. <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
+    <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">Retour</button>
 </body>
 </html>
 <?php

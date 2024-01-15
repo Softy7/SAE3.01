@@ -5,16 +5,12 @@ require_once('../../Model/Capitain.php');
 require_once('../../Model/AdminCapitain.php');
 require_once('../../ConnexionDataBase.php');
 
-
 $bdd=__init__();
 $user = launch();
 $team=$user->getTeam();
 if ($_SESSION['connected']) {
-    $req=$bdd->prepare("SELECT * FROM Match WHERE (contestation IS null) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
-    $req->bindParam(':equipeCap',$team);
-    $req->bindParam(':teamCap',$team);
-    $req->execute();
-    $resultats=$req->fetchAll();
+    $resultats=$user->getMatchNotValidated($bdd);
+
     if ($resultats[0][1]=="$team"){
     ?>
 
@@ -66,7 +62,7 @@ if ($_SESSION['connected']) {
             <title>Cholage Club Quaroule.fr</title>
         </head>
         <body>
-        <h1>Valider le score du match de <?php echo $resultats[0][1]; ?> contre <?php echo $resultats[0][2]; ?> entrer par le capitainede l'équipe <?php echo $resultats[0][1]; ?></h1>
+        <h1>Valider le score du match de <?php echo $resultats[0][1]; ?> contre <?php echo $resultats[0][2]; ?> entrer par le capitaine de l'équipe <?php echo $resultats[0][1]; ?></h1>
         <form action="../../Controller/Capitain/EntrerScore.php" method="post">
 
             <label> Le capitaine de l'équipe <?php echo $resultats[0][1]; ?> a entré le score <?php echo $resultats[0][3]; ?> et a entré qu'il a <?php if ($resultats[0][4]==1) {echo "gagné";}else{echo "perdu";}?></label>

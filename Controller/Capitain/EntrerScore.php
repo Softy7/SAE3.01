@@ -8,64 +8,38 @@ require_once('../../ConnexionDataBase.php');
 
 $bdd = __init__();
 $user = launch();
-$team=$user->getTeam();
 
-$requete=$bdd->prepare("SELECT * FROM Match WHERE (contestation IS null) AND (attack=:equipeCap OR defend=:teamCap) ORDER BY(idmatch)");
-$requete->bindParam(':equipeCap',$team);
-$requete->bindParam(':teamCap',$team);
-$requete->execute();
-$req=$requete->fetchAll();
+
+$req=$user->getMatchNotValidated($bdd);
 $idMatch=$req[0][0];
 
-echo $idMatch;
 
 if (isset($_POST["nbdechole"])) {
-    $requete1 = $bdd->prepare("Update Match SET score=:score, goal=:win WHERE idmatch=:idMatch");
-    $requete1->bindParam(':score', $_POST["nbdechole"]);
+
+
     if (isset($_POST["win"])){
         $won=1;
-        $requete1->bindParam(':win', $won);
+        $user->enterScore($bdd,$_POST["nbdechole"],$won,$idMatch);
+
     }else{
 
         $lost=2;
-        $requete1->bindParam(':win', $lost);
+        $user->enterScore($bdd,$_POST["nbdechole"],$lost,$idMatch);
     }
-    echo 'won : ';
-    echo $won;
-    echo ' ';
 
-    echo 'score : ';
-    echo $_POST["nbdechole"];
-    echo ' ';
 
-    echo 'idMatch : ';
-    echo $idMatch;
-    echo ' ';
-    $requete1->bindParam(':idMatch', $idMatch);
-    echo ' MARCHE TA MERE';
-
-    $requete1->execute();
-    echo 'fini';
     header('location: ../../View/HomeTournaments/HomeTournaments.php');
 }
 else{
     foreach ($_POST as $key => $value) {
         if (!strpos($key, 'contestation')) {
-            echo 'enculer';
             $contestation = true;
-            $requete2 = $bdd->prepare("Update Match SET contestation=:contestation WHERE idmatch=:idMatch");
-            $requete2->bindParam(':contestation', $contestation);
-            $requete2->bindParam(':idMatch', $idMatch);
-            $requete2->execute();
+            $user->confirmation($bdd,$contestation,$idMatch);
             header('location: ../../View/HomeTournaments/HomeTournaments.php');
 
         } elseif (!strpos($key, 'confirmer')) {
-            echo 'fils de pute';
-            $contestation = false;
-            $requete3 = $bdd->prepare("Update Match SET contestation=:contestation WHERE idmatch=:idMatch");
-            $requete3->bindParam(':contestation', $contestation);
-            $requete3->bindParam(':idMatch', $idMatch);
-            $requete3->execute();
+            $confirmation = false;
+            $user->confirmation($bdd,$confirmation,$idMatch);
             header('location: ../../View/HomeTournaments/HomeTournaments.php');
 
         }

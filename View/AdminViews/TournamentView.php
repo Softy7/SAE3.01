@@ -5,6 +5,7 @@ require_once('../../Model/AdminCapitain.php');
 require_once('../../ConnexionDataBase.php');
 
 session_start();
+
 $user = launch();
 if ($_SESSION['isAdmin'] == 1) {
 
