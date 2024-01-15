@@ -53,7 +53,7 @@ class Administrator extends Member
 
     function getMember($bdd, $player)
     {
-        $req = $bdd->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND isplayer = true AND username != :player ORDER BY team");
+        $req = $bdd->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND username != :player ORDER BY team");
         $req->bindValue(':player', $player);
         $req->execute();
         return $req->fetchall();
@@ -340,5 +340,19 @@ class Administrator extends Member
         $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
+    }
+    function deleteTournament($bdd)
+    {
+        $req = $bdd->prepare("UPDATE Guests SET isplayer = false and team = NULL");
+        $req->execute();
+        $req1 = $bdd->prepare("DELETE FROM match");
+        $req1->execute();
+        $req4 = $bdd->prepare("DELETE FROM run");
+        $req4->execute();
+        $req2 = $bdd->prepare("DELETE FROM capitain");
+        $req2->execute();
+        $req3 = $bdd->prepare("DELETE FROM team");
+        $req3->execute();
+
     }
 }

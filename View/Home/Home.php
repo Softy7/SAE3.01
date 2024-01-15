@@ -113,6 +113,9 @@ if ($_SESSION['connected']) {
                 <input type="submit" value="gérer parcours" id="gererParcours"/>
             </form>
             <button onclick="window.location.href='../AdminViews/CreateTeam.php';" value="CreateByForce" id="CreateByForce">Création forcée d'équipe</button>
+            <form action="../AdminViews/deleteTournament.php" method="post">
+                <input type="submit" value="delTournament" id="supTournament"/>
+            </form>
             <?php
         }
     ?>
