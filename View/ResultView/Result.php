@@ -36,13 +36,28 @@ usort($resultats, 'compareEquipes');
 <head>
     <meta charset="UTF-8">
     <title>Quarouble Chômage.fr</title>
+    <link rel="stylesheet" href="Result.css" media="screen" type="text/css" />
 </head>
 <body>
-<H1>Résultat Finaux</H1>
+<H1>&#x1F3C6; Résultat Finaux &#x1F3C6;</H1>
+<div id="google_translate_element"></div>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'fr',
+            includedLanguages: 'en,fr',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <table>
     <tr>
-        <th>classement</th>
+        <th>Classement</th>
         <th>Equipe</th>
         <th>Total Victoires</th>
         <th>Victoires Attaque</th>
@@ -68,11 +83,25 @@ usort($resultats, 'compareEquipes');
     }
     foreach ($resultats as $result) { ?>
         <tr>
-            <td><?= $classement++ ?></td>
-            <td><?= $result[0] ?></td>
-            <td><?= $result[1] ?></td>
-            <td><?= $result[2] ?></td>
-            <td><?= $result[3] ?></td>
+            <td id="class"><?php
+                if($classement == 1){
+                    ?>&#129351;<?php
+                }
+                if($classement == 2){
+                ?>&#129352;<?php
+                }
+                if($classement == 3){
+                ?>&#129353;<?php
+                }
+                if($classement>=4){
+                    echo $classement;
+                }
+                $classement++;?>
+            </td>
+            <td id="class"><?= $result[0] ?></td>
+            <td id="class"><?= $result[1] ?></td>
+            <td id="class"><?= $result[2] ?></td>
+            <td id="class"><?= $result[3] ?></td>
             <td>
                 <?php
                 if($classement == 2){
