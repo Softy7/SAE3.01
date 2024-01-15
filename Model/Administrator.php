@@ -139,31 +139,22 @@ class Administrator extends Member
 
     function TournamentEnd($bdd): bool
     {
-        $req1 = $bdd->prepare("SELECT match.idrun, count(attack), count(defend) FROM match GROUP BY match.idrun");
+        $req1 = $bdd->prepare("SELECT match.idrun, COUNT(attack) as count_attack, COUNT(defend) as count_defend FROM match GROUP BY match.idrun");
         $req1->execute();
-        $req1->fetchall();
-        $req2 = $bdd->prepare("Select teamname from team");
+        $matchesCounts = $req1->fetchAll(PDO::FETCH_ASSOC);
+
+        $req2 = $bdd->prepare("SELECT COUNT(teamname) as count_team FROM team");
         $req2->execute();
-        $req2->fetchall();
-        $req3 = $bdd->prepare("Select idrun from run");
+        $count2 = $req2->fetch()['count_team'];
+
+        $req3 = $bdd->prepare("SELECT COUNT(idrun) as count_idrun FROM run");
         $req3->execute();
-        $req3->fetchall();
-        $count1=0;
-        $count2=0;
-        $count3=0;
-        foreach($req1 as $re1) {
-            $count1++;
-        }
-        foreach($req2 as $re2){
-            $count2++;
-        }
-        foreach($req3 as $re3){
-            $count3++;
-        }
-        if($count1 == $count3){
-            foreach($req1 as $r1){
-                $count = $r1[1] + $r1[2];
-                if ($count2 != $count){
+        $count3 = $req3->fetch()['count_idrun'];
+
+        if (count($matchesCounts) == $count3) {
+            foreach ($matchesCounts as $match) {
+                $count = $match['count_attack'] + $match['count_defend'];
+                if ($count2 != $count) {
                     return false;
                 }
             }
@@ -171,6 +162,7 @@ class Administrator extends Member
         }
         return false;
     }
+
 
     function RelsultCalculation($bdd, $team): array
     {
