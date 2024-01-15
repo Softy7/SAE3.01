@@ -223,7 +223,7 @@ class AdminCapitain extends PlayerAdministrator {
         }
     }
 
-    function checkPenalti($bdd){
+    function checkPenalty($bdd){
         $matchNotPlayed=$this->getMatchNotPlayed($bdd);
         if ($matchNotPlayed[0][7]){
             return true;

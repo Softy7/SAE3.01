@@ -55,20 +55,33 @@ if ($_SESSION['connected']) {
             <?php
             }
             //si le match est un pénalti, que le capitaine est en attaque et que le score n'est pas entré
-            elseif ($user->checkPenalti($bdd) && $Matchs[0][1] == $user->username){
-
+            elseif ($user->checkPenalty($bdd) && $Matchs[0][1] == $user->username && !$user->checkScoreEntered($bdd)){
+                $Matchs=$user->getMatchNotValidated($bdd);
+                ?>
+                <h1>Le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?> est un match de penalty</h1>
+                <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
+                <?php
             }
             //si le match est un pénalti, que le capitaine est en attaque et que le score est entré
-            elseif ($user->checkPenalti($bdd) && $Matchs[0][1] == $user->username){
-
+            elseif ($user->checkPenalty($bdd) && $Matchs[0][1] == $user->username && $user->checkScoreEntered($bdd)){
+                $Matchs=$user->getMatchNotValidated($bdd);
+                ?>
+                <h1>Vous avez entré que votre equipe a marqué <?php echo $Matchs[0][9]; ?> et que l'equipe adverse a marqué <?php $Matchs[0][10] ?> match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
+                <?php
             }
             //si le match est un pénalti, que le capitaine est en défense et que le score n'est pas entré
-            elseif ($user->checkPenalti($bdd) && $Matchs[0][2] == $user->username){
-
+            elseif ($user->checkPenalty($bdd) && $Matchs[0][2] == $user->username && !$user->checkScoreEntered($bdd)){
+                $Matchs=$user->getMatchNotValidated($bdd);
+                ?>
+                <h1>Le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?> est un match de penalty et le score n'a pas été entrer</h1>
+                <?php
             }
             //si le match est un pénalti, que le capitaine est en défense et que le score est entré
-            elseif ($user->checkPenalti($bdd) && $Matchs[0][2] == $user->username){
-
+            elseif ($user->checkPenalty($bdd) && $Matchs[0][2] == $user->username && $user->checkScoreEntered($bdd)){
+                $Matchs=$user->getMatchNotValidated($bdd);
+                ?>
+                <h1>le capitaine adverse a entré que son equipe a marqué <?php echo $Matchs[0][9]; ?> et que votre equipe a marqué <?php $Matchs[0][10] ?> pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
+                <?php
             }
 
             //le capitaine de l'equipe n'a pas parié

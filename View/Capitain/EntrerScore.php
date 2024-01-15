@@ -54,7 +54,11 @@ if ($_SESSION['connected']) {
         </html>
 
     <?php
-    } else{ ?>
+    }elseif ($user->checkPenalty($bdd)) {    ?>
+
+
+        <?php
+    }else{ ?>
         <!DOCTYPE html>
         <html lang="en">
         <head>
