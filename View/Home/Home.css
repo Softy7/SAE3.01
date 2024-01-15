@@ -109,6 +109,24 @@ h1 {
     right: 10px;
 }
 
+#teamRequest{
+    position: absolute;
+    top: 145px;
+    right: 10px;
+}
+
+#RequestJointeam{
+    position: absolute;
+    top: 100px;
+    right: 160px;
+}
+
+#ViewRequest{
+    position: absolute;
+    top: 145px;
+    right: 170px;
+}
+
 #addPlayerTeam{
     position: absolute;
     top: 100px;
@@ -124,6 +142,18 @@ h1 {
 #CreateTeam{
     position: absolute;
     top: 100px;
+    right: 10px;
+}
+
+#JoinTeam{
+    position: absolute;
+    top: 100px;
+    right: 160px;
+}
+
+#AskTeam{
+    position: absolute;
+    top: 145px;
     right: 10px;
 }
 
@@ -150,6 +180,12 @@ h1 {
     position: absolute;
     top: 330px;
     left: 10px;
+}
+
+#ViewReq{
+    position: absolute;
+    top: 145px;
+    right: 170px;
 }
 
 #gererPublication{

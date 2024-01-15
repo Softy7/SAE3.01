@@ -1,6 +1,7 @@
 <?php
 
-include_once('Administrator.php');
+include('Administrator.php');
+
 
 class PlayerAdministrator extends Administrator {
     protected $team;
@@ -17,7 +18,7 @@ class PlayerAdministrator extends Administrator {
         $request = $bdd->prepare("update Guests 
                                         set Team = :teamName
                                         where username = :username;");//passe se joueur dans une équipe
-        $request->bindValue(':teamName',$this->team,PDO::PARAM_STR);
+        $request->bindValue(':teamName',$team->name,PDO::PARAM_STR);
         $request->bindValue(':username',$this->username,PDO::PARAM_STR);
         $request->execute();
         $this->team = $team;
@@ -31,6 +32,7 @@ class PlayerAdministrator extends Administrator {
                                         where username = :username;");//retire se joueur son equipe
         $request->bindValue(':username',$this->username,PDO::PARAM_STR);
         $request->execute();
+        $this->team->removePlayer($this);
         $this->team = null;//annule l'équipe affilié
     }
 
@@ -49,8 +51,8 @@ class PlayerAdministrator extends Administrator {
         return new Administrator($this->username, $this->getMail(), $this->getName(), ($this->getFirstname()), $this->getBirthday(), $this->getPassword());
     }
 
-    public function createTeam($teamName, $playerUsername, $bdd){
-        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0,0)");
+    public function createTeam($teamName, $playerUsername, $bdd) {
+        $requete=$bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
         $requete->bindParam(':teamName',$teamName);
         $requete->execute();
 
@@ -80,6 +82,14 @@ class PlayerAdministrator extends Administrator {
         return $request->fetchAll();
     }
 
+    public function askPlayer($player, $team){
+        $bdd = __init__();
+        $request = $bdd->prepare("INSERT INTO request VALUES (:Player, true, :team)");
+        $request->bindValue(':team', $team, PDO::PARAM_STR);
+        $request->bindValue(':Player', $player, PDO::PARAM_STR);
+        $request->execute();
+    }
+
     public function scearchName($teamName,$bdd){
         $requete = $bdd->prepare("SELECT * FROM Team WHERE teamName=:teamName");
         $requete->bindParam(':teamName',$teamName);
@@ -91,5 +101,6 @@ class PlayerAdministrator extends Administrator {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
     }
+    /**/
 
 }

@@ -1,25 +1,41 @@
 <?php
 
-
-include_once('PlayerAdministrator.php');
+include('PlayerAdministrator.php');
 class AdminCapitain extends PlayerAdministrator {
     function __construct($un, $m, $n, $fn, $b, $p, $tn)
     {
         parent::__construct($un, $m, $n, $fn, $b, $p, $tn);
     }
-
+  
     function addPlayerInTeam($username) {
         $bdd = __init__();
         $request=$bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
         $request->bindValue(':username',$username, PDO::PARAM_STR);
         $request->execute();
+
     }
 
-    function removePlayerInTeam($player) {
+    function removePlayerInTeam($username) {
         $bdd = __init__();
-        $request=$bdd->prepare("UPDATE Guests set team = null where username = :username");
-        $request->bindValue(':username',$player, PDO::PARAM_STR);
+        $request=$bdd->prepare("delete from Guests where username = :username");
+        $request->bindValue(':username',$username, PDO::PARAM_STR);
+        $request->execute();
+    }
+
+    public function askPlayer($player, $team){
+        $bdd = __init__();
+        $request = $bdd->prepare("INSERT INTO request VALUES (:Player, false, :team)");
+        $request->bindValue(':team', $team, PDO::PARAM_STR);
+        $request->bindValue(':Player', $player, PDO::PARAM_STR);
+        $request->execute();
+    }
+
+    function addPlayer($teamname, $player){
+        $bdd = __init__();
+        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
+        $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
     }
 
@@ -32,7 +48,6 @@ class AdminCapitain extends PlayerAdministrator {
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         $prepare = $bdd->prepare("UPDATE Guests SET Team=null where Team = :teamname");
-        echo $this->team;
         $prepare->bindValue(':teamname', $this->team);
         $prepare->execute();
 
@@ -50,7 +65,7 @@ class AdminCapitain extends PlayerAdministrator {
             null);
     }
 
-    function searchPlayer($search/*recherche nom,prénom ou username,*/): array{
+    function searchPlayer($search/*recherche nom,prénom ou username,*/){
         $players = array();
         $bdd = __init__();
         $lines = array("username", "name", "firstname");
@@ -74,9 +89,6 @@ class AdminCapitain extends PlayerAdministrator {
         return $players;
     }
 
-    function addPlayer($seachPlayer){
-        $this->team->addPlayer($seachPlayer);
-    }
 
 
 
@@ -88,7 +100,7 @@ class AdminCapitain extends PlayerAdministrator {
 
         $request1 = $bdd->prepare("INSERT INTO Capitain VALUES(:playerSelectedUsername,:teamName)");
         $request1->bindValue(':playerSelectedUsername',$playerSelectedUsername);
-        $request1->bindValue(':teamName',$this->team);
+        $request1->bindValue(':teamName',$this->team->name);
         $request1->execute();
 
         /* passer le joueur choisi en cap
@@ -232,6 +244,5 @@ class AdminCapitain extends PlayerAdministrator {
             return false;
         }
     }
-
 
 }

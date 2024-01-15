@@ -16,7 +16,6 @@ if ($_SESSION['connected']) {
 
     if ($bets[0][0]=="" || $bets[0][0]!= $user->username && $bets[1][0]==""){
 
-
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +29,7 @@ if ($_SESSION['connected']) {
 
 <form action="../../Controller/Capitain/Bet.php" method="post">
 
-    <label>Entrer en combien de coup de déchole vous penser gagner,<br> le plus petit pari des deux capitaine définira l'équipe qui chole</label>
+    <label>Entrer en combien de coup de déchole vous pensez gagner,<br> le plus petit pari des deux capitaine définira l'équipe qui chôle</label>
     <input id="pari" type="number" name="pari">
     <input id="submit" type="submit" name="valider">
 

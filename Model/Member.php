@@ -1,6 +1,6 @@
 <?php
-
-class Member {
+include('Connexion.php');
+class Member extends Connexion {
     public $username;
     private $mail;
     private $name;
@@ -10,6 +10,7 @@ class Member {
 
     function __construct($un/*username*/, $m/*mail*/, $n/*nom*/, $fn/*prénom*/, $b/*date de naissance*/, $p/*mots de passe*/)
     {
+        parent::__construct();
         $this->username = $un;
         $this->mail = $m;
         $this->name = $n;
@@ -93,4 +94,9 @@ class Member {
         return $resultats;
     }
 
+    public function getMatchs($db) {
+        $req = $db->prepare('Select Match.* from Match join public.run r on r.idrun = Match.idrun order by orderrun');
+        $req->execute();
+        return $req->fetchAll();
+    }
 }
