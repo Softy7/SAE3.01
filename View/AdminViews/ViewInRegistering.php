@@ -2,7 +2,7 @@
 session_start();
 require_once('../../ConnexionDataBase.php');
 
-if ($_SESSION['isAdmin'] == 1) {
+if ($_SESSION['isAdmin']) {
 $bdd = __init__();
 $req = $bdd->prepare("SELECT username, mail, name, firstname, birthday FROM Guests WHERE isRegistered = false and isDeleted = false");
 $req->execute();
@@ -38,6 +38,6 @@ if($resultat!=null){
 </body>
 <?php
 } else {
-    header('location: ../Guest_Home.html');
+    header('location: ../Home/Home.php');
 
 }

@@ -4,11 +4,14 @@ session_start();
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <link rel="stylesheet" href="connexion.css" media="screen" type="text/css" />
     <title>Formulaire d'adhésion</title>
 </head>
 <body>
-<h1>Adhésion</h1>
+<div id="container">
+
 <form action="../../Controller/Registering/checkInscription.php" method="post">
+    <h1>Adhésion</h1>
     Nom: <input type="text" name="name"><br>
     Prenom: <input type="text" name="firstname"><br>
     Email: <input type="text" name="email"><br>
@@ -19,5 +22,6 @@ session_start();
 
     <input type="submit" value="Demander Adhésion">
 </form>
+</div>
 </body>
 </html>
