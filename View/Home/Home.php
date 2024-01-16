@@ -109,7 +109,7 @@ if ($_SESSION['connected']) {
                 foreach ($result as $row) {
                     echo "<div>";
                     echo htmlspecialchars($row['title'])."<br>";
-                    echo "Image : <img src='" . $row['path'] . "'><br>";
+                    echo "Image : <img src='" . $row['image_data'] . "'><br>";
                     echo "Point de départ: ".htmlspecialchars(($row['starterpoint']))."<br>";
                     echo "Point d'arrivée: ".htmlspecialchars(($row['finalpoint']))."<br>";
                     echo "Paris max: ".htmlspecialchars(($row['maxbet']))."<br>";

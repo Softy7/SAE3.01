@@ -14,6 +14,7 @@ if (!$bdd) {
         $pdd = $_POST['pdd'];
         $pda = $_POST['pda'];
         $bet = $_POST['bet'];
+        $order = $_POST['order'];
         $uploadDir = '../../View/AdminViews/image/';
         echo $uploadDir;
         $uploadFile = $uploadDir . basename($_FILES['lien']['name']);
@@ -24,7 +25,7 @@ if (!$bdd) {
             echo 'Erreur lors du déplacement du fichier téléchargé.';
         }
         $lien = $uploadFile;
-        $user->addRun($title, $lien, $pdd, $pda, $bet, $bdd);
+        $user->addRun($title, $lien, $pdd, $pda, $order, $bet, $bdd);
     }
 
     foreach ($_POST as $key => $value) {
@@ -47,21 +48,13 @@ if (!$bdd) {
             $newPda = $_POST['pda_' . $title];
             $newBet = $_POST['bet_' . $title];
             $user->updateRun($newTitle, $newData, $newPdd, $newPda, $title, $newBet, $bdd);
-            if (strpos($key, 'modifier') === 0) {
-                $idarticle = substr($key, 9);
-                $nTitre = $_POST['titre'];
-                $nData = $_POST['lien'];
-                $nPdd = $_POST['pdd'];
-                $nPda = $_POST['pda'];
-                $nBet = $_POST['bet'];
-                $user->updateRun($nTitre, $nData, $nPdd, $nPda, $idarticle, $nBet, $bdd);
 
             } elseif (isset($_POST['supprimer']) && $_POST['supprimer'] == $value) {
-                $title = $_POST['supprimer'];
-                $user->deleteRun($title, $bdd);
+                $idrun = $_POST['supprimer'];
+                $user->deleteRun($idrun, $bdd);
             }
         }
     }
     header("Location: ../../View/AdminViews/RunView.php");
-}
 ?>
+}
