@@ -54,7 +54,57 @@ if ($_SESSION['connected']) {
         </html>
 
     <?php
-    } else{ ?>
+    }elseif ($user->checkPenalty($bdd)) {    ?>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Cholage Club Quaroule.fr</title>
+        </head>
+        <body>
+        <h1>Entrer le score du match penalty de <?php echo $resultats[0][1]; ?> contre <?php echo $resultats[0][2]; ?></h1>
+        <form action="../../Controller/Capitain/EntrerScore.php" method="post">
+
+            <label>Entrer le nombre de coup docké de votre équipe</label>
+            <input id="nbDockeAttaque" type="number" name="nbDockeAttaque">
+            <br>
+            <label>Entrer le nombre de coup docké de votre adversaire</label>
+            <input id="nbDockeDefense" type="number" name="nbDockeDefense"><br>
+
+
+            <input id="submit" type="submit" name="valider" value="valider">
+
+        </form>
+        <br>
+        <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">retour</button>
+        </body>
+        </html>
+        <?php
+    }elseif($resultats[0][2]==$team && $resultats[0][9]!=0){ ?>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Cholage Club Quaroule.fr</title>
+        </head>
+        <body>
+        <h1>Valider le score du match de <?php echo $resultats[0][1]; ?> contre <?php echo $resultats[0][2]; ?> entrer par le capitaine de l'équipe <?php echo $resultats[0][1]; ?></h1>
+        <br>
+        <form action="../../Controller/Capitain/EntrerScore.php" method="post">
+
+            <label> Le capitaine de l'équipe <?php echo $resultats[0][1]; ?> a entré qu'ils ont docké <?php echo $resultats[0][9]; ?> et il a entré que vous avez docké <?php echo $resultats[0][10]; ?></label>
+
+
+            <input id="submit" type="submit" name="correct" value="correct">
+            <input id="submit" type="submit" name="Contestation" value="Contestation">
+
+        </form>
+        <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">retour</button>
+        </body>
+        </html>
+
+        <?php
+    }else{ ?>
         <!DOCTYPE html>
         <html lang="en">
         <head>

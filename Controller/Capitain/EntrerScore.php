@@ -30,6 +30,9 @@ if (isset($_POST["nbdechole"])) {
 
     header('location: ../../View/HomeTournaments/HomeTournaments.php');
 }
+elseif(isset($_POST["nbDockeAttaque"])){
+    $user->enterScorePenal($bdd,$_POST["nbDockeAttaque"],$_POST["nbDockeDefense"],$idMatch);
+}
 else{
     foreach ($_POST as $key => $value) {
         if (!strpos($key, 'contestation')) {
