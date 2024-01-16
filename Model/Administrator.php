@@ -296,7 +296,7 @@ class Administrator extends Member
 
 
     function addRun($title,$data, $pdd, $pda, $order, $nbpm, $bdd){
-        $req = $bdd->prepare("INSERT INTO run (title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (:title, :data, :pdd, :pda, :order, :paris)");
+        $req = $bdd->prepare("INSERT INTO run (idrun, title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (DEFAULT, :title, :data, :pdd, :pda, :order, :paris)");
         $req->bindValue(":title", $title);
         $req->bindValue(":data", $data,PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
@@ -341,18 +341,17 @@ class Administrator extends Member
 
     }
 
-    function searchFile($title,$bdd){
+    function searchFile($title, $bdd){
         $req = $bdd->prepare("select image_data from run where title = :title");
-        $req-> bindValue(":title",$title);
+        $req->bindValue(":title", $title);
         $req->execute();
-        $req=$req->fetchall();
+        $req=$req->fetchAll();
         return $req[0][0];
     }
 
     function addPlayerF($teamname, $player)
     {
-        $bdd = __init__();
-        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request = $this->db->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();

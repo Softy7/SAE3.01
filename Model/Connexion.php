@@ -4,7 +4,7 @@ class Connexion {
     protected $db;
 
     function __construct() {
-        $this->db = new PDO('pgsql:host=localhost;dbname=postgres','postgres','hugo2004');
+        $this->db = new PDO('pgsql:host=localhost;dbname=postgres','postgres','v1c70I83');
     }
 
     function getUser($username) {
