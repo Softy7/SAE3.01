@@ -117,9 +117,11 @@ usort($resultats, 'compareEquipes');
         </tr>
     <?php } ?>
 </table>
-<h4>index :</h4>
-<p>Roi du fut = vainqueurs <br/>
+<div id="kevin">
+    <h4>index :</h4>
+    <p>Roi du fut = vainqueurs <br/>
     Videur de fut = Meilleurs attaquant<br/>
     Gardien du fut = Meilleurs Défenseur<br/></p>
+</div>
 </body>
 </html>
