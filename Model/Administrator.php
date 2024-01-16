@@ -39,11 +39,10 @@ class Administrator extends Member
      * @param $bdd
      * @return void
      */
-    function getDeleted($bdd)
-    {
-        $req = $bdd->prepare("select username, mail, name, firstname, birthday, password from Guests where isDeleted = true");
+    function getDeleted(): array {
+        $req = $this->db->prepare("select username, mail, name, firstname, birthday from Guests where isDeleted = true");
         $req->execute();
-        return $req->fetchall();
+        return $req->fetchAll();
     }
 
     function upgradeMember($bdd, $username){
@@ -51,6 +50,11 @@ class Administrator extends Member
         $req->execute();
     }
 
+    function getNotRegistrered() {
+        $req = $this->db->prepare("SELECT username, mail, name, firstname, birthday FROM Guests WHERE isRegistered = false and isDeleted = false");
+        $req->execute();
+        return $req->fetchAll();
+    }
     function getMember($bdd, $player)
     {
         $req = $bdd->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND isplayer = true AND username != :player ORDER BY team");

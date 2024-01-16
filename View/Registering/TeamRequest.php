@@ -1,13 +1,14 @@
 <?php
 session_start();
 require_once('../../ConnexionDataBase.php');
-if ($_SESSION['captain'] == 0) {
+require_once('../../Controller/launch.php');
+require_once('../../Model/PlayerAdministrator.php');
+require_once('../../Model/Player.php');
+
+if ($_SESSION['captain'] == 0 && $_SESSION['isPlayer'] == 1) {
     $bdd = __init__();
-    $user = $_SESSION['username'];
-    $req = $bdd->prepare("SELECT Team FROM request WHERE username=:user AND isplayerask = false");
-    $req->bindValue(':user', $user, PDO::PARAM_STR);
-    $req->execute();
-    $resultat = $req->fetchAll();
+    $user = launch();
+    $resultat = $user->getTeamsAsk();
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -55,7 +56,6 @@ if ($_SESSION['captain'] == 0) {
     }
     ?>
     <div id="bouton">
-        <!--met le en dessous le bouton-->
         <button onclick="window.location.href='../Home/Home.php';" value="Home">Retour sur votre espace</button>
     </div>
 </div>

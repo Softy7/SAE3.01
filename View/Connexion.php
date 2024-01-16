@@ -9,7 +9,7 @@
 <body>
 <div id="container">
 <form action="../Controller/Connect/CheckConnect.php" method="post">
-  <h2><label>Veuiller donner votre identifiant et mot de passe :</label></h2><br/>
+  <h2><label>Connexion:</label></h2><br/>
   <label>Identifiant: </label>
   <input name="id" type="text" />
 

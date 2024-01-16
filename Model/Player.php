@@ -90,6 +90,13 @@ class Player extends Member {
         return new AdminCapitain($this->username, $this->getMail(), $this->getName(), $this->getFirstname(), $this->getBirthday(), $this->getPassword(), $teamName, array($playerUsername));
     }
 
+    function getTeamsAsk() {
+        $req = $this->db->prepare("SELECT Team FROM request WHERE username=:user AND isplayerask = false");
+        $req->bindValue(':user', $this->username, PDO::PARAM_STR);
+        $req->execute();
+        return $req->fetchAll();
+    }
+
     public function askPlayer($player, $team){
         $bdd = __init__();
         $request = $bdd->prepare("INSERT INTO request VALUES (:Player, true, :team)");

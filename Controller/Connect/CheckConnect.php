@@ -66,8 +66,8 @@ if ($temp != null) {
     }
 
 } else if ($_SESSION['try']) {
-    header("location: ../../View/Guest_Home.html");
-} else {
     header('location: ../../View/NotAccepted.html');
+} else {
+    header("location: ../../View/Guest_Home.html");
 }
 exit;
