@@ -3,6 +3,32 @@ table {
     margin : auto;
 }
 
+main {
+    align-items: center;
+}
+
+#container{
+    width:400px;
+    margin:0 auto;
+    margin-top:5%;
+
+    align-items: center;
+}
+/* Bordered form */
+form {
+    border-radius: 9px;
+    width:100%;
+    padding: 130px;
+    background: #bbbbbb;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+
+}
+#container label{
+    width: 70%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    font-family: Arial, sans-serif;
+}
 
 #players{
     background-color: #cccccc;
@@ -67,13 +93,3 @@ h1 {
     width: 100%;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
-
-
-
-
-
-
-
-
-
-

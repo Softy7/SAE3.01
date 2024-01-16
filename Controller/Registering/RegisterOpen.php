@@ -18,4 +18,4 @@ if ($_SESSION['open'] == 'Inscriptions Ouvertes') {
     $_SESSION['openn'] = 1;
 }
 sleep(2);
-header('location: ../../View/Home/Home.php');
+header('location: ../Connect/CheckConnect.php');

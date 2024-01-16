@@ -9,16 +9,54 @@ session_start();
 
 if ($_SESSION['isAdmin'] == 1) {
     $bdd = __init__();
-    $results = launch()->getPlayer($bdd);
+    $user = launch();
+    $results = $user->getPlayer($bdd);
     ?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Cholage Club Quaroule.fr</title>
+        <link href="CreateTeam.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1>Cette page sert a créer des équipes "de Force"</h1>
+    <h1><?php echo $_SESSION['view'] ?></h1>
+    <p>Monsieur <?php echo $_SESSION['username']?></p>
+    <center><table id="head"><tr>
+                <?php if ($_SESSION['isAdmin']) {
+                    ?><th><?php
+                    if ($_SESSION['openn']) {
+                        ?><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Tournoi</button><?php
+                    } else {
+                        ?><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Préparation</button><?php
+                    }?></th>
+                    <th><button onclick="window.location.href='../AdminViews/viewAllMember.php'">Voir Membres</button></th>
+                    <th><button onclick="window.location.href='../AdminViews/ViewInRegistering.php'">Voir Demandes d'Adhésion</button></th>
+                    <th><button onclick="window.location.href='../AdminViews/UnregisteredView.php'">Réadhésion Membre</button></th>
+                    <?php if ($user->enoughtPlayer()) {
+                        ?><th><button onclick="window.location.href='../Home/Home.php'">Espace Principal</button></th><?php
+                    }?>
+                <?php }?><th><?php if (!$_SESSION['openn']) {
+                        ?><button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">Espace Tournoi</button><?php
+                    }?></th>
+                <?php if ($_SESSION['captain'] == 1) {
+                    ?><th><button onclick="window.location.href='../Capitain/Players.php'">Vue Equipe</button></th><?php
+                }
+                else if ($_SESSION['openn']) {
+                    ?><th><button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">Quitter l'équipe</button></th><?php
+                }
+                if ($_SESSION['teamName'] == null && $_SESSION['openn']) {
+                    ?><th><button onclick="window.location.href='../Capitain/CreateTeam.php'">Devenir Capitaine</button></th><?php
+                    ?><th><button onclick="window.location.href='../Unregistering/unregisteringTournament.php'">Quitter le tournoi</button></th><?php
+                }
+                if ($_SESSION['openn'] && $_SESSION['teamName'] == null) {
+                    ?><th><button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">Supprimer le compte</button></th><?php
+                }?>
+                <th><button onclick="window.location.href='../../Controller/Connect/Deconnect.php'">Déconnexion</button></th>
+                <th></th>
+            </tr></table></center>
+    <main>
+    <div id="container">
     <form action="../../Controller/AdminFunctions/CreateTeam.php" method='post' name="createTeamForm">
         <label>Nom d'équipe : </label><input Type="text" name="nameTeam" required="required"/><br>
         <label>Capitaine : </label><select required="required" name="cap">
@@ -59,9 +97,10 @@ if ($_SESSION['isAdmin'] == 1) {
             }?></select><br>
         <input type="submit" value="Créer" name="ok"/>
     </form>
+    </div>
+    </main>
     <?php
     ?>
-    <button onclick="window.location.href='../Home/Home.php';" value="Home">Retour sur votre espace</button>
     </body>
     </html>
     <?php

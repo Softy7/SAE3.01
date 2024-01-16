@@ -5,7 +5,7 @@ session_start();
 <html lang="fr">
 <head>
     <link rel="stylesheet" href="connexion.css" media="screen" type="text/css" />
-    <title>Formulaire d'adhésion</title>
+    <title>Demande d'adhésion</title>
 </head>
 <body>
 <div id="container">

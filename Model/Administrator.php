@@ -39,11 +39,10 @@ class Administrator extends Member
      * @param $bdd
      * @return void
      */
-    function getDeleted($bdd)
-    {
-        $req = $bdd->prepare("select username, mail, name, firstname, birthday, password from Guests where isDeleted = true");
+    function getDeleted(): array {
+        $req = $this->db->prepare("select username, mail, name, firstname, birthday from Guests where isDeleted = true");
         $req->execute();
-        return $req->fetchall();
+        return $req->fetchAll();
     }
 
     function upgradeMember($bdd, $username){
@@ -51,6 +50,11 @@ class Administrator extends Member
         $req->execute();
     }
 
+    function getNotRegistrered() {
+        $req = $this->db->prepare("SELECT username, mail, name, firstname, birthday FROM Guests WHERE isRegistered = false and isDeleted = false");
+        $req->execute();
+        return $req->fetchAll();
+    }
     function getMember($bdd, $player)
     {
         $req = $bdd->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND isplayer = true AND username != :player ORDER BY team");
@@ -291,10 +295,9 @@ class Administrator extends Member
 
 
 
-    function addRun($title, $link, $data, $pdd, $pda, $order, $nbpm, $bdd){
-        $req = $bdd->prepare("INSERT INTO run (title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (:title, :link, :pdd, :pda, :order, :paris)");
+    function addRun($title,$data, $pdd, $pda, $order, $nbpm, $bdd){
+        $req = $bdd->prepare("INSERT INTO run (idrun, title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (DEFAULT, :title, :data, :pdd, :pda, :order, :paris)");
         $req->bindValue(":title", $title);
-        $req->bindValue(":link", $link);
         $req->bindValue(":data", $data,PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
         $req->bindValue(":pda", $pda);
@@ -306,14 +309,14 @@ class Administrator extends Member
 
     function deleteRun($id, $bdd)
     {
-        $req = $bdd->prepare("DELETE From run where idrun= :id ");
+        $req = $bdd->prepare("DELETE From run where title= :id ");
         $req->bindValue(":id", $id);
         $req->execute();
     }
 
     function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd)
     {
-        $req = $bdd->prepare("UPDATE run SET title = :link, maxBet = :nbpm, path = :data, starterPoint = :pdd, finalPoint = :pda WHERE title = :remplacer");
+        $req = $bdd->prepare("UPDATE run SET title = :link, maxBet = :nbpm, image_data = :data, starterPoint = :pdd, finalPoint = :pda WHERE title = :remplacer");
         $req->bindValue(":link", $link);
         $req->bindValue(":data", $data, PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
@@ -338,18 +341,17 @@ class Administrator extends Member
 
     }
 
-    function searchFile($title,$bdd){
-        $req = $bdd->prepare("select path from run where title = :title");
-        $req-> bindValue(":title",$title);
+    function searchFile($title, $bdd){
+        $req = $bdd->prepare("select image_data from run where title = :title");
+        $req->bindValue(":title", $title);
         $req->execute();
-        $req=$req->fetchall();
+        $req=$req->fetchAll();
         return $req[0][0];
     }
 
     function addPlayerF($teamname, $player)
     {
-        $bdd = __init__();
-        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request = $this->db->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();

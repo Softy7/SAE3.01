@@ -1,8 +1,8 @@
 <?php
 session_start();
 
- require_once('../../ConnexionDataBase.php');
- //require_once ('../../View/AdminViews/RunView.css');
+require_once('../../ConnexionDataBase.php');
+//require_once ('../../View/AdminViews/RunView.css');
 
 
 require_once ('../../Model/AdminCapitain.php');
@@ -15,6 +15,7 @@ if ($_SESSION['isAdmin'] == 1) {
     <!DOCTYPE html>
     <html lang="fr">
     <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
         <meta charset="UTF-8">
         <title>Gestion des parcours</title>
         <script>
@@ -85,12 +86,13 @@ if ($_SESSION['isAdmin'] == 1) {
 
                     echo "<div>";
                     echo "Titre: <input type='text' id='titre_" . $row['title'] . "' name='titre_" . $row['title'] . "' value='" . htmlspecialchars($row['title']) . "'><br>";
-                    echo "Image : <img src='" . $row['path'] . "'><br>";
-                  
+                    echo "Image : <img src='" . $row['image_data'] . "'><br>";
+
                     echo "Image à mettre: <input type='file' id='lien' name='lien' accept='image/*'><br>";
                     echo "Point de depart: <input type='text' id='pdd" . $row['title'] . "' name='pdd_" . $row['title'] . "' value='" . htmlspecialchars($row['starterpoint']) . "'> <br>";
                     echo "Point d'arrive: <input type='text' id='pda" . $row['title'] . "' name='pda_" . $row['title'] . "' value='" . htmlspecialchars($row['finalpoint']) . "'> <br>";
                     echo "Paris Max: <input type='text' id='paris" . $row['title'] . "' name='bet_" . $row['title'] . "' value='" . htmlspecialchars($row['maxbet']) . "'> <br>";
+                    echo "Ordre: <input type='text' id='order" . $row['title'] . "' name='order_" . $row['title'] . "' value='" . htmlspecialchars($row['orderrun']) . "'> <br>";
 
                     echo "<button onclick='return remplirChampsRun(" . $row['title'] . ", \"" . htmlspecialchars($row['title']) . "\", \"" . htmlspecialchars($row['title']) . "\")' type='submit' name='modifier_" . $row['title'] . "'>Modifier</button>";
                     echo "<button onclick='return confirmerSuppressionRun(" . $row['title'] . ")' type='submit' name='supprimer' value='" . $row['title'] . "'>Supprimer</button>";
