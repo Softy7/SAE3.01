@@ -35,3 +35,6 @@ body{
     height: 120px;
     right: 100px
 }
+button {
+    margin-top: 20px;
+}

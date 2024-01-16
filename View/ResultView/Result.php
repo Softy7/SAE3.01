@@ -123,5 +123,6 @@ usort($resultats, 'compareEquipes');
     Videur de fut = Meilleurs attaquant<br/>
     Gardien du fut = Meilleurs Défenseur<br/></p>
 </div>
+<button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">retour</button>
 </body>
 </html>
