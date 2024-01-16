@@ -192,6 +192,26 @@ class Administrator extends Member
         return [$team, $TotalWin, $WinAttack, $WinDefend];
     }
 
+    function EditionCheck($bdd): bool{
+        $year = date("Y");
+        $req = $bdd->prepare("select Edition FROM old_tournament WHERE edition = :year");
+        $req->bindValue(':year', $year);
+        $req->execute();
+        $res = $req->fetchall();
+        if($res != null){
+            return false;
+        }
+        return true;
+    }
+
+    function SaveTournament($bdd, $class, $Team){
+        $year = date("Y");
+        $req = $bdd->prepare("Insert INTO old_tournament VALUES (:year, :class, :team)");
+        $req->bindValue(':year', $year);
+        $req->bindValue(':class', $class, PDO::PARAM_STR);
+        $req->bindValue(':team', $Team, PDO::PARAM_STR);
+        $req->execute();
+    }
 
     /**
      * ferme les inscription du tournois

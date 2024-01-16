@@ -81,6 +81,13 @@ usort($resultats, 'compareEquipes');
             $meilleursDefenseurs[] = $res;
         }
     }
+    if($user->EditionCheck($db)){
+        foreach ($resultats as $r){
+            $user->SaveTournament($db, $classement, $r[0]);
+            $classement++;
+        }
+        $classement=1;
+    }
     foreach ($resultats as $result) { ?>
         <tr>
             <td id="class"><?php
