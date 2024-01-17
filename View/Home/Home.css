@@ -176,6 +176,12 @@ h1 {
     left: 10px;
 }
 
+#oldT{
+    position: absolute;
+    top: 255px;
+    left: 150px;
+}
+
 #publications{
     position: absolute;
     top: 330px;

@@ -18,6 +18,7 @@ if ($_SESSION['connected']) {
         <input type="submit" value="Déconnexion" id="deconnexion"/>
     </form>
     <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'" id="ModeTournois">Mode Tournois</button>
+    <button onclick="window.location.href='viewOldTournament.php'" id="oldT">Voir Ancien Classement</button>
     <?php
     if ($_SESSION['teamName'] != null) {
     ?>

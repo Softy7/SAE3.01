@@ -43,6 +43,12 @@ class Member {
         return $this->password;
     }
 
+    function getOldTournament($bdd){
+        $req = $bdd->prepare("SELECT * FROM old_tournament");
+        $req->execute();
+        return $req->fetchall();
+    }
+
     public function becomePlayer($bdd)
     {
         $request = $bdd->prepare("update Guests 
