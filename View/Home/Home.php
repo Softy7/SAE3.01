@@ -83,8 +83,6 @@ if ($_SESSION['connected']) {
             </tr></table></center>
     <h1>Actus & Parcours</h1>
     <div class="sides">
-
-
         <span id="articles">
             <table id="runArticle"><tr><th><h2>Actualités:</h2></th>
                 <?php if ($_SESSION['isAdmin'] == 1) {echo
