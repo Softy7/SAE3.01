@@ -32,16 +32,15 @@ input[type=text], input[type=password], input[type=date] {
 
 /* Set a style for all buttons */
 input[type=submit] {
-    background-color: #34c5d2;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
+    padding: 10px 20px;
     cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
     width: 100%;
 }
 input[type=submit]:hover {
-    background-color: #ffffff;
-    color: #34c5d2;
-    border: 1px solid #34c5d2;
+    background-color: #bbbbbb;
+    border-radius: 13px;
+    border-color: #c5c5c5;
 }
