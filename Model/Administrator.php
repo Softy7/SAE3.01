@@ -429,15 +429,15 @@ class Administrator extends Member
     {
         $req = $bdd->prepare("UPDATE Guests SET isplayer = false and team = NULL");
         $req->execute();
-        $req1 = $bdd->prepare("DELETE FROM match");
-        $req1->execute();
         $req4 = $bdd->prepare("DELETE FROM run");
         $req4->execute();
         $req2 = $bdd->prepare("DELETE FROM capitain");
         $req2->execute();
+        $req5 = $bdd->prepare("DELETE FROM request");
+        $req5->execute();
         $req3 = $bdd->prepare("DELETE FROM team");
         $req3->execute();
-
+    }
 
     function createMatchs($bdd)
     {
@@ -484,6 +484,7 @@ class Administrator extends Member
         $req1 = $bdd->prepare("DELETE FROM Match");
         $req1->execute();
     }
+
     function getArticles()
     {
         $request = $this->db->prepare("SELECT * FROM articles ORDER BY datepublication DESC");

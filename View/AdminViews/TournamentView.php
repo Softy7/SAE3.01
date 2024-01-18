@@ -90,7 +90,9 @@ if ($_SESSION['isAdmin'] == 1) {
     if ($match == null) {
         $teams = count($user->getTeams($bdd));
         $cruns = count($user->getRun($bdd));
-
+    ?><table><tr><th><form action="deleteTournament.php" method="post">
+                <input type="submit" name="final" value="Réinitialiser Joueurs">
+            </form></th></tr></table><?php
         if (($teams%2 == 0)&&($cruns>0)) {?>
             <table><tr><th><form action="../../Controller/AdminFunctions/TournamentTreatment.php" method="post">
                 <input type="submit" name="generate" value="Générer Tournoi">

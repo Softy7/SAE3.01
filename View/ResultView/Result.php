@@ -88,6 +88,7 @@ usort($resultats, 'compareEquipes');
             $classement++;
         }
         $classement=1;
+        $user->destroyTournament($db);
     }
     foreach ($resultats as $result) { ?>
         <tr>
