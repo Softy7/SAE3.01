@@ -9,10 +9,10 @@ td,th {
     font-family: sans-serif;
     font-size: 20px;
 }
-
 body {
     background-color: aliceblue;
 }
+
 header{
     background-color: #cccccc;
     color: #000000;
@@ -28,7 +28,6 @@ main {
     background-color: #cccccc;
     color: black;
     border-radius: 9px;
-    font-family: sans-serif;
 }
 
 button{
@@ -37,8 +36,7 @@ button{
     background-color: red;
     border-color: black;
     border-radius: 20px;
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }
 
 button:hover{
@@ -47,43 +45,23 @@ button:hover{
     background-color: #bd181f;
     border-color: black;
     border-radius: 20px;
-    font-size: 24px;
-    font-family: sans-serif;
-}
-
-#correct {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #ffffff;
-    border-color: black;
-    border-radius: 5px;
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }
 
 input {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: red;
+    background-color: limegreen;
     border-color: black;
-    border-radius: 5px;
-    font-size: 24px;
-    font-family: sans-serif;
+    border-radius: 20px;
+    font-size: 20px;
 }
 
 input:hover {
-    padding: 10px 20px;
+    padding: 11px 21px;
     cursor: pointer;
-    background-color: #bd181f;
+    background-color: greenyellow;
+    border-radius: 20px;
     border-color: black;
-    border-radius: 5px;
-    font-size: 24px;
-    font-family: sans-serif;
-}
-
-#line {
-    background-color: #ffffff;
-    border-radius: 5px;
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }

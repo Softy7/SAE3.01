@@ -13,6 +13,7 @@ td,th {
 body {
     background-color: aliceblue;
 }
+
 header{
     background-color: #cccccc;
     color: #000000;
@@ -28,7 +29,6 @@ main {
     background-color: #cccccc;
     color: black;
     border-radius: 9px;
-    font-family: sans-serif;
 }
 
 button{
@@ -37,8 +37,7 @@ button{
     background-color: red;
     border-color: black;
     border-radius: 20px;
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }
 
 button:hover{
@@ -47,9 +46,9 @@ button:hover{
     background-color: #bd181f;
     border-color: black;
     border-radius: 20px;
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }
+
 
 #correct {
     padding: 10px 20px;
@@ -57,33 +56,20 @@ button:hover{
     background-color: #ffffff;
     border-color: black;
     border-radius: 5px;
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }
 
-input {
+#_contest_ {
     padding: 10px 20px;
     cursor: pointer;
     background-color: red;
     border-color: black;
     border-radius: 5px;
-    font-size: 24px;
-    font-family: sans-serif;
-}
-
-input:hover {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #bd181f;
-    border-color: black;
-    border-radius: 5px;
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }
 
 #line {
     background-color: #ffffff;
     border-radius: 5px;
-    font-size: 24px;
-    font-family: sans-serif;
+    font-size: 20px;
 }

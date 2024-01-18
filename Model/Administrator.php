@@ -39,11 +39,10 @@ class Administrator extends Member
      * @param $bdd
      * @return void
      */
-    function getDeleted($bdd)
-    {
-        $req = $bdd->prepare("select username, mail, name, firstname, birthday, password from Guests where isDeleted = true");
+    function getDeleted(): array {
+        $req = $this->db->prepare("select username, mail, name, firstname, birthday from Guests where isDeleted = true");
         $req->execute();
-        return $req->fetchall();
+        return $req->fetchAll();
     }
 
     function upgradeMember($bdd, $username){
@@ -51,6 +50,11 @@ class Administrator extends Member
         $req->execute();
     }
 
+    function getNotRegistrered() {
+        $req = $this->db->prepare("SELECT username, mail, name, firstname, birthday FROM Guests WHERE isRegistered = false and isDeleted = false");
+        $req->execute();
+        return $req->fetchAll();
+    }
     function getMember($bdd, $player)
     {
         $req = $bdd->prepare("select username ,firstname, name, team, isadmin from Guests where isDeleted = false AND isregistered = true AND isplayer = true AND username != :player ORDER BY team");
@@ -237,37 +241,21 @@ class Administrator extends Member
         $req->execute();
         return $req->fetchAll();
     }
-    function createMatch($bdd, $t1, $t2, $year, $run)
-    {
-        $check = $bdd->prepare("Select maxbet from run where idrun = :runID");
-        $check->bindValue(':runId', $run);
-        $check->execute();
-        $check = $check->fetchAll()[0][0];
-        if ($check == 0) {
-            $req = $bdd->prepare("insert into Match (attack, defend, betteamkept, goal, annee, idrun, penal, contest, countattack, countdefend, countmoves) 
-                              values (:t1, :t2, null, null, :year, :runID, true, null, null, null, null)");
-            $req->bindValue(':t1', $t1);
-            $req->bindValue(':t2', $t2);
-            $req->bindValue(':year', $year);
-            $req->bindValue('runID', $run);
-            $req->execute();
-        }
-    }
 
-    function getMatch($bdd, $t)
+    function getMatch($bdd, $t = null)
     {
         if ($t == null) {
             $req = $bdd->prepare("select * from Match 
-                                  join public.run r on Match.idmatch = r.idrun
+                                  join public.run r on r.idrun = Match.idrun
                                   order by r.orderrun");
             $req->execute();
             return $req->fetchAll();
         } else {
-            $req = $bdd->prepare('select * from Match 
-                                  join public.run r on Match.idmatch = r.idrun
+            $req = $bdd->prepare("select * from Match 
+                                  join public.run r on r.idrun = Match.idrun
                                   where attack = :t or defend = :t
-                                  order by r.orderrun');
-            $req->bindValue(":t", $t);
+                                  order by r.orderrun");
+            $req->bindValue(":t", $t, PDO::PARAM_STR);
             $req->execute();
             return $req->fetchAll();
         }
@@ -281,11 +269,18 @@ class Administrator extends Member
         return $req->fetchAll();
     }
 
-    function getRun($bdd)
+    function getRun($bdd,$idr = null)
     {
+        if ($idr == null) {
         $req = $bdd->prepare('select * from run order by orderrun');
         $req->execute();
         return $req->fetchAll();
+        } else {
+            $req = $bdd->prepare('select * from run where idrun = :idr');
+            $req->bindValue(':idr', $idr);
+            $req->execute();
+            return $req->fetchAll();
+        }
     }
 
     /**
@@ -374,10 +369,10 @@ class Administrator extends Member
     }
 
 
-    function addRun($title, $link, $data, $pdd, $pda, $order, $nbpm, $bdd){
-        $req = $bdd->prepare("INSERT INTO run (title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (:title, :link, :pdd, :pda, :order, :paris)");
+
+    function addRun($title,$data, $pdd, $pda, $order, $nbpm, $bdd){
+        $req = $bdd->prepare("INSERT INTO run (idrun, title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (DEFAULT, :title, :data, :pdd, :pda, :order, :paris)");
         $req->bindValue(":title", $title);
-        $req->bindValue(":link", $link);
         $req->bindValue(":data", $data,PDO::PARAM_LOB);
         $req->bindValue(":pdd", $pdd);
         $req->bindValue(":pda", $pda);
@@ -389,8 +384,20 @@ class Administrator extends Member
 
     function deleteRun($id, $bdd)
     {
-        $req = $bdd->prepare("DELETE From run where idrun= :id ");
+        $req = $bdd->prepare("DELETE From run where title= :id ");
         $req->bindValue(":id", $id);
+        $req->execute();
+    }
+
+    function updateRun($link,$data,$pdd,$pda,$remplacer,$nbpm,$bdd)
+    {
+        $req = $bdd->prepare("UPDATE run SET title = :link, maxBet = :nbpm, image_data = :data, starterPoint = :pdd, finalPoint = :pda WHERE title = :remplacer");
+        $req->bindValue(":link", $link);
+        $req->bindValue(":data", $data, PDO::PARAM_LOB);
+        $req->bindValue(":pdd", $pdd);
+        $req->bindValue(":pda", $pda);
+        $req->bindValue(":nbpm", $nbpm);
+        $req->bindValue(":remplacer", $remplacer);
         $req->execute();
     }
 
@@ -406,14 +413,68 @@ class Administrator extends Member
         $requete1->bindParam(':teamName', $teamName);
         $requete1->bindParam(':playerUsername', $capiUsername);
         $requete1->execute();
+
+    }
+
+    function searchFile($title, $bdd){
+        $req = $bdd->prepare("select image_data from run where title = :title");
+        $req->bindValue(":title", $title);
+        $req->execute();
+        $req=$req->fetchAll();
+        return $req[0][0];
     }
 
     function addPlayerF($teamname, $player)
     {
-        $bdd = __init__();
-        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request = $this->db->prepare("UPDATE Guests set team = :teamname where username = :username");
         $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
     }
+
+    function createMatchs($bdd)
+    {
+        $countTeam = $bdd->prepare("Select count(*) from team");
+        $countTeam->execute();
+        $countTeam = $countTeam->fetchAll()[0];
+        $runs = $this->getRun($bdd);
+        $teams = $this->getTeams($bdd);
+        if ($countTeam[0] % 2 != 0) {
+            return false;
+        } else {
+            $middle = $countTeam[0] / 2;
+            foreach ($runs as $r) {
+                for ($i = 0; $i < $middle; $i++) {
+                    $t1 = $teams[$i]['teamname'];
+                    $j = $countTeam[0] - 1 - $i;
+                    $t2 = $teams[$j]['teamname'];
+                    $match = array($t1, $t2, $r[0]);
+                    if ($r[6] == 0) {
+                        $request = $bdd->prepare("INSERT INTO match VALUES (DEFAULT, :attack, :defend, null, null, :year, :idrun, true, null, null, null, 0)");
+                    } else {
+                        $request = $bdd->prepare("INSERT INTO match VALUES (DEFAULT, :attack, :defend, null, 0, :year, :idrun, false, null, null, null, null)");
+                    }
+                    $date = date("Y");
+                    $request->bindParam(':attack', $match[0]);
+                    $request->bindParam(':defend', $match[1]);
+                    $request->bindParam(':year', $date);
+                    $request->bindParam(':idrun', $match[2]);
+                    $request->execute();
+                }
+                $tmp = $teams[1];
+                for ($i = 1; $i < $countTeam[0] - 1; $i++) {
+                    $teams[$i] = $teams[$i + 1];
+                }
+                $teams[$countTeam[0] - 1] = $tmp;
+            }
+            return true;
+        }
+    }
+
+    function destroyTournament($bdd){
+        $requete = $bdd->prepare("DELETE FROM match");
+        $requete->execute();
+    }
+
+    function checkAllMatch($bdd) {}
 }

@@ -3,6 +3,7 @@
     width:400px;
     margin:0 auto;
     margin-top:10%;
+    border-radius: 9px;
 }
 /* Bordered form */
 form {
@@ -16,6 +17,7 @@ form {
     width: 38%;
     margin: 0 auto;
     padding-bottom: 10px;
+    font-family: Arial, sans-serif;
 }
 
 /* Full-width inputs */

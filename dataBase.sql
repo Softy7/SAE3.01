@@ -46,7 +46,7 @@ create table Articles (
 create table Run (
                      idRun serial not null primary key,
                      title text not null,
-                     image_data bytea not null,
+                     image_data text not null,
                      starterPoint text not null,
                      finalPoint text not null,
                      orderRun int not null,
