@@ -6,10 +6,15 @@ require_once('../../Model/AdminCapitain.php');
 require_once('../../ConnexionDataBase.php');
 require_once("../../Controller/launch.php");
 
-$bdd=__init__();
-$user=launch();
+$bdd = __init__();
+
 
 if ($_SESSION['connected']) {
+    $user = launch();
+    $nextMatch = array();
+    if ($user instanceof Capitain || $user instanceof AdminCapitain) {
+        $nextMatch = $user->getMatchNotPlayed($bdd);
+    }
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -19,231 +24,99 @@ if ($_SESSION['connected']) {
         <link href="HomeTournaments.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1><?php echo $_SESSION['view'] ?></h1>
-    <p>Bienvenue sur votre espace de Tournois! Monsieur <?php echo $_SESSION['username']?></p>
-    <button onclick="window.location.href='../../Controller/Connect/CheckConnect.php'" id="retour">Retour</button>
-    <form action="../../Controller/Connect/Deconnect.php" method="post">
-        <input type="submit" value="Déconnexion" id="deconnexion"/>
-    </form>
-    <?php
-    if ($_SESSION['teamName'] != null) {
-        ?>
-        <p><?php echo 'Vous êtes dans l\'équipe ', $_SESSION['teamName'];?></p>
-    <?php
-    }
+    <h1>Chôlage Quarouble</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
+    <center><table id="head"><tr>
+                <th><button  onclick="window.location.href='../Home/Home.php'">Espace Principal</button></th><th>
+                <?php if ($_SESSION['isAdmin']) {
+                    ?><th><button onclick="window.location.href='../AdminViews/viewRunMatch.php'">Espace Rencontres</button></th><th><?php
+                    if ($_SESSION['openn']) {
+                        ?><th><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Tournoi</button><?php
+                    } else {
+                        ?><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Préparation</button></th><?php
+                        ?><th><button onclick="window.location.href='../AdminViews/TournamentView.php'">Espace Génération</button><?php
+                    }?></th>
+                    <th><button onclick="window.location.href='../AdminViews/viewAllMember.php'">Espace Membres</button></th>
+                    <th><button onclick="window.location.href='../AdminViews/ViewInRegistering.php'">Espace Adhésions</button></th>
+                    <th><button onclick="window.location.href='../AdminViews/UnregisteredView.php'">Espace Réadhésion</button></th>
+                    <?php if ($user->enoughtPlayer()) {
+                        ?><th><button onclick="window.location.href='../AdminViews/CreateTeam.php'">Espace Création d'équipe</button></th><?php
+                    }?>
+                <?php } else {
+                    ?><th><button onclick="window.location.href='../MemberViewMatch/viewRunMatch.php'">Espace Rencontres</button></th><th><?php
+                }?><th>
+                    <?php if (!$_SESSION['openn']) {
+                    if ($_SESSION['captain']) {
+                    ?><button id="notActive">Espace Tournoi</button></th>
 
-    if($_SESSION['isPlayer']==1){
-        ?>
-        <?php
-        if($_SESSION['captain']==1){
-            $Matchs=$user->getMatchNotValidated($bdd);
-            $bets=$user->getBet($bdd,$Matchs[0][0]);
-            $MatchsNotPlayed=$user->getMatchNotPlayed($bdd);
-            if(empty($MatchsNotPlayed)){ ?>
-                <p>vous n'avez plus de match à joué</p>
-                <?php
+            <?php
             }
-            //les deux équipes n'ont pas parié
-            elseif(empty($bets)){
-                $bets=$user->getBet($bdd,$Matchs[0][0]);
+            } else {
+                if (!$_SESSION['captain'] && $_SESSION['teamName'] != null) {
+                    ?><th><button onclick="window.location.href='../Team/LeaveConfirm4.php'">Quitter l'équipe</button></th>
+                    <th><button onclick="window.location.href='../PlayerView/ViewTeam.php'">Espace Effectif</button></th>
+                    <?php
+                }
+                if ($_SESSION['captain'] == 1) {?>
+
+                    <th><button onclick="window.location.href='../Capitain/ViewRequest.php'">Espace Enrollement</button></th>
+                    <th><button onclick="window.location.href='../Capitain/NewPlayer.php'">Espace Demandes</button></th>
+                    <th><button onclick="window.location.href='../Capitain/Players.php'">Espace Effectif</button></th>
+                    <th><button onclick="window.location.href='../Capitain/DestroyTeam.php'">Dissoudre l'équipe</button></th><?php
+                }
+            }
+
+            if ($_SESSION['teamName'] == null && $_SESSION['openn'] && $_SESSION['isPlayer']) {
+                if ($user->ableToCreate()) {
+                    ?><th><button onclick="window.location.href='../Capitain/CreateTeam.php'">Devenir Capitaine</button></th><?php
+                }
+                ?><th><button onclick="window.location.href='../Registering/AskJoin.php'">Espace Intégration</button></th><?php
+                ?><th><button onclick="window.location.href='../Registering/TeamRequest.php'">Espace Demandes</button></th><?php
+                ?><th><button onclick="window.location.href='../Unregistering/unregisteringTournament.php'">Quitter le tournoi</button></th><?php
+            } else if ($_SESSION['teamName'] == null && $_SESSION['openn']){
+                ?><th><button onclick="window.location.href='../Registering/registeringTournament.php'">Rejoindre le tournoi</button></th><?php
+            }
+            if (($_SESSION['teamName'] == null) && !($user instanceof Administrator)) {
+                ?><th><button onclick="window.location.href='../Unregistering/unregisteringWebsite.php'">Supprimer le compte</button></th><?php
+            } else {
+                if ($user instanceof Administrator) {
+                    if ($user->lenghtAdmin($bdd)>=1 && $_SESSION['teamName'] == null) {
+                        ?><th><button onclick="window.location.href='../Unregistering/unregisteringWebsite.php'">Supprimer le compte</button></th><?php
+                    }
+                }
+            }?>
+                <th><button onclick="window.location.href='../../Controller/Connect/Deconnect.php'">Déconnexion</button></th>
+                <th></th>
+            </tr></table></center>
+    <?php if(count($nextMatch) > 0) {
+        ?>
+        <div class="LastMatch">
+        <h2>Prochain Match:</h2>
+            <form action="../Capitain/setScore.php">
+            <input type="submit" id="Match" value="<?php echo $nextMatch[0][1]; if ($nextMatch[0][4] == 0) {echo " VS ";} else if ($nextMatch[0][4] == 3) {echo " 1 - 0 ";} else if ($nextMatch[0][4] == 4) {echo " 0 - 1 ";} echo $nextMatch[0][2]; ?>">
+            </form>
+        <h2>Matchs à venir: </h2>
+            <?php
+            for ($i = 1; $i < count($nextMatch); $i++) {
+                $run = $user->getRun($bdd, $nextMatch[$i][6])
+                ?>
+                    <p><?php echo "Parcours: ", $run[0][1], " Pari Max: ", $run[0][5], " Point de départ: ", $run[0][2], " Point d'arrivée: ", $run[0][3] ?></p>
+                <input type="submit" id="Match" value="<?php echo $nextMatch[$i][1], " VS ", $nextMatch[$i][2]; ?>">
+            <?php
+            }
             ?>
-                <h1>Aucun pari n'a été effectuer pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
-                <button onclick="window.location.href='../Capitain/Bet.php'" id="parier">parier</button>
-
-            <?php
-            }
-            //si le match est un pénalti, que le capitaine est en attaque et que le score n'est pas entré
-            elseif ($user->checkPenalty($bdd) && $Matchs[0][1] == $user->username && !$user->checkScoreEntered($bdd)){
-                $Matchs=$user->getMatchNotValidated($bdd);
-                ?>
-                <h1>Le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?> est un match de penalty</h1>
-                <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
-                <?php
-            }
-            //si le match est un pénalti, que le capitaine est en attaque et que le score est entré
-            elseif ($user->checkPenalty($bdd) && $Matchs[0][1] == $user->username && $user->checkScoreEntered($bdd)){
-                $Matchs=$user->getMatchNotValidated($bdd);
-                ?>
-                <h1>Vous avez entré que votre equipe a marqué <?php echo $Matchs[0][9]; ?> et que l'equipe adverse a marqué <?php $Matchs[0][10] ?> match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
-                <?php
-            }
-            //si le match est un pénalti, que le capitaine est en défense et que le score n'est pas entré
-            elseif ($user->checkPenalty($bdd) && $Matchs[0][2] == $user->username && !$user->checkScoreEntered($bdd)){
-                $Matchs=$user->getMatchNotValidated($bdd);
-                ?>
-                <h1>Le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?> est un match de penalty et le score n'a pas été entrer</h1>
-                <?php
-            }
-            //si le match est un pénalti, que le capitaine est en défense et que le score est entré
-            elseif ($user->checkPenalty($bdd) && $Matchs[0][2] == $user->username && $user->checkScoreEntered($bdd)){
-                $Matchs=$user->getMatchNotValidated($bdd);
-                ?>
-                <h1>le capitaine adverse a entré que son equipe a marqué <?php echo $Matchs[0][9]; ?> et que votre equipe a marqué <?php $Matchs[0][10] ?> pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
-                <?php
-            }
-
-            //le capitaine de l'equipe n'a pas parié
-            elseif($bets[0][0]!=$user->username && $bets[1][0]==""){?>
-                <h1>Votre pari n'a pas été effectuer pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
-                <button onclick="window.location.href='../Capitain/Bet.php'" id="parier">parier</button>
-            <?php
-                $bets=$user->getBet($bdd,$Matchs[0][0]);
-            }
-            //le capitaine de l'equipe a parié mais le capitaine de l'equipe advairse n'a pas parié
-            elseif($bets[0][0]==$user->username && $bets[1][0]==""){
-                $bets=$user->getBet($bdd,$Matchs[0][0]);
-                ?>
-                <h1>Vous avez parié que vous pouvez gagné en <?php echo $bets[0][2]; ?> coup de déchole pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
-                <?php
-            }
-            //le capitaine est le premier a avoir parier
-            elseif($bets[0][0]==$user->username && $bets[1][0]!=$user->username){
-                ?>
-                <h1>Vous avez parié que vous pouvez gagné en <?php echo $bets[0][2]; ?> coup de déchole, votre adversaire a pari qu'ils gagneront en <?php echo $bets[1][2]; ?> pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
-                <?php
-                $Matchs=$user->getMatchNotValidated($bdd);
-                //le parie du capitaine est le plus petit et le score n a pas encore été entrer
-                if($bets[0][2]<$bets[1][2] && !$user->checkScoreEntered($bdd)){
-                    ?>
-                    <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
-                    <?php
-                }
-                //le parie du capitaine est le plus petit et le score a été entrer
-                elseif($bets[0][2]<$bets[1][2] && $user->checkScoreEntered($bdd)){
-                    $Matchs=$user->getMatchNotValidated($bdd);?>
-                    <p>vous avez entré que vous avez <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][11]; ?> coups de déchole</p>
-                    <?php
-                }
-                //le parie du capitaine est le plus grand et le score n'a pas été entré
-                elseif ($bets[0][2]>$bets[1][2] && $Matchs[0][4]==0){?>
-                        <p>le score n'a pas encore été entrée</p>
-                    <?php
-                }
-
-                //le parie du capitaine est le plus grand et le score a été entré
-                elseif ($bets[0][2]>$bets[1][2] && $Matchs[0][4]!=0 ){?>
-                    <p>le capitaine a entré qu'il a <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][11]; ?> coups de déchole</p>
-                    <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">confirmation</button>
-                    <?php
-                }
-
-                //le pari est du capitaine est égale et le capitaine attaque et le score n'a pas été entrer
-                elseif ($bets[0][2]==$bets[1][2] && $Matchs[0][1]==$user->username && !$user->checkScoreEntered($bdd)){?>
-                    <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
-                    <?php
-                }
-                //le pari est du capitaine est égale et le capitaine attaque et le score a été entrer
-                elseif ($bets[0][2]==$bets[1][2] && $Matchs[0][1]==$user->username && $user->checkScoreEntered($bdd)){
-                    $Matchs=$user->getMatchNotValidated($bdd);
-                    ?>
-                    <p>vous avez entré que vous avez <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][11]; ?> coups de déchole</p>
-                    <?php
-                }
-
-                //le pari est du capitaine est égale, l'équipe du capitaine defend et le score a été entré
-                elseif ($bets[0][2]==$bets[1][2] && $Matchs[0][4]==0){?>
-                    <p>le score n'a pas encore été entrée</p>
-                    <?php
-                }
-
-                //le pari est du capitaine est égale, l'équipe du capitaine defend et le score a été entré
-                elseif ($bets[0][2]==$bets[1][2] && $Matchs[0][4]!=0){?>
-                    <p>le capitaine a entré qu'il a <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][11]; ?> coups de déchole</p>
-                    <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">confirmation</button>
-                    <?php
-                }
-            }
-            //le capitaine est le deuxieme a avoir parié
-            elseif($bets[0][0]!=$user->username && $bets[1][0]==$user->username){ ?>
-                <h1>Vous avez parié que vous pouvez gagné en <?php echo $bets[1][2]; ?> coup de déchole, votre adversaire a pari qu'ils gagneront en <?php echo $bets[0][2]; ?> pour le match de <?php echo $Matchs[0][1]; ?> contre <?php echo $Matchs[0][2]; ?></h1>
-                <?php
-                $Matchs=$user->getMatchNotValidated($bdd);
-
-                //le parie du capitaine est le plus petit et le score n'a pas été entrer
-                if($bets[1][2]<$bets[0][2] && !$user->checkScoreEntered($bdd)){ ?>
-                    <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
-                    <?php
-                }
-                //le parie du capitaine est le plus petit et le score a été entrer
-                elseif($bets[1][2]<$bets[0][2] && $user->checkScoreEntered($bdd)){
-                    $Matchs=$user->getMatchNotValidated($bdd);
-                    ?>
-                    <p>vous avez entré que vous avez <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][11]; ?> coups de déchole</p>
-                    <?php
-                }
-
-                //le parie du capitaine est le plus grand et le score n'a pas été entré
-                elseif ($bets[1][2]>$bets[0][2] && $Matchs[0][4]==0){?>
-                    <p>le score n'a pas encore été entrée</p>
-                    <?php
-                }
-
-                //le parie du capitaine est le plus grand et le score a été entré
-                elseif ($bets[1][2]>$bets[0][2] && $Matchs[0][4]!=0){?>
-                    <p>le capitaine a entré qu'il a <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][11]; ?> coups de déchole</p>
-                    <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">confirmation</button>
-                    <?php
-                }
-
-                //le pari est du capitaine est égale et le capitaine attaque
-                elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][1]==$user->username && !$user->checkScoreEntered($bdd)){?>
-                    <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">entrerScore</button>
-                    <?php
-                }
-
-                elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][1]==$user->username && $user->checkScoreEntered($bdd)){
-                    $Matchs=$user->getMatchNotValidated($bdd);
-                    ?>
-                    <p>vous avez entré que vous avez <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][11]; ?> coups de déchole</p>
-                    <?php
-                }
-                //le pari est du capitaine est égale, l'équipe du capitaine defend et le score a été entré
-                elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][4]==0){?>
-                    <p>le score n'a pas encore été entrée</p>
-                    <?php
-                }
-
-                //le pari est du capitaine est égale, l'équipe du capitaine defend et le score a été entré
-                elseif ($bets[1][2]==$bets[0][2] && $Matchs[0][4]!=0){?>
-                    <p>le capitaine a entré qu'il a <?php if($Matchs[0][4]==1){echo "gagné";} else{echo "perdu";}?> en <?php echo $Matchs[0][11]; ?> coups de déchole</p>
-                    <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">confirmation</button>
-                    <?php
-                }
-
-            }
-        }
-    }
-    $results = $user->getMatchs($bdd);
-    if ($_SESSION['isPlayer']!=1){
-        $resultats=$user->viewMatch($bdd);
-        foreach ($resultats as $res){
-
-            if($res[4]==0){
-
-        ?>
-                <h1>Match: <?php echo $res[1]; ?> - <?php echo $res[2]; ?> Parcours: <?php echo $res[6]; ?>à jouer</h1>
-
-    <?php }
-            else{
-                if($res[4]==1){
-                    ?>
-
-                                <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> a été joué<br>L'equipe qui été en attaque a gagné avec <?php echo $res[5]; ?> décholes</h1>
-            <?php } else if ($res[4]==2){?>
-                    <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> a été joué<br>L'equipe qui été en défence a gagné </h1>
-                <?php }
-            }
-        }
-    }
-
-        ?>
-
-        <button id="matchs" onclick="window.location.href='../AdminViews/viewRunMatch.php'">Rencontres</button>
+        </div>
         <?php
-
+    } else {
+        echo 1;
+    }
     ?>
     </body>
-    <button id="return" onclick="window.location.href='../../Controller/Connect/CheckConnect.php'">Retour</button>
+    <footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+                Projet Réalisé dans le cadre de la SAE 3.01<br>
+                Références:<br>
+                Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+                A destination de: <br>
+                Philippe Polet<br>-----</p></center></footer>
     </html>
     <?php
 } else {

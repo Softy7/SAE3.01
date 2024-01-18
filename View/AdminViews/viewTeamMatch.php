@@ -7,7 +7,7 @@ require_once('../../ConnexionDataBase.php');
 $user = launch();
 $bdd = __init__();
 
-if ($user instanceof Administrator) {
+if ($user instanceof Administrator && $_SESSION['tname'] != null) {
     $teamName = $_SESSION['tname'];
     $matchs = $_SESSION['match'];
     $contests = array();
@@ -62,8 +62,16 @@ if ($user instanceof Administrator) {
             ?><table><tr><th><input type="submit" name="_contest_<?php echo $match[0]?>" value="<?php echo $match[1], $str, $match[2]?>"</th></tr></table><?php
         } ?></form><?php
     } ?>
-    <table><tr><th><button onclick="window.location.href='viewRunMatch.php';">Retour</button></th></tr></table></main>
+    <table><tr><th><button onclick="window.location.href='viewRunMatch.php';">Retour</button></th></tr></table></main></body>
+<footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+            Projet Réalisé dans le cadre de la SAE 3.01<br>
+            Références:<br>
+            Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+            A destination de: <br>
+            Philippe Polet<br>-----</p></center></footer></html>
 <?php
+} else if ($user instanceof Administrator) {
+    header('location: viewRunMatch.php');
 } else {
     header('location: ../Guest_home.html');
 }

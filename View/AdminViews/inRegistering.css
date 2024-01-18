@@ -68,6 +68,48 @@ h1 {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+#profile {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
+}
+
+#profile:hover {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
+}
+
+#form {
+    background-color: #cccccc;
+    border-radius: 9px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    font-size: 20px;
+}
+
+#classment {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+
+#classment:hover {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+#notActive {
+    background-color: #9a9696;
+    color: white;
+}
 
 
 

@@ -1,13 +1,14 @@
 <?php
 session_start();
 require_once('../../ConnexionDataBase.php');
+require_once('../../Model/Player.php');
+require_once('../../Model/PlayerAdministrator.php');
+require_once('../../Controller/launch.php');
 
 if ($_SESSION['isPlayer']) {
-    $user = $_SESSION['username'];
+    $user = launch();
     $bdd = __init__();
-    $req = $bdd->prepare("SELECT team, capitain.username, count(guests.username) FROM guests join capitain ON guests.team = capitain.teamname GROUP BY team, capitain.username HAVING count(guests.username) < 4 AND team IS NOT NULL ORDER BY team");
-    $req->execute();
-    $resultat1 = $req->fetchAll();
+    $result1 = $user->getOtherTeams();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,30 +18,91 @@ if ($_SESSION['isPlayer']) {
     <link href="AskJoin.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<h3>Cette page sert a voir les équipes auquelles vous pouvez demander a rejoindre.</h3>
-<div>
-<table>
+<h1>Espace Intégration</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
+<center><table id="head"><tr>
+            <th><button onclick="window.location.href='../Home/Home.php'">Espace Principal</button></th><th>
+            <?php if ($_SESSION['isAdmin']) {
+                ?><th><button onclick="window.location.href='../AdminViews/viewRunMatch.php'">Espace Rencontres</button></th><th><?php
+                if ($_SESSION['openn']) {
+                    ?><th><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Tournoi</button><?php
+                } else {
+                    ?><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Préparation</button></th><?php
+                    ?><th><button onclick="window.location.href='../AdminViews/TournamentView.php'">Espace Génération</button><?php
+                }?></th>
+                <th><button onclick="window.location.href='../AdminViews/viewAllMember.php'">Espace Membres</button></th>
+                <th><button onclick="window.location.href='../AdminViews/ViewInRegistering.php'">Espace Adhésions</button></th>
+                <th><button onclick="window.location.href='../AdminViews/UnregisteredView.php'">Espace Réadhésion</button></th>
+                <?php if ($user->enoughtPlayer()) {
+                    ?><th><button onclick="window.location.href='../AdminViews/CreateTeam.php'">Espace Création d'équipe</button></th><?php
+                }?>
+            <?php } else {
+                ?><th><button onclick="window.location.href='../MemberViewMatch/viewRunMatch.php'">Espace Rencontres</button></th><th><?php
+            }?><th>
+                <?php if (!$_SESSION['openn']) {
+                if ($_SESSION['captain']) {
+                ?><button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">Espace Tournoi</button></th>
+
+        <?php
+        }
+        } else {
+            if (!$_SESSION['captain'] && $_SESSION['teamName'] != null) {
+                ?><th><button onclick="window.location.href='../Team/LeaveConfirm4.php'">Quitter l'équipe</button></th>
+                <th><button onclick="window.location.href='../PlayerView/ViewTeam.php'">Espace Effectif</button></th>
+                <?php
+            }
+            if ($_SESSION['captain'] == 1) {?>
+
+                <th><button onclick="window.location.href='../Capitain/ViewRequest.php'">Espace Enrollement</button></th>
+                <th><button onclick="window.location.href='../Capitain/NewPlayer.php'">Espace Demandes</button></th>
+                <th><button onclick="window.location.href='../Capitain/Players.php'">Espace Effectif</button></th>
+                <th><button onclick="window.location.href='../Capitain/DestroyTeam.php'">Dissoudre l'équipe</button></th><?php
+            }
+        }
+
+        if ($_SESSION['teamName'] == null && $_SESSION['openn'] && $_SESSION['isPlayer']) {
+            if ($user->ableToCreate()) {
+                ?><th><button onclick="window.location.href='../Capitain/CreateTeam.php'">Devenir Capitaine</button></th><?php
+            }
+            ?><th><button id="notActive">Espace Intégration</button></th><?php
+            ?><th><button onclick="window.location.href='../Registering/TeamRequest.php'">Espace Demandes</button></th><?php
+            ?><th><button onclick="window.location.href='../Unregistering/unregisteringTournament.php'">Quitter le tournoi</button></th><?php
+        } else if ($_SESSION['teamName'] == null && $_SESSION['openn']){
+            ?><th><button onclick="window.location.href='../Registering/registeringTournament.php'">Rejoindre le tournoi</button></th><?php
+        }
+        if (($_SESSION['teamName'] == null) && !($user instanceof Administrator)) {
+            ?><th><button onclick="window.location.href='../Unregistering/unregisteringWebsite.php'">Supprimer le compte</button></th><?php
+        } else {
+            if ($user instanceof Administrator) {
+                if ($user->lenghtAdmin($bdd)>=1 && $_SESSION['teamName'] == null) {
+                    ?><th><button onclick="window.location.href='../Unregistering/unregisteringWebsite.php'">Supprimer le compte</button></th><?php
+                }
+            }
+        }?>
+            <th><button onclick="window.location.href='../../Controller/Connect/Deconnect.php'">Déconnexion</button></th>
+            <th></th>
+        </tr></table></center>
+<h3>Equipes à rejoindre: </h3>
+
+<center><table>
     <thead>
-    <tr>
+    <tr id="players">
         <th scope="col">Equipe</th>
         <th scope="col">Capitaine</th>
-        <th scope="col">effectif</th>
-        <th id="Bis" scope="col"></th>
+        <th scope="col">Effectif</th>
+        <th id="Bis" scope="col">Option</th>
     </tr>
     </thead>
     <tbody>
 <?php
-foreach ($resultat1 as $result){
+foreach ($result1 as $result){
     ?>
-        <tr>
+        <tr id="players">
             <td><?php echo $result[0]?></td>
             <td><?php echo $result[1]?></td>
             <td><?php echo $result[2]?></td>
             <td>
                 <?php
-                $reqAsk = $bdd->prepare("SELECT Team, isplayerask FROM request WHERE username = '$user' AND team = '$result[0]'");
-    $reqAsk->execute();
-    $res = $reqAsk->fetchAll();
+                $res = $user->checkRequest($result[0]);
                 if($res==null){
         ?>
         <form action="../../Controller/MemberAsk/AskJoin.php" method='post'>
@@ -48,11 +110,10 @@ foreach ($resultat1 as $result){
         </form>
         <?php
                 }else if($res[0][1]){
-                    echo "vous avez dejà demandé a rejoindre cette équipe";
+                    echo "Proposition faite";
                 }else if($res[0][1]==false){
-                    echo "cette équipe vous propose déjà de la rejoindre";
                     ?>
-                    <button onclick="window.location.href='TeamRequest.php';" id="teamRequest" value="Voir demande recru">Voir les Demandes de Recrutement</button>
+                    <button onclick="window.location.href='TeamRequest.php';" id="teamRequest">Espace Demandes</button>
                         <?php
                 }
                 ?>
@@ -63,14 +124,17 @@ foreach ($resultat1 as $result){
 }
 ?>
     </tbody>
-</table>
-    <div id="bouton">
-        <button onclick="window.location.href='../Home/Home.php';" value="Home">Retour sur votre espace</button>
-    </div>
-</div>
+</table></center>
 
 
 </body>
+<footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+            Projet Réalisé dans le cadre de la SAE 3.01<br>
+            Références:<br>
+            Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+            A destination de: <br>
+            Philippe Polet<br>-----</p></center></footer>
+    </html>
 <?php
 } else {
     header('location: ../../Controller/Connect/CheckConnect.php');

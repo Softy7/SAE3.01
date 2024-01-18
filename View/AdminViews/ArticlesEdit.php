@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once('../../ConnexionDataBase.php');
+require_once('../../Model/AdminCapitain.php');
+require_once('../../Controller/launch.php');
+
+$user = launch();
 if ($_SESSION['isAdmin'] == 1) {
 ?>
     <!DOCTYPE html>
@@ -65,15 +69,7 @@ if ($_SESSION['isAdmin'] == 1) {
     <h2>Publications Existantes</h2>
     <form action="../../Controller/AdminFunctions/ArticleTreatment.php" method="post">
         <?php
-        $bdd = __init__();
-
-        if (!$bdd) {
-            echo "Erreur de connexion à la base de données. Veuillez réessayer";
-        } else {
-            $request = $bdd->prepare("SELECT * FROM articles ORDER BY datepublication DESC");
-            $request->execute();
-            $result = $request->fetchAll(PDO::FETCH_ASSOC);
-
+            $result = $user->getArticles();
             if ($result) {
                 foreach ($result as $row) {
                     echo "<div>";
@@ -89,11 +85,16 @@ if ($_SESSION['isAdmin'] == 1) {
             } else {
                 echo "Aucune publication trouvée.";
             }
-        }
         ?>
     </form>
 <button onclick="window.location.href='../../Controller/Connect/CheckConnect.php';">Retour</button>
 </body>
+    <footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+                Projet Réalisé dans le cadre de la SAE 3.01<br>
+                Références:<br>
+                Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+                A destination de: <br>
+                Philippe Polet<br>-----</p></center></footer>
 </html>
 <?php
 } else {

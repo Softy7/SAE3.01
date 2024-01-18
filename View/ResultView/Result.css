@@ -35,6 +35,15 @@ body{
     height: 120px;
     right: 100px
 }
-button {
-    margin-top: 20px;
+button:hover{
+    background-color: #9a9696;
+    color: white;
+}
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
 }

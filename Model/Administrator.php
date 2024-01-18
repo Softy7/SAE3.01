@@ -197,19 +197,29 @@ class Administrator extends Member
     }
 
     function EditionCheck($bdd): bool{
-        $year = date("Y");
+        $year = date("Y-m-d");
         $req = $bdd->prepare("select Edition FROM old_tournament WHERE edition = :year");
         $req->bindValue(':year', $year);
         $req->execute();
-        $res = $req->fetchall();
+        $res = $req->fetchAll();
         if($res != null){
             return false;
         }
         return true;
     }
 
+    function checkMatchs() {
+        $req = $this->db->prepare('Select count(*) from match');
+        $req->execute();
+        $x = $req->fetchAll();
+        $req = $this->db->prepare('Select count(*) from match where ((goal >0 and goal < 3) or (penal and countmoves != 1) and contest is null)');
+        $req->execute();
+        $y = $req->fetchAll();
+        return $x == $y&&$x>0;
+    }
+
     function SaveTournament($bdd, $class, $Team){
-        $year = date("Y");
+        $year = date("Y-m-d");
         $req = $bdd->prepare("Insert INTO old_tournament VALUES (:year, :class, :team)");
         $req->bindValue(':year', $year);
         $req->bindValue(':class', $class, PDO::PARAM_STR);
@@ -267,20 +277,6 @@ class Administrator extends Member
         $req->bindValue(':id', $id);
         $req->execute();
         return $req->fetchAll();
-    }
-
-    function getRun($bdd,$idr = null)
-    {
-        if ($idr == null) {
-        $req = $bdd->prepare('select * from run order by orderrun');
-        $req->execute();
-        return $req->fetchAll();
-        } else {
-            $req = $bdd->prepare('select * from run where idrun = :idr');
-            $req->bindValue(':idr', $idr);
-            $req->execute();
-            return $req->fetchAll();
-        }
     }
 
     /**
@@ -367,8 +363,6 @@ class Administrator extends Member
         $req->execute();
         return $req->fetchAll();
     }
-
-
 
     function addRun($title,$data, $pdd, $pda, $order, $nbpm, $bdd){
         $req = $bdd->prepare("INSERT INTO run (idrun, title, image_data, starterpoint, finalpoint, orderrun, maxbet) VALUES (DEFAULT, :title, :data, :pdd, :pda, :order, :paris)");
@@ -472,9 +466,15 @@ class Administrator extends Member
     }
 
     function destroyTournament($bdd){
-        $requete = $bdd->prepare("DELETE FROM match");
-        $requete->execute();
+        $req = $bdd->prepare("DELETE FROM bet");
+        $req->execute();
+        $req1 = $bdd->prepare("DELETE FROM Match");
+        $req1->execute();
     }
-
-    function checkAllMatch($bdd) {}
+    function getArticles()
+    {
+        $request = $this->db->prepare("SELECT * FROM articles ORDER BY datepublication DESC");
+        $request->execute();
+        return $request->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

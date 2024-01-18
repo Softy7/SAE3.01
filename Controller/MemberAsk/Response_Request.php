@@ -92,4 +92,4 @@ if (isset($_POST)) {
         }
     }
 }
-header("location: ../../View/Registering/TeamRequest.php");
+header("location: Connect/CheckConnect.php");

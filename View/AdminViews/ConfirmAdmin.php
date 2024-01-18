@@ -25,6 +25,7 @@ if ($_SESSION['isAdmin']) {?>
     }?>
     <button onclick="window.location.href='viewAllMember.php';" value="Stop">Annuler</button>
     </body>
+    </html>
     <?php
 } else {
     header('location: ../Home/Home.php');

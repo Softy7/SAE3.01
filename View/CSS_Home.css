@@ -1,20 +1,75 @@
 body{
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-size: 33px;
+
+
+    background-color: #bbbbbb;
+    width: 48%;
+    border-radius: 9px;
+    color: #000000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#every {
     background-image : url('https://th.bing.com/th/id/OIP.qqU8ZqlwL9F1cxu3O5vFTgHaEK?pid=ImgDet&rs=1');
     background-attachment: fixed;
-    background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: 40%;
+    width: 55%;
+    background-color: white;
+    border-radius: 9px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    min-height: 700px;
 }
-h1{
+#rules {
+    width: 92%;
+    background-color: white;
+    border-radius: 9px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+
+}
+
+#join {
+    width: 48%;
+    background-color: #bbbbbb;
+    border-radius: 9px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+    min-height: 140px;
+}
+
+#connexion {
+    width: 48%;
+    background-color: #bbbbbb;
+    border-radius: 9px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    font-size: 18px;
+    min-height: 140px;
+}
+
+footer {
+    background-color: white;
+}
+
+#website {
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+button:hover{
+    background-color: #9a9696;
     color: white;
 }
-h2{
-    color: white;
-}
-p{
-    color: white;
-}
-header{
-    position: fixed;
-    right: 50px;
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
 }

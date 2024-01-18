@@ -13,6 +13,8 @@ $team=$user->getTeam();
 $req=$user->getMatchNotPlayed($bdd);
 
 $idMatch=$req[0][0];
+$max = $user->nextMatchBet($req[0][6]);
+$bets = $user->getBet($bdd, $req[0][0]);
 
 if ($req[0][2] != $user->getTeam()) {
     $equipe1 = $req[0][1];
@@ -22,21 +24,19 @@ if ($req[0][2] != $user->getTeam()) {
     $equipe2 = $req[0][1];
 }
 
-if (isset($_POST["pari"])) {
-    $user->insertIntoBet($bdd,$idMatch,$_POST["pari"]);
-    if ($req[2]==null){
-        $user->bet($bdd,$idMatch,$_POST["pari"],$equipe2);
-        header('location: ../../View/HomeTournaments/HomeTournaments.php');
-    } elseif ($req[0][3] > $_POST['pari']) {
-        $user->bet($bdd,$idMatch,$_POST["pari"],$equipe2);
-        header('location: ../../View/HomeTournaments/HomeTournaments.php');
-    } elseif ($req[0][3] == $_POST['pari']) {
-        $user->betIfEquals();
-            header('location: ../../View/HomeTournaments/HomeTournaments.php');
+if (isset($_POST["bet"])) {
+    $user->insertIntoBet($bdd, $idMatch, $_POST["bet"]);
+    $bets = $user->getBet($bdd, $req[0][0]);
+    if (count($bets)==2) {
+        if ($bets[0][2] == $bets[1][2]) {
+            $user->betIfEquals($bdd, $idMatch, $_POST['bet'], $equipe2);
+        } else if ($bets[0][2] > $bets[1][2]) {
+            $user->bet($bdd, $idMatch, $_POST["bet"], $equipe2);
+        } else {
+            $user->bet($bdd, $idMatch, $_POST["bet"], $equipe1);
+        }
     }
-
-
-    else {
-        header('location: ../../View/HomeTournaments/HomeTournaments.php');
-    }
+    header('location: ../../View/HomeTournaments/HomeTournaments.php');
+} else {
+    header('location: ../../View/HomeTournaments/HomeTournaments.php');
 }

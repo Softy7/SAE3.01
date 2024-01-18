@@ -12,6 +12,7 @@ require_once('../../Controller/launch.php');
 $db = __init__();
 $user = launch();
 
+if ($user instanceof Administrator && $user->checkMatchs() && $user->EditionCheck($db)) {
 function compareEquipes($equipe1, $equipe2) {
     if ($equipe1[1] != $equipe2[1]) {
         return $equipe2[1] - $equipe1[1];
@@ -130,6 +131,15 @@ usort($resultats, 'compareEquipes');
     Videur de fut = Meilleurs attaquant<br/>
     Gardien du fut = Meilleurs Défenseur<br/></p>
 </div>
-<button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">retour</button>
+<button onclick="window.location.href='../../Controller/Connect/CheckConnect.php'">Retour</button>
 </body>
-</html>
+<footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+            Projet Réalisé dans le cadre de la SAE 3.01<br>
+            Références:<br>
+            Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+            A destination de: <br>
+            Philippe Polet<br>-----</p></center></footer>
+</html><?php
+} else {
+    header('location: ../../Controller/Connect/checkConnect.php');
+}

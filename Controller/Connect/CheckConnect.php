@@ -20,13 +20,14 @@ if (!($_SESSION['connected'])) {
     $password = $_POST['MDP'];
 } else {
 
-    $isCap = $User->checkCapitain($_SESSION['username']);
+    $user = $_SESSION['username'];
+    $isCap = $User->checkCapitain($user);
     $User = launch();
-    header("location: ../../View/Home/Home.php");
-    exit;
+    $password = $_SESSION['password'];
 }
 
 $temp = $User->getUser($user);
+echo $User->getUser($user);
 
 if ($temp != null) {
 
@@ -37,7 +38,7 @@ if ($temp != null) {
         $_SESSION['name'] = $temp[0][2];
         $_SESSION['firstname'] = $temp[0][3];
         $_SESSION['birthday'] = $temp[0][4];
-        $_SESSION['password'] = $temp[0][5];
+        $_SESSION['password'] = $password;
         $_SESSION['isPlayer'] = $temp[0][6];
         $_SESSION['isAdmin'] = $temp[0][7];
         $_SESSION['connected'] = true;
@@ -48,26 +49,26 @@ if ($temp != null) {
         $User = launch();
 
         if ($User instanceof AdminCapitain) {
-            $_SESSION['view'] = 'Espace Capitaine Administrateur';
+            $_SESSION['view'] = 'Capitaine Administrateur';
         } else if ($User instanceof Capitain) {
-            $_SESSION['view'] = 'Espace Capitaine';
+            $_SESSION['view'] = 'Capitaine';
         } else if ($User instanceof PlayerAdministrator) {
-            $_SESSION['view'] = 'Espace Joueur Administrateur';
+            $_SESSION['view'] = 'Joueur Administrateur';
         } else if ($User instanceof Administrator) {
-            $_SESSION['view'] = 'Espace Administrateur';
+            $_SESSION['view'] = 'Administrateur';
         } else if ($User instanceof Player) {
-            $_SESSION['view'] = 'Espace Joueur';
+            $_SESSION['view'] = 'Joueur';
         } else if ($User instanceof Member) {
-            $_SESSION['view'] = 'Espace Membre';
+            $_SESSION['view'] = 'Membre';
         }
         header("location: ../../View/Home/Home.php");
     } else {
-        header('location: ../../View/NotAccepted.html');
+        /*header('location: ../../View/NotAccepted.html');*/
     }
 
 } else if ($_SESSION['try']) {
-    header('location: ../../View/NotAccepted.html');
+    /*$header('location: ../../View/NotAccepted.html');*/
 } else {
-    header("location: ../../View/Guest_Home.html");
+    /*header("location: ../../View/Guest_Home.html");*/
 }
 exit;

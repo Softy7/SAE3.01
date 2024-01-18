@@ -43,6 +43,19 @@ class Member extends Connexion {
     {
         return $this->password;
     }
+    function getRun($bdd,$idr = null)
+    {
+        if ($idr == null) {
+            $req = $bdd->prepare('select * from run order by orderrun');
+            $req->execute();
+            return $req->fetchAll();
+        } else {
+            $req = $bdd->prepare('select * from run where idrun = :idr');
+            $req->bindValue(':idr', $idr);
+            $req->execute();
+            return $req->fetchAll();
+        }
+    }
 
     function getOldTournament($bdd){
         $req = $bdd->prepare("SELECT * FROM old_tournament");

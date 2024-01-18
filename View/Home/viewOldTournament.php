@@ -22,7 +22,7 @@ $result = $user->getOldTournament($db);
     <link rel="stylesheet" href="viewOldTournament.css" media="screen" type="text/css" />
 </head>
 <body>
-<H1>Ancien Classement</H1>
+<H1>Anciens Classements</H1>
 <div id="google_translate_element"></div>
 
 <script type="text/javascript">
@@ -59,6 +59,12 @@ $result = $user->getOldTournament($db);
     }
     ?>
 </table>
-<button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">retour</button>
+<button onclick="window.location.href='../../Controller/Connect/CheckConnect.php'">retour</button>
 </body>
+<footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+            Projet Réalisé dans le cadre de la SAE 3.01<br>
+            Références:<br>
+            Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+            A destination de: <br>
+            Philippe Polet<br>-----</p></center></footer>
 </html>

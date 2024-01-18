@@ -3,50 +3,104 @@ table {
     margin : auto;
 }
 
-td,th {
-    border: 1px solid black;
-    padding: 15px;
-    width: 30%;
+
+
+td {
+    padding: 55px;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
 }
 
 th {
     font-weight: bolder;
 }
 
+button:hover{
+    background-color: #9a9696;
+    color: white;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #9a9696;
+}
+
+input[type="submit"]:hover{
+    background-color: #9a9696;
+    color: white;
+}
+
 button{
     padding: 10px 20px;
     cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
 }
 
-div{
-    text-align:center;
+/* Style pour le message "404 not found" */
+h1 {
+    font-family: "Baskerville Old Face" ;
+    margin-left:35% ;
+    margin-right:35%;
+    text-align: center;
+    color: #000000;
+    background-color: #cccccc;
+    width: 30%;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-h3{
-    text-align:center;
+#head {
+    background-color: #c5c5c5;
+    border-radius: 9px;
+    width: 100%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-button{
-    margin-top: 20px;
-
+#profile {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
 }
-#bouton{
-    text-align:right;
-    transform: translate(-560px);
+
+#profile:hover {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
 }
 
-#add:hover{
-    margin-right: 15px;
+#players{
+    background-color: #cccccc;
+    border: 1px solid black;
+    padding: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+
+#classment {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+
+#classment:hover {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+#notActive {
+    background-color: #9a9696;
     color: white;
-    background-color: slategray;
-}
-
-button:hover{
-    color: white;
-    background-color: slategray;
-}
-
-#Bis{
-    border-right: white;
-    border-top: white;
 }

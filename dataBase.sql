@@ -58,7 +58,7 @@ create table Match (
                        attack text references Team,
                        defend text references team,
                        betTeamKept int,
-                       goal int,
+                       goal int check(goal >= 0 and goal <= 5),
                        annee int not null,
                        idRun serial not null references run,
                        penal boolean not null,
@@ -77,7 +77,7 @@ create table bet(
 );
 
 create table Old_Tournament(
-                               Edition int check(Edition>2000),
+                               Edition date,
                                Classement int check(classement>0),
                                Team text not null,
                                primary key (Edition, Classement)

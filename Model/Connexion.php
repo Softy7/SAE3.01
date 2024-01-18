@@ -20,11 +20,13 @@ class Connexion {
         return password_verify($password, $User[0][5]);
     }
 
-    function insertNewGuest($name, $FirstName, $email, $Birth, $User, $Password, $PasswordC) {
+    function insertNewGuest($name, $FirstName, $email, $Birth, $User, $Password, $PasswordC): int {
 
         if ($Password != $PasswordC) {
             return 2;
-        } else if (Strlen($Password) < 6) {
+        }
+
+        if (Strlen($Password) < 6) {
             return 3;
         } else {
 
