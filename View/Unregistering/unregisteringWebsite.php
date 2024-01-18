@@ -8,7 +8,7 @@ session_start();
     <title>Desinscription du Site</title>
 </head>
 <body>
-    <p>voulez-vous annuler votre adhésion au club ?</p>
+    <p>Voulez-vous vraiment annuler votre adhésion au club ?</p>
 <form action="../../Controller/Unregistering/unregisteringWebsite.php" method="post">
     <input type="submit" value="Oui">
 </form>

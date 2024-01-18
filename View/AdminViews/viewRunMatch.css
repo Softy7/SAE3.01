@@ -3,14 +3,48 @@ table {
     margin : auto;
 }
 
-td,th {
-    border: 1px;
-    padding: 15px;
+h1 {
+    font-family: "Baskerville Old Face" ;
+    margin-left:35% ;
+    margin-right:35%;
+    text-align: center;
+    color: #000000;
+    background-color: #cccccc;
+    width: 30%;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background-color: #ffffff;
+}
+
+.main {
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.main span {
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+    padding: 20px;
+    background-color: #c5c5c5;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 45%;
+    height:700px;
+    overflow:scroll;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 header{
     background-color: #cccccc;
-    color: red;
+    color: #000000;
+    border-radius: 9px;
+    font-family: sans-serif;
 }
 
 th {
@@ -20,36 +54,79 @@ th {
 main {
     background-color: #cccccc;
     color: black;
+    border-radius: 9px;
+}
+
+button:hover{
+    background-color: #9a9696;
+    color: white;
 }
 
 button{
     padding: 10px 20px;
     cursor: pointer;
-    background-color: red;
-    border-color: black;
-    border-radius: 20px;
-}
-
-button:hover{
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #bd181f;
-    border-color: black;
-    border-radius: 20px;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
 }
 
 input {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: limegreen;
-    border-color: black;
+    background-color: #ffffff;
+    border-color: #c5c5c5;
     border-radius: 20px;
+    font-size: 20px;
 }
 
 input:hover {
     padding: 11px 21px;
     cursor: pointer;
-    background-color: greenyellow;
+    background-color: #9a9696;
+    color: white;
     border-radius: 20px;
-    border-color: black;
+    font-size: 20px;
+}
+
+#head {
+    background-color: #c5c5c5;
+    border-radius: 9px;
+    width: 100%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#profile {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
+}
+
+#profile:hover {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
+}
+
+#classment {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+
+#classment:hover {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+#notActive {
+    background-color: #9a9696;
+    color: white;
 }

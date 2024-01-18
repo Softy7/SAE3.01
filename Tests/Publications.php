@@ -12,7 +12,7 @@ $bdd = new PDO("pgsql:host=localhost;dbname=postgres",'postgres','v1c70I83');
     } else {
         $res++;
     }
-    $requete = $bdd->prepare("INSERT INTO articles VALUES (:res,:titre,:contenu, 'Softy16', NOW())");
+    $requete = $bdd->prepare("INSERT INTO articles VALUES (:res,:titre,:contenu, 'Softy16', NOW(%Y))");
     $requete->bindParam(':contenu', $nouveauTexte);
     $requete->bindParam(':res', $res);
     $requete->bindParam('titre',$titre);

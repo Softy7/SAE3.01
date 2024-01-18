@@ -1,4 +1,4 @@
-Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Request cascade;
+Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Old_Tournament, Request cascade;
 
 create table Team (
                       teamName text unique not null primary key,
@@ -46,7 +46,7 @@ create table Articles (
 create table Run (
                      idRun serial not null primary key,
                      title text not null,
-                     image_data bytea not null,
+                     image_data text not null,
                      starterPoint text not null,
                      finalPoint text not null,
                      orderRun int not null,
@@ -58,7 +58,7 @@ create table Match (
                        attack text references Team,
                        defend text references team,
                        betTeamKept int,
-                       goal int,
+                       goal int check(goal >= 0 and goal <= 5),
                        annee int not null,
                        idRun serial not null references run,
                        penal boolean not null,
@@ -74,6 +74,13 @@ create table bet(
                     idmatch int not null references Match,
                     betcap int,
                     primary key(username,idmatch)
+);
+
+create table Old_Tournament(
+                               Edition date,
+                               Classement int check(classement>0),
+                               Team text not null,
+                               primary key (Edition, Classement)
 );
 
 create table Inscription (

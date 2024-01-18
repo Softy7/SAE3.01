@@ -1,39 +1,115 @@
-body{
-    background-image : url('https://th.bing.com/th/id/OIP.qqU8ZqlwL9F1cxu3O5vFTgHaEK?pid=ImgDet&rs=1');
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+table {
+    border-collapse: collapse;
+    margin : auto;
 }
 
-h3 {
-    font-size: 24px;
-    text-align: center;
-    color: #fff;
-    padding: 10px;
+
+#players{
+    background-color: #cccccc;
+    border: 1px solid black;
+    padding: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
 }
 
-/* Style des étiquettes (labels) */
-label {
+td {
+    padding: 55px;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+
+th {
+    font-weight: bolder;
+}
+
+button:hover{
+    background-color: #9a9696;
     color: white;
-    display: block;
-    margin: 10px;
 }
 
-/* Style des boutons */
 input[type="submit"] {
     padding: 10px 20px;
     cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #9a9696;
+}
+
+input[type="submit"]:hover{
+    background-color: #9a9696;
+    color: white;
+}
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
 }
 
 /* Style pour le message "404 not found" */
 h1 {
+    font-family: "Baskerville Old Face" ;
+    margin-left:35% ;
+    margin-right:35%;
     text-align: center;
-    color: red;
+    color: #000000;
+    background-color: #cccccc;
+    width: 30%;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
+#head {
+    background-color: #c5c5c5;
+    border-radius: 9px;
+    width: 100%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
 
+#profile {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
+}
 
+#profile:hover {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
+}
+
+#form {
+    background-color: #cccccc;
+    border-radius: 9px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    font-size: 20px;
+}
+
+#classment {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+
+#classment:hover {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+#notActive {
+    background-color: #9a9696;
+    color: white;
+}
 
 
 

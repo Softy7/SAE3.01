@@ -1,6 +1,12 @@
 <?php
-require_once ("../../ConnexionDataBase.php");
 session_start();
+require_once('../../Model/AdminCapitain.php');
+require_once('../../Model/Capitain.php');
+require_once ('../../Controller/launch.php');
+require_once ('../../ConnexionDataBase.php');
+
+$user = launch();
+$bdd = __init__();
 
 if ($_SESSION['connected']) {
     ?>
@@ -12,143 +18,153 @@ if ($_SESSION['connected']) {
         <link href="Home.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1><?php echo $_SESSION['view'] /*""*/?></h1>
-    <p>Bienvenue sur votre espace ! Monsieur <?php echo $_SESSION['username']?></p>
-    <form action="../../Controller/Connect/Deconnect.php" method="post">
-        <input type="submit" value="Déconnexion" id="deconnexion"/>
-    </form>
-    <button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'" id="ModeTournois">Mode Tournois</button>
-    <?php
-    if ($_SESSION['teamName'] != null) {
-    ?>
-    <p id="nomEquipe"><?php echo 'Vous êtes dans l\'équipe ', $_SESSION['teamName'];?></p>
-    <?php
-    }
+    <button id="classment" onclick="window.location.href='viewOldTournament.php'">Classements</button><h1>Espace Principal</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
+    <center><table id="head"><tr>
+                <th><button id="notActive">Espace Principal</button></th><th>
+                <?php if ($_SESSION['isAdmin']) {
+                    ?><th><button onclick="window.location.href='../AdminViews/viewRunMatch.php'">Espace Rencontres</button></th><th><?php
+                    if ($_SESSION['openn']) {
+                        ?><th><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Tournoi</button><?php
+                    } else {
+                        ?><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Préparation</button></th><?php
+                        ?><th><button onclick="window.location.href='../AdminViews/TournamentView.php'">Espace Génération</button><?php
+                    }?></th>
+                    <th><button onclick="window.location.href='../AdminViews/viewAllMember.php'">Espace Membres</button></th>
+                    <th><button onclick="window.location.href='../AdminViews/ViewInRegistering.php'">Espace Adhésions</button></th>
+                    <th><button onclick="window.location.href='../AdminViews/UnregisteredView.php'">Espace Réadhésion</button></th>
+                    <?php if ($user->enoughtPlayer()) {
+                        ?><th><button onclick="window.location.href='../AdminViews/CreateTeam.php'">Espace Création d'équipe</button></th><?php
+                    }?>
+                <?php } else {
+                    ?><th><button onclick="window.location.href='../MemberViewMatch/viewRunMatch.php'">Espace Rencontres</button></th><th><?php
+                }?><th>
+                    <?php if (!$_SESSION['openn']) {
+                    if ($_SESSION['captain']) {
+                    ?><button onclick="window.location.href='../HomeTournaments/HomeTournaments.php'">Espace Tournoi</button></th>
 
-    if ($_SESSION['isAdmin'] == 1) {
-        if ($_SESSION['lenght'] > 1) {
-            echo "<form action='../Unregistering/unregisteringWebsite.php' method='post'>
-                    <input type='submit' value='Supprimer le compte' id='del'/>
-                    </form>";
-        } else {
-            echo "<p><div id='boite'>Vous ne pouvez pas<br> vous désincrire car vous êtes <br>le seul administrateur du site</div></p>";
-        }
-    }else{
-        echo "<form action='../Unregistering/unregisteringWebsite.php' method='post'>
-                    <input type='submit' value='Supprimer le compte' id='del'/>
-                    </form>";
-    }
-
-    if ($_SESSION['openn'] == 1) {
-
-        if ($_SESSION['isPlayer'] != 1) {
-            echo "<form action='../Registering/registeringTournament.php' method='post'>
-            <input type='submit' value='Inscription Tournoi' id='championship'/>
-            </form>";
-        } else {
-            echo "<form action='../Unregistering/unregisteringTournament.php' method='post'>
-            <input type='submit' value='Désinscription Tournoi' id='championship'/>
-            </form>";
-
-            if ($_SESSION['captain'] != 1) {
-                if ($_SESSION['teamName'] != null) {
-                    ?>
-                    <button onclick="window.location.href='../PlayerView/ViewTeam.php';" id="viewTeam" value="Voir Equipe">Voir Equipe</button>
-                    <?php
-                    ?>
-                    <button onclick="window.location.href='../Team/LeaveConfirm4.php';" id="leave" value="Quitter Equipe">Quitter Equipe</button>
+            <?php
+            }
+            } else {
+                if (!$_SESSION['captain'] && $_SESSION['teamName'] != null) {
+                    ?><th><button onclick="window.location.href='../Team/LeaveConfirm4.php'">Quitter l'équipe</button></th>
+                    <th><button onclick="window.location.href='../PlayerView/ViewTeam.php'">Espace Effectif</button></th>
                     <?php
                 }
-                else {
-            ?>
-                    <button onclick="window.location.href='../Registering/AskJoin.php';" value="RejoindreEquipe" id="AskTeam">Rejoindre Equipe</button>
-                    <button onclick="window.location.href='../Registering/TeamRequest.php';" value="VoirDemande" id="JoinTeam">Voir Demande de recrutement</button>
-            <button onclick="window.location.href='../CreateTeam/Form.php';" value="Créer Equipe" id="CreateTeam">Créer une équipe</button>
-            <?php
+                if ($_SESSION['captain'] == 1) {?>
+
+                    <th><button onclick="window.location.href='../Capitain/ViewRequest.php'">Espace Enrollement</button></th>
+                    <th><button onclick="window.location.href='../Capitain/NewPlayer.php'">Espace Demandes</button></th>
+                    <th><button onclick="window.location.href='../Capitain/Players.php'">Espace Effectif</button></th>
+                    <th><button onclick="window.location.href='../Capitain/DestroyTeam.php'">Dissoudre l'équipe</button></th><?php
                 }
-            } else {
-                ?>
-                <form action='../Capitain/DestroyTeam.php' method="post">
-                    <input type='submit' value="Dissoudre l'équipe" id="deleteTeam">
-                </form>
-                <form action='../Capitain/NewPlayer.php' method="post">
-                    <input type='submit' value="Recruter un joueur" id="addPlayerTeam">
-                </form>
-                <button onclick="window.location.href='../Capitain/ViewRequest.php';" value="voirEnrolle" id="ViewReq">Voir Demande d'enrollement</button>
-                <?php
-
-            ?>
-                <form action='../PlayerView/ViewTeam.php' method="post">
-                    <input type='submit' value="Voir effectif" id="viewTeam">
-                </form>
-                <?php
             }
-        }
-    }
-        if ($_SESSION['isAdmin'] == 1) {
-            ?>
-            <button onclick="window.location.href='../AdminViews/viewAllMember.php';" value="ViewPlayer" id="ViewPlayer">Voir les joueurs</button>
-            <?php
-            if ($_SESSION['openn'] == 1) {
-                echo "<form action='../../Controller/Registering/RegisterOpen.php' method='post'>
-            <input type='submit' value='Fermer Inscriptions' id='boutonEtatInscription'/>
-            </form>";
-            } else {
-                echo "<form action='../../Controller/Registering/RegisterOpen.php' method='post'>
-            <input type='submit' value='Ouvrir Inscriptions' id='boutonEtatInscription'/>
-            </form>";
-            }
-            ?>
-            <form action="../AdminViews/ViewInRegistering.php" method="post">
-                <input type="submit" value="Voir Demande Adhesion" id="voirAdhesion"/>
-            </form>
-            <form action="../AdminViews/ArticlesEdit.php" method="post">
-                <input type="submit" value="Gérer Publications" id="gererPublication"/>
-            </form>
 
-            <form action="../AdminViews/UnregisteredView.php" method="post">
-                <input type="submit" value="Voir désinscrits" id="viewUnregistered"/>
-            </form>
-            <form action="../AdminViews/RunView.php" method="post">
-                <input type="submit" value="gérer parcours" id="gererParcours"/>
-            </form>
-            <button onclick="window.location.href='../AdminViews/CreateTeam.php';" value="CreateByForce" id="CreateByForce">Création forcée d'équipe</button>
-            <form action="../AdminViews/deleteTournament.php" method="post">
-                <input type="submit" value="delTournament" id="supTournament"/>
-            </form>
+            if ($_SESSION['teamName'] == null && $_SESSION['openn'] && $_SESSION['isPlayer']) {
+                if ($user->ableToCreate()) {
+                    ?><th><button onclick="window.location.href='../Capitain/CreateTeam.php'">Devenir Capitaine</button></th><?php
+                }
+                ?><th><button onclick="window.location.href='../Registering/AskJoin.php'">Espace Intégration</button></th><?php
+                ?><th><button onclick="window.location.href='../Registering/TeamRequest.php'">Espace Demandes</button></th><?php
+                ?><th><button onclick="window.location.href='../Unregistering/unregisteringTournament.php'">Quitter le tournoi</button></th><?php
+            } else if ($_SESSION['teamName'] == null && $_SESSION['openn']){
+                ?><th><button onclick="window.location.href='../Registering/registeringTournament.php'">Rejoindre le tournoi</button></th><?php
+            }
+            if (($_SESSION['teamName'] == null) && !($user instanceof Administrator)) {
+                ?><th><button onclick="window.location.href='../Unregistering/unregisteringWebsite.php'">Supprimer le compte</button></th><?php
+            } else {
+                if ($user instanceof Administrator) {
+                    if ($user->lenghtAdmin($bdd)>=1 && $_SESSION['teamName'] == null) {
+                        ?><th><button onclick="window.location.href='../Unregistering/unregisteringWebsite.php'">Supprimer le compte</button></th><?php
+                    }
+                }
+            }?>
+                <th><button onclick="window.location.href='../../Controller/Connect/Deconnect.php'">Déconnexion</button></th>
+                <th></th>
+            </tr></table></center>
+    <h1>Actus & Parcours</h1>
+    <div class="sides">
+        <span id="articles">
+            <table id="runArticle"><tr><th><h2>Actualités:</h2></th>
+                <?php if ($_SESSION['isAdmin'] == 1) {echo
+                    '<form action="../AdminViews/ArticlesEdit.php" method="post">
+            <th><input type="submit" value="Gérer Publications" id="gererPublication"/></th>
+        </form>';
+                }
+        ?></tr></table>
             <?php
-        }
-    ?>
-    <p id="etatInscription"><?php echo $_SESSION['open'];?></p>
-    <div id="publications">
-        <h2>Actualités:</h2>
-        <?php
         $bdd = __init__();
 
         if (!$bdd) {
             echo "Erreur de connexion à la base de données.";
         } else {
-            $request = $bdd->prepare("SELECT * FROM articles ORDER BY datepublication DESC");
+            $request = $bdd->prepare("SELECT * FROM articles ORDER BY datepublication");
             $request->execute();
             $result = $request->fetchAll(PDO::FETCH_ASSOC);
 
             if ($result) {
                 foreach ($result as $row) {
                     echo "<div>";
-                    echo "<h4>".htmlspecialchars($row['title'])."</h4>";
-                    echo "<h4>".htmlspecialchars($row['datepublication.'])."</h4>";
-                    echo "<textarea readonly='readonly' id='contenu_" . $row['idarticle'] . "' name='contenu_" . $row['idarticle'] . "'>" . htmlspecialchars($row['contenu']) . "</textarea><br>";
+                    echo htmlspecialchars($row['title'])."<br>";
+                    echo "date: " . $row['datepublication'] . "<br>";
+                    echo "Auteur: ".htmlspecialchars(($row['writer']))."<br>";
+                    echo "<h4>";
+                    echo "". htmlspecialchars($row['contenu']) . "<br>";
+                    echo "</h4>";
                     echo "</div>";
                 }
             } else {
-                echo "Aucune publication trouvée.";
+                echo "<br>Aucune publication trouvée...";
             }
         }
         ?>
+    </span>
+    <span id="runs">
+        <table id="runArticle"><tr><th><h2>Parcours:</h2></th>
+                <?php if ($_SESSION['isAdmin'] == 1) {echo
+                    '<form action="../AdminViews/RunView.php" method="post">
+                <th><input type="submit" value="Gérer parcours" id="gererParcours"/></th>
+            </form>';
+                }
+                ?></tr></table>
+        <?php
+
+        if (!$bdd) {
+            echo "Erreur de connexion à la base de données.";
+        } else {
+
+
+            $request = $bdd->prepare("SELECT * FROM run ORDER BY orderrun");
+            $request->execute();
+            $result = $request->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                foreach ($result as $row) {
+                    echo "<div>";
+                    echo htmlspecialchars($row['title'])."<br>";
+                    echo "Image : <img src='" . $row['image_data'] . "'><br>";
+                    echo "Point de départ: ".htmlspecialchars(($row['starterpoint']))."<br>";
+                    echo "Point d'arrivée: ".htmlspecialchars(($row['finalpoint']))."<br>";
+                    echo "Paris max: ".htmlspecialchars(($row['maxbet']))."<br>";
+                    //echo "<textarea readonly='readonly' id='contenu_" . $row['idarticle'] . "' name='contenu_" . $row['idarticle'] . "'>" . htmlspecialchars($row['contenu']) . "</textarea><br>";
+                    echo "</div>";
+                }
+            } else {
+                echo "<br>Aucun parcours trouvé...";
+            }
+        }
+        ?>
+    </span>
     </div>
 
     </body>
+    <footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+                Projet Réalisé dans le cadre de la SAE 3.01<br>
+                Références:<br>
+                Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+                A destination de: <br>
+                Philippe Polet<br>-----</p></center></footer>
     </html>
+
     <?php
 } else {
     header('location: ../Guest_Home.html');

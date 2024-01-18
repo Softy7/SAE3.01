@@ -9,7 +9,7 @@
 <body>
 <div id="container">
 <form action="../Controller/Connect/CheckConnect.php" method="post">
-  <h2><label>Veuiller donner votre identifiant et mot de passe :</label></h2><br/>
+  <h2><label>Connexion:</label></h2><br/>
   <label>Identifiant: </label>
   <input name="id" type="text" />
 
@@ -20,6 +20,12 @@
 </form>
 </div>
 </body>
+<footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+            Projet Réalisé dans le cadre de la SAE 3.01<br>
+            Références:<br>
+            Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+            A destination de: <br>
+            Philippe Polet<br>-----</p></center></footer>
 </html>
 
 <?php

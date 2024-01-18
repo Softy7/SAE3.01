@@ -32,6 +32,10 @@ foreach ($_POST as $key => $value) {
     }
 }
 
+if ($run == 0) {
+    header('location: ../Home/Home.php');
+}
+
 ?><!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -56,7 +60,7 @@ foreach ($_POST as $key => $value) {
                     ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " 1 - 0 ", $match[2], ' Paris: ', $match[3], ' Coups: ', $match[11]?>"></th></tr></table><?php
                 } else if ($match[4] == 2) {
                     ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " 0 - 1 ", $match[2], ' Paris: ', $match[3], ' Coups: ', $match[11]?>"</th></tr></table><?php
-                } else if ($match[6] != null && $match[9] != null && $match[10]!=null) {
+                } else if ($match[7] != null && $match[9] != null && $match[10]!=null) {
                     ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], ' ', $match[9]," - ", $match[10], ' ', $match[2], '(Penalty)'?>"</th></tr></table><?php
                 } else {
                     ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " - ", $match[2]?>"</th></tr></table><?php
@@ -66,7 +70,7 @@ foreach ($_POST as $key => $value) {
             }
         }
                 foreach($contests as $match) {
-                    if ($match[6] != null) {
+                    if ($match[7] != null) {
                         $str = " $match[9] - $match[10] ";
                         $bet = " (Penalty)";
                     } else {
@@ -84,6 +88,12 @@ foreach ($_POST as $key => $value) {
                 }
     } ?>
 <table><tr><th><button onclick="window.location.href='viewRunMatch.php';">Retour</button></th></tr></table></main>
+<footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+            Projet Réalisé dans le cadre de la SAE 3.01<br>
+            Références:<br>
+            Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+            A destination de: <br>
+            Philippe Polet<br>-----</p></center></footer>
 <?php
 } else {
     header('location: ../Guest_home.html');

@@ -90,6 +90,28 @@ class Player extends Member {
         return new AdminCapitain($this->username, $this->getMail(), $this->getName(), $this->getFirstname(), $this->getBirthday(), $this->getPassword(), $teamName, array($playerUsername));
     }
 
+    function getTeamsAsk() {
+        $req = $this->db->prepare("SELECT request.Team, capitain.username FROM request join public.team t on request.team = t.teamname join capitain on t.teamname = capitain.teamname WHERE request.username=:user AND isplayerask = false");
+        $req->bindValue(':user', $this->username, PDO::PARAM_STR);
+        $req->execute();
+        return $req->fetchAll();
+    }
+
+    function getOtherTeams() {
+        $req = $this->db->prepare("SELECT guests.team, capitain.username, count(guests.username) FROM guests join capitain ON guests.team = capitain.teamname 
+                                        GROUP BY guests.team, capitain.username HAVING count(guests.username) < 4 AND guests.team IS NOT NULL ORDER BY team");
+        $req->execute();
+        return $req->fetchAll();
+    }
+
+    function checkRequest($team) {
+        $reqAsk = $this->db->prepare("SELECT Team, isplayerask FROM request WHERE username = :username AND team = :team");
+        $reqAsk->bindParam(':username', $this->username);
+        $reqAsk->bindParam(':team', $team);
+        $reqAsk->execute();
+        return $reqAsk->fetchAll();
+    }
+
     public function askPlayer($player, $team){
         $bdd = __init__();
         $request = $bdd->prepare("INSERT INTO request VALUES (:Player, true, :team)");
@@ -99,7 +121,7 @@ class Player extends Member {
     }
 
     function getTeammates($bdd) {
-        $request = $bdd->prepare("Select username from Guests where team = :teamname and username != :username");//retire le capitaine de son equipe
+        $request = $bdd->prepare("Select * from Guests where team = :teamname and username != :username");//retire le joueur de son equipe
         $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
@@ -116,6 +138,12 @@ class Player extends Member {
         } else {
             return false;//renvoie false si il n'est pas dans la base de donné
         }
+    }
+
+    function ableToCreate() {
+        $requete = $this->db->prepare("SELECT count(*) from guests where isPlayer = true and team is null");
+        $requete->execute();
+        return $requete->fetchAll()[0][0] > 3;
     }
     /**/
 }

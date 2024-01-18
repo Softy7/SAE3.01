@@ -1,14 +1,20 @@
 <?php
 session_start();
-require_once('../../ConnexionDataBase.php');
-require_once('../../Model/AdminCapitain.php');
-require_once('../../Model/Capitain.php');
-require_once('../../Controller/launch.php');
 
-$db=__init__();
-$user = launch();
+require_once('../../Model/Capitain.php');
+require_once('../../Model/AdminCapitain.php');
+require_once('../../ConnexionDataBase.php');
+require_once("../../Controller/launch.php");
+
+$bdd = __init__();
+
 
 if ($_SESSION['connected']) {
+    $user = launch();
+    $nextMatch = array();
+    if ($user instanceof Capitain || $user instanceof AdminCapitain) {
+        $nextMatch = $user->getMatchNotPlayed($bdd);
+    }
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -18,56 +24,99 @@ if ($_SESSION['connected']) {
         <link href="HomeTournaments.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1><?php echo $_SESSION['view'] ?></h1>
-    <p>Bienvenue sur votre espace de Tournois! Monsieur <?php echo $_SESSION['username']?></p>
-    <button onclick="window.location.href='../../Controller/Connect/CheckConnect.php'" id="retour">Retour</button>
-    <form action="../../Controller/Connect/Deconnect.php" method="post">
-        <input type="submit" value="Déconnexion" id="deconnexion"/>
-    </form>
-    <?php
-    if ($_SESSION['teamName'] != null) {
-        ?>
-        <p><?php echo 'Vous êtes dans l\'équipe ', $_SESSION['teamName'];?></p>
-    <?php
-    }
+    <h1>Chôlage Quarouble</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
+    <center><table id="head"><tr>
+                <th><button  onclick="window.location.href='../Home/Home.php'">Espace Principal</button></th><th>
+                <?php if ($_SESSION['isAdmin']) {
+                    ?><th><button onclick="window.location.href='../AdminViews/viewRunMatch.php'">Espace Rencontres</button></th><th><?php
+                    if ($_SESSION['openn']) {
+                        ?><th><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Tournoi</button><?php
+                    } else {
+                        ?><button onclick="window.location.href='../../Controller/Registering/RegisterOpen.php'">Passer en Mode Préparation</button></th><?php
+                        ?><th><button onclick="window.location.href='../AdminViews/TournamentView.php'">Espace Génération</button><?php
+                    }?></th>
+                    <th><button onclick="window.location.href='../AdminViews/viewAllMember.php'">Espace Membres</button></th>
+                    <th><button onclick="window.location.href='../AdminViews/ViewInRegistering.php'">Espace Adhésions</button></th>
+                    <th><button onclick="window.location.href='../AdminViews/UnregisteredView.php'">Espace Réadhésion</button></th>
+                    <?php if ($user->enoughtPlayer()) {
+                        ?><th><button onclick="window.location.href='../AdminViews/CreateTeam.php'">Espace Création d'équipe</button></th><?php
+                    }?>
+                <?php } else {
+                    ?><th><button onclick="window.location.href='../MemberViewMatch/viewRunMatch.php'">Espace Rencontres</button></th><th><?php
+                }?><th>
+                    <?php if (!$_SESSION['openn']) {
+                    if ($_SESSION['captain']) {
+                    ?><button id="notActive">Espace Tournoi</button></th>
 
-    if($_SESSION['isPlayer']==1){
-        ?>
-        <?php
-        if($_SESSION['captain']==1){ ?>
-            <button onclick="window.location.href='../Capitain/Bet.php'" id="parier">Parier</button>
-            <button onclick="window.location.href='../Capitain/EntrerScore.php'" id="entrerScore">Résultat</button>
             <?php
-        }
-    }
-    $results = $user->getMatchs($db);
-    if ($_SESSION['isPlayer']!=1){
-        foreach ($results as $res){
-            if($res[4]==0){
-
-        ?>
-                <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> n'a pas encore été joué</h1>
-
-    <?php }
-            else{
-                if($res[4]==1){
-                    ?>
-
-                                <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> a été joué<br>L'equipe qui été en attaque a gagné avec <?php echo $res[5]; ?> décholes</h1>
-            <?php } else if ($res[4]==2){?>
-                    <h1>Le match <?php echo $res[1]; ?> contre <?php echo $res[2]; ?> sur le parcour <?php echo $res[6]; ?> a été joué<br>L'equipe qui été en défence a gagné </h1>
-                <?php }
             }
-        }
-    }
+            } else {
+                if (!$_SESSION['captain'] && $_SESSION['teamName'] != null) {
+                    ?><th><button onclick="window.location.href='../Team/LeaveConfirm4.php'">Quitter l'équipe</button></th>
+                    <th><button onclick="window.location.href='../PlayerView/ViewTeam.php'">Espace Effectif</button></th>
+                    <?php
+                }
+                if ($_SESSION['captain'] == 1) {?>
 
+                    <th><button onclick="window.location.href='../Capitain/ViewRequest.php'">Espace Enrollement</button></th>
+                    <th><button onclick="window.location.href='../Capitain/NewPlayer.php'">Espace Demandes</button></th>
+                    <th><button onclick="window.location.href='../Capitain/Players.php'">Espace Effectif</button></th>
+                    <th><button onclick="window.location.href='../Capitain/DestroyTeam.php'">Dissoudre l'équipe</button></th><?php
+                }
+            }
+
+            if ($_SESSION['teamName'] == null && $_SESSION['openn'] && $_SESSION['isPlayer']) {
+                if ($user->ableToCreate()) {
+                    ?><th><button onclick="window.location.href='../Capitain/CreateTeam.php'">Devenir Capitaine</button></th><?php
+                }
+                ?><th><button onclick="window.location.href='../Registering/AskJoin.php'">Espace Intégration</button></th><?php
+                ?><th><button onclick="window.location.href='../Registering/TeamRequest.php'">Espace Demandes</button></th><?php
+                ?><th><button onclick="window.location.href='../Unregistering/unregisteringTournament.php'">Quitter le tournoi</button></th><?php
+            } else if ($_SESSION['teamName'] == null && $_SESSION['openn']){
+                ?><th><button onclick="window.location.href='../Registering/registeringTournament.php'">Rejoindre le tournoi</button></th><?php
+            }
+            if (($_SESSION['teamName'] == null) && !($user instanceof Administrator)) {
+                ?><th><button onclick="window.location.href='../Unregistering/unregisteringWebsite.php'">Supprimer le compte</button></th><?php
+            } else {
+                if ($user instanceof Administrator) {
+                    if ($user->lenghtAdmin($bdd)>=1 && $_SESSION['teamName'] == null) {
+                        ?><th><button onclick="window.location.href='../Unregistering/unregisteringWebsite.php'">Supprimer le compte</button></th><?php
+                    }
+                }
+            }?>
+                <th><button onclick="window.location.href='../../Controller/Connect/Deconnect.php'">Déconnexion</button></th>
+                <th></th>
+            </tr></table></center>
+    <?php if(count($nextMatch) > 0) {
         ?>
-        <button id="matchs" onclick="window.location.href='../AdminViews/viewRunMatch.php'">Rencontres</button>
+        <div class="LastMatch">
+        <h2>Prochain Match:</h2>
+            <form action="../Capitain/setScore.php">
+            <input type="submit" id="Match" value="<?php echo $nextMatch[0][1]; if ($nextMatch[0][4] == 0) {echo " VS ";} else if ($nextMatch[0][4] == 3) {echo " 1 - 0 ";} else if ($nextMatch[0][4] == 4) {echo " 0 - 1 ";} echo $nextMatch[0][2]; ?>">
+            </form>
+        <h2>Matchs à venir: </h2>
+            <?php
+            for ($i = 1; $i < count($nextMatch); $i++) {
+                $run = $user->getRun($bdd, $nextMatch[$i][6])
+                ?>
+                    <p><?php echo "Parcours: ", $run[0][1], " Pari Max: ", $run[0][5], " Point de départ: ", $run[0][2], " Point d'arrivée: ", $run[0][3] ?></p>
+                <input type="submit" id="Match" value="<?php echo $nextMatch[$i][1], " VS ", $nextMatch[$i][2]; ?>">
+            <?php
+            }
+            ?>
+        </div>
         <?php
-
+    } else {
+        echo 1;
+    }
     ?>
     </body>
-    <button id="return" onclick="window.location.href='../../Controller/Connect/CheckConnect.php'">Retour</button>
+    <footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
+                Projet Réalisé dans le cadre de la SAE 3.01<br>
+                Références:<br>
+                Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
+                A destination de: <br>
+                Philippe Polet<br>-----</p></center></footer>
     </html>
     <?php
 } else {
