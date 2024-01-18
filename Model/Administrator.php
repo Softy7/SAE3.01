@@ -141,6 +141,81 @@ class Administrator extends Member
         $req->execute();
     }
 
+    function TournamentEnd($bdd): bool
+    {
+        $req1 = $bdd->prepare("SELECT match.idrun, COUNT(attack) as count_attack, COUNT(defend) as count_defend FROM match GROUP BY match.idrun");
+        $req1->execute();
+        $matchesCounts = $req1->fetchAll(PDO::FETCH_ASSOC);
+
+        $req2 = $bdd->prepare("SELECT COUNT(teamname) as count_team FROM team");
+        $req2->execute();
+        $count2 = $req2->fetch()['count_team'];
+
+        $req3 = $bdd->prepare("SELECT COUNT(idrun) as count_idrun FROM run");
+        $req3->execute();
+        $count3 = $req3->fetch()['count_idrun'];
+
+        if (count($matchesCounts) == $count3) {
+            foreach ($matchesCounts as $match) {
+                $count = $match['count_attack'] + $match['count_defend'];
+                if ($count2 != $count) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    function RelsultCalculation($bdd, $team): array
+    {
+        $resAttack = $bdd->prepare("select count(goal) as count_goal from match where attack = :team AND goal = 1 AND penal = false");
+        $resAttack->bindValue(':team', $team, PDO::PARAM_STR);
+        $resAttack->execute();
+        $WinAttack = $resAttack->fetch()['count_goal'];
+
+        $resDefend = $bdd->prepare("select count(goal) as count_goal from match where defend = :team AND goal = 2 AND penal = false");
+        $resDefend->bindValue(':team', $team, PDO::PARAM_STR);
+        $resDefend->execute();
+        $WinDefend = $resDefend->fetch()['count_goal'];
+
+        $resPalAttack = $bdd->prepare("select count(idrun) as count_idrun from match where attack = :team AND countattack <= match.countdefend AND penal = true");
+        $resPalAttack->bindValue(':team', $team, PDO::PARAM_STR);
+        $resPalAttack->execute();
+        $resPalDefend = $bdd->prepare("select count(idrun) as count_idrun from match where defend = :team AND countattack >= match.countdefend AND penal = true");
+        $resPalDefend->bindValue(':team', $team, PDO::PARAM_STR);
+        $resPalDefend->execute();
+        $WinAttackPal = $resPalAttack->fetch()['count_idrun'];
+        $WinDefendPal = $resPalDefend->fetch()['count_idrun'];
+
+        $WinPal = $WinAttackPal + $WinDefendPal;
+
+        $TotalWin = $WinAttack + $WinDefend + $WinPal;
+
+        return [$team, $TotalWin, $WinAttack, $WinDefend];
+    }
+
+    function EditionCheck($bdd): bool{
+        $year = date("Y");
+        $req = $bdd->prepare("select Edition FROM old_tournament WHERE edition = :year");
+        $req->bindValue(':year', $year);
+        $req->execute();
+        $res = $req->fetchall();
+        if($res != null){
+            return false;
+        }
+        return true;
+    }
+
+    function SaveTournament($bdd, $class, $Team){
+        $year = date("Y");
+        $req = $bdd->prepare("Insert INTO old_tournament VALUES (:year, :class, :team)");
+        $req->bindValue(':year', $year);
+        $req->bindValue(':class', $class, PDO::PARAM_STR);
+        $req->bindValue(':team', $Team, PDO::PARAM_STR);
+        $req->execute();
+    }
 
     /**
      * ferme les inscription du tournois

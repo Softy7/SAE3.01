@@ -156,6 +156,17 @@ h1 {
     align-items: center;
 }
 
+#oldT{
+    position: absolute;
+    top: 255px;
+    left: 150px;
+}
+
+#publications{
+    position: absolute;
+    top: 330px;
+    left: 10px;
+
 .sides span {
     align-items: start;
     display: grid;
@@ -169,6 +180,7 @@ h1 {
     height:700px;
     overflow:scroll;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
 }
 
 .sides table {

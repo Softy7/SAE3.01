@@ -1,4 +1,4 @@
-Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Request cascade;
+Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Old_Tournament, Request cascade;
 
 create table Team (
                       teamName text unique not null primary key,
@@ -74,6 +74,13 @@ create table bet(
                     idmatch int not null references Match,
                     betcap int,
                     primary key(username,idmatch)
+);
+
+create table Old_Tournament(
+                               Edition int check(Edition>2000),
+                               Classement int check(classement>0),
+                               Team text not null,
+                               primary key (Edition, Classement)
 );
 
 create table Inscription (

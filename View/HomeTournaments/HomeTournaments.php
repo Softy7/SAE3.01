@@ -237,6 +237,7 @@ if ($_SESSION['connected']) {
     }
 
         ?>
+
         <button id="matchs" onclick="window.location.href='../AdminViews/viewRunMatch.php'">Rencontres</button>
         <?php
 
