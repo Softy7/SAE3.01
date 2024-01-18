@@ -93,12 +93,12 @@ values (true);
 
 /* Jeu de test*/
 insert into Guests
-values ('Softy16', 'ewanrecquignies@gmail.com','Michel','Ewan','2004-11-12', 'N1nt3nd0#',true,true,true,false),
-       ('OptimusPrime3000', 'optimus@gmail.com','Prime','Optimus','2004-11-12', 'N1nt3nd0#',True,false,true,false),
-       ('Kirby', '1@gmail.com','Faes','Hugo','2004-11-12', 'N1nt3nd0#',True,false,true,true),
-       ('TaGueuleThomas', '2@gmail.com','Meriaux','Thomas','2004-11-12', 'N1nt3nd0#',false,false,true,false),
-       ('Valider', '3@gmail.com','Hostelart','Anthony','2004-11-12', 'N1nt3nd0#',false,false,false,false),
-       ('ADELETE', '4@gmail.com','Hostelart','Anthony','2004-11-12', 'N1nt3nd0#',false,false,false,false);
+values ('Softy16', 'ewanrecquignies@gmail.com','Michel','Ewan','2004-11-12', '$2y$10$kvQreEw6k1KF6b.rVj3gheT4fOGKnCh2t5KOHuUD/r3u6CL.aO7/C',true,true,true,false),
+       ('OptimusPrime3000', 'optimus@gmail.com','Prime','Optimus','2004-11-12', '$2y$10$kvQreEw6k1KF6b.rVj3gheT4fOGKnCh2t5KOHuUD/r3u6CL.aO7/C',True,false,true,false),
+       ('Kirby', '1@gmail.com','Faes','Hugo','2004-11-12', '$2y$10$kvQreEw6k1KF6b.rVj3gheT4fOGKnCh2t5KOHuUD/r3u6CL.aO7/C',True,false,true,true),
+       ('TaGueuleThomas', '2@gmail.com','Meriaux','Thomas','2004-11-12', '$2y$10$kvQreEw6k1KF6b.rVj3gheT4fOGKnCh2t5KOHuUD/r3u6CL.aO7/C',false,false,true,false),
+       ('Valider', '3@gmail.com','Hostelart','Anthony','2004-11-12', '$2y$10$kvQreEw6k1KF6b.rVj3gheT4fOGKnCh2t5KOHuUD/r3u6CL.aO7/C',false,false,false,false),
+       ('ADELETE', '4@gmail.com','Hostelart','Anthony','2004-11-12', '$2y$10$kvQreEw6k1KF6b.rVj3gheT4fOGKnCh2t5KOHuUD/r3u6CL.aO7/C',false,false,false,false);
 
 /* renvoie les joueurs selon l'équipe */
 select *
