@@ -4,7 +4,7 @@ class Connexion {
     protected $db;
 
     function __construct() {
-        $this->db = new PDO('pgsql:host=localhost;dbname=postgres','postgres','v1c70I83');
+        $this->db = new PDO('pgsql:host=localhost;dbname=postgres','postgres','ThomasMathieu1810');
     }
 
     function getUser($username) {
@@ -26,7 +26,7 @@ class Connexion {
             return 2;
         }
 
-        if (Strlen($Password) < 6) {
+        if (strlen($Password) < 6) {
             return 3;
         } else {
 
