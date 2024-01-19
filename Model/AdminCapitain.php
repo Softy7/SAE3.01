@@ -41,6 +41,50 @@ class AdminCapitain extends PlayerAdministrator
         $request->execute();
     }
 
+    function bet($idMatch, $bet, $team, $meT){
+        global $user;
+        $req = $this->db->prepare("Select attack from match where idmatch = :idMatch");
+        $req->bindValue(":idMatch", $idMatch, PDO::PARAM_INT);
+        $req->execute();
+        $req = $req->fetchAll()[0][0];
+
+        $reqB = $this->db->prepare("SELECT betcap FROM bet WHERE (idmatch=:idmatch) AND username=:use");
+        $reqB->bindParam(':use', $this->username);
+        $reqB->bindParam(':idmatch',$idMatch);
+        $reqB->execute();
+        $rb = $reqB->fetchAll();
+        if($rb[0][0] == $bet){
+            if ($req == $this->getTeam()) {
+                $requete = $this->db->prepare("UPDATE match set betteamkept=:bet WHERE idmatch=:idMatch");
+                $requete->bindParam(":bet", $bet);
+                $requete->bindParam(':idMatch', $idMatch);
+                $requete->execute();
+            } else {
+                $requete = $this->db->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+                $requete->bindParam(":equipe1", $meT);
+                $requete->bindParam(":equipe2", $team);
+                $requete->bindParam(":bet", $bet);
+                $requete->bindParam(':idMatch', $idMatch);
+                $requete->execute();
+            }
+        }else{
+            if ($req == $this->getTeam()) {
+                $requete = $this->db->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
+                $requete->bindParam(":equipe2", $req);
+                $requete->bindParam(":equipe1", $team);
+                $requete->bindParam(":bet", $bet);
+                $requete->bindParam(':idMatch', $idMatch);
+                $requete->execute();
+            } else {
+                $requete = $this->db->prepare("UPDATE match set betteamkept=:bet WHERE idmatch=:idMatch");
+                $requete->bindParam(":bet", $bet);
+                $requete->bindParam(':idMatch', $idMatch);
+                $requete->execute();
+            }
+        }
+
+    }
+
     public function deleteTeam($team)
     {//dissoudre
 
@@ -197,27 +241,6 @@ class AdminCapitain extends PlayerAdministrator
         $requete->bindParam(":bet", $bet);
         $requete->bindParam(':idMatch', $idMatch);
         $requete->execute();
-    }
-
-    function bet($idMatch, $bet, $team)
-    {
-        $req = $this->db->prepare("Select attack from match where idmatch = :idMatch");
-        $req->bindValue(":idMatch", $idMatch);
-        $req->execute();
-        $req = $req->fetchAll()[0][0];
-        if ($req == $this->getTeam()) {
-            $requete = $this->db->prepare("UPDATE match set betteamkept=:bet WHERE idmatch=:idMatch");
-            $requete->bindParam(":bet", $bet);
-            $requete->bindParam(':idMatch', $idMatch);
-            $requete->execute();
-        } else {
-            $requete = $this->db->prepare("UPDATE match SET attack=:equipe1, defend=:equipe2, betteamkept=:bet WHERE idmatch=:idMatch");
-            $requete->bindParam(":equipe1", $req);
-            $requete->bindParam(":equipe2", $team);
-            $requete->bindParam(":bet", $bet);
-            $requete->bindParam(':idMatch', $idMatch);
-            $requete->execute();
-        }
     }
 
     function getBet($bdd, $idMatch)

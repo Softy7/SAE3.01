@@ -121,11 +121,12 @@ class Player extends Member {
     }
 
     function getTeammates($bdd) {
-        $request = $bdd->prepare("Select * from Guests where team = :teamname and username != :username");//retire le joueur de son equipe
-        $request->bindValue(':teamname', $this->team, PDO::PARAM_STR);
+        $request = $bdd->prepare("Select username, mail, name, firstname, isadmin from Guests where team = :teamname and username != :username");//retire le joueur de son equipe
+        $request->bindValue(':teamname', $this->getTeam(), PDO::PARAM_STR);
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         return $request->fetchAll();
+
     }
 
     public function scearchName($teamName,$bdd){

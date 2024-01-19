@@ -435,6 +435,8 @@ class Administrator extends Member
         $req2->execute();
         $req5 = $bdd->prepare("DELETE FROM request");
         $req5->execute();
+        $req6 = $bdd->prepare("UPDATE Guests set Team = null");
+        $req6->execute();
         $req3 = $bdd->prepare("DELETE FROM team");
         $req3->execute();
     }

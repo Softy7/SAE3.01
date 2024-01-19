@@ -99,7 +99,7 @@ if ($_SESSION['connected']) {
             for ($i = 1; $i < count($nextMatch); $i++) {
                 $run = $user->getRun($bdd, $nextMatch[$i][6])
                 ?>
-                    <p><?php echo "Parcours: ", $run[0][1], " Pari Max: ", $run[0][5], " Point de départ: ", $run[0][2], " Point d'arrivée: ", $run[0][3] ?></p>
+                    <p><?php echo "Parcours: ", $run[0][1], " Pari Max: ", $run[0][5], " Point de départ: ", $run[0][3], " Point d'arrivée: ", $run[0][4] ?></p>
                 <input type="submit" id="Match" value="<?php echo $nextMatch[$i][1], " VS ", $nextMatch[$i][2]; ?>">
             <?php
             }
@@ -107,7 +107,7 @@ if ($_SESSION['connected']) {
         </div>
         <?php
     } else {
-        echo 1;
+        echo 'Aucun match, générer les d\'abors';
     }
     ?>
     </body>

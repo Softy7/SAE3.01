@@ -1,5 +1,6 @@
 <?php
 require_once('../../Model/Player.php');
+require_once ('../../Model/PlayerAdministrator.php');
 require_once('../launch.php');
 
 // Inclusion de la bibliothèque PHPMailer
@@ -92,4 +93,4 @@ if (isset($_POST)) {
         }
     }
 }
-header("location: Connect/CheckConnect.php");
+header("location: ../Connect/CheckConnect.php");
