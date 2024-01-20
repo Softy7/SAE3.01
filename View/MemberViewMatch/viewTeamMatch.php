@@ -51,9 +51,9 @@ if ($team == 0) {
             foreach($matchs as $match) {
                 if ($match[8] != 1) {
                     if ($match[4] == 1) {
-                        ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " 1 - 0 ", $match[2], ' Paris: ', $match[3], ' Coups: ', $match[11]?>"></th></tr></table><?php
+                        ?><table><tr><th><input type="submit" id="correct" value="Chole <?php echo $match[1], " 1 - 0 ", $match[2], ' Paris: ', $match[3], ' Coups: ', $match[11]?>"></th></tr></table><?php
                     } else if ($match[4] == 2) {
-                        ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " 0 - 1 ", $match[2], ' Paris: ', $match[3], ' Coups: ', $match[11]?>"</th></tr></table><?php
+                        ?><table><tr><th><input type="submit" id="correct" value="Déchole <?php echo $match[1], " 0 - 1 ", $match[2], ' Paris: ', $match[3], ' Coups: ', $match[11]?>"</th></tr></table><?php
                     } else if ($match[7] != null && $match[9] != null && $match[10]!=null) {
                         ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], ' ', $match[9]," - ", $match[10], ' ', $match[2], '(Penalty)'?>"</th></tr></table><?php
                     } else {
