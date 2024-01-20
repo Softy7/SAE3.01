@@ -23,7 +23,7 @@ $user = launch();
         Prenom: <?php echo $user->getFirstname()?><br><br>
         Email: <?php echo $user->getMail()?><br><br>
         Date de naissance: <?php echo $user->getBirthday()?><br><br>
-        Equipe: <?php if ($user instanceof player) {echo $user->getTeam();} else {echo "Aucune";}?><br><br>
+        Equipe: <?php if ($user instanceof player || $user instanceof PlayerAdministrator) {echo $user->getTeam();} else {echo "Aucune";}?><br><br>
         Mot de passe: ******** <br><br>
         <input type="submit" value="Espace Principal">
     </form>
