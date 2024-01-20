@@ -88,7 +88,7 @@ foreach($teamMates as $team) {
         echo "<table><tr id='players'><th>Pseudo</th><th>Mail</th><th>Nom</th><th>Prénom</th><th>Fonction</th><th>Décision</th></tr>";
             echo"<tr id='players'><td>$team[0]</td>";
             ?>
-            <td><?= $team[1] ?></td>
+            <td><?php echo $team[1]; ?></td>
             <td><?= $team[2] ?></td>
             <td><?= $team[3] ?></td>
                 <?php

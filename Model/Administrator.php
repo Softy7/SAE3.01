@@ -185,11 +185,11 @@ class Administrator extends Member
     function checkMatchs() {
         $req = $this->db->prepare('Select count(*) from match');
         $req->execute();
-        $x = $req->fetchAll();
-        $req = $this->db->prepare('Select count(*) from match where ((goal >0 and goal < 3) or (penal and countmoves != 1) and contest is null)');
+        $x = $req->fetchAll()[0][0];
+        $req = $this->db->prepare('Select count(*) from match where ((goal >0 and goal < 3) or (penal = true and countmoves != 1) and contest = false)');
         $req->execute();
-        $y = $req->fetchAll();
-        return $x == $y&&$x>0;
+        $y = $req->fetchAll()[0][0];
+        return ($x == $y) && ($x>>0);
     }
 
     function SaveTournament($bdd, $class, $Team){
@@ -371,17 +371,16 @@ class Administrator extends Member
 
     public function createTeamF($teamName, $capiUsername, $bdd) {
         $requete = $bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
-        $requete->bindParam(':teamName', $teamName);
+        $requete->bindValue(':teamName', $teamName);
         $requete->execute();
         $requete0 = $bdd->prepare("INSERT INTO Capitain VALUES (:capUsername,:teamName)");
-        $requete0->bindParam(':capUsername', $capiUsername);
-        $requete0->bindParam(':teamName', $teamName);
+        $requete0->bindValue(':capUsername', $capiUsername);
+        $requete0->bindValue(':teamName', $teamName);
         $requete0->execute();
         $requete1 = $bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:playerUsername");
-        $requete1->bindParam(':teamName', $teamName);
-        $requete1->bindParam(':playerUsername', $capiUsername);
+        $requete1->bindValue(':teamName', $teamName);
+        $requete1->bindValue(':playerUsername', $capiUsername);
         $requete1->execute();
-
     }
 
     function searchFile($title, $bdd){
@@ -399,6 +398,7 @@ class Administrator extends Member
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
     }
+
     function deleteTournament($bdd)
     {
         $req = $bdd->prepare("UPDATE Guests SET isplayer = false and team = NULL");

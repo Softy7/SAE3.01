@@ -21,6 +21,24 @@ if(isset($_POST['enter'])) {
     }
 }
 
+if(isset($_POST['confirmate'])) {
+    if (isset($_POST['confirm'])) {
+        $user->Confirm($nextMatch[0][0]);
+        if ($nextMatch[0][7] != 1) {
+            $user->enterScore($bdd, $nextMatch[0][11], $nextMatch[0][4] - 2, $nextMatch[0][0]);
+        } else {
+            $user->enterScorePenal($bdd, $nextMatch[0][9], $nextMatch[0][10], $nextMatch[0][0]);
+        }
+    } else {
+        $user->contest($nextMatch[0][0]);
+        if ($nextMatch[0][7] == 1) {
+            $user->enterScorePenal($bdd, $nextMatch[0][9], $nextMatch[0][10], $nextMatch[0][0]);
+        } else {
+            $user->enterScore($bdd, $nextMatch[0][11], $nextMatch[0][4] - 2, $nextMatch[0][0]);
+        }
+    }
+}
+
 header('location: ../../View/HomeTournaments/HomeTournaments.php');
 
 ?>

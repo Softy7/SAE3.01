@@ -36,11 +36,11 @@ if ($_SESSION['connected']) {
                 </form>
             </div><?php
 
-        } else if ($team == $nextMatch[0][1] && $nextMatch[0][11] != 1){?>
+        } else if ($team == $nextMatch[0][1] && $nextMatch[0][11] != 1 && ($nextMatch[0][3] != null || $nextMatch[0][7] == 1)){?>
             <div class="LastMatch">
             <h2>Résultat:</h2>
             <form action="../../Controller/Capitain/setScore.php" method="post">
-            <input type="submit" value="<?php echo $nextMatch[0][1], " VS ", $nextMatch[0][2]; ?>">
+            <input type="submit" name="enter" value="<?php echo $nextMatch[0][1], " VS ", $nextMatch[0][2]; ?>">
             <?php if ($nextMatch[0][3] != null && $nextMatch[0][7] != 1 ) {?>
                 <label for="dock">Docké: <input type="checkbox" name="dock"></label>
                 <label for="score">Déchôles: Max: <?php echo $nextMatch[0][3], " ";?><input type="number" required checked max ="<?php echo $nextMatch[0][3]?>" name="score"></label>
@@ -48,6 +48,12 @@ if ($_SESSION['connected']) {
             else if ($nextMatch[0][7] == 1) {?>
                 <label for="attack"><input type="number" required  name="attack" value="0"></label>
                 <label for="defend"><input type="number" required  name="defend" value="0"></label>
+                <?php
+            } else {
+                ?>
+                <h2>Résultat:</h2>
+                <input type="submit" value="<?php echo $nextMatch[0][1], " VS ", $nextMatch[0][2]; ?>">
+                <p>En attente du capitaine adverse...</p>
                 <?php
             }
         }?>
@@ -59,22 +65,22 @@ if ($_SESSION['connected']) {
         <div class="LastMatch">
         <h2>Prochain Match: Pari Max: <?php echo $run[0][5]?> Votre Pari: <?php echo $bets[0][2]?></h2>
         <form action="../../Controller/Capitain/setScore.php" method="post">
-        <input type="submit" value="<?php echo $nextMatch[0][1], " 1 - 0 ", $nextMatch[0][2]; ?>">
+        <input type="submit" name ="confirmate" value="<?php echo $nextMatch[0][1], " 1 - 0 ", $nextMatch[0][2]; ?>">
         <label for="confirm">Valider Score: <input type="checkbox" name="confirm"></label>
         </form><?php
     } else if ($nextMatch[0][4] == 4 && $team == $nextMatch[0][2]) {?>
         <div class="LastMatch">
         <h2>Prochain Match: Pari Max: <?php echo $run[0][5]?> Votre Pari: <?php echo $bets[0][2]?></h2>
         <form action="../../Controller/Capitain/setScore.php" method="post">
-        <input type="submit" value="<?php echo $nextMatch[0][1], " 0 - 1 ", $nextMatch[0][2]; ?>">
+        <input type="submit" name ="confirmate" value="<?php echo $nextMatch[0][1], " 0 - 1 ", $nextMatch[0][2]; ?>">
         <label for="confirm">Valider Score: <input type="checkbox" name="confirm"></label>
         </form><?php
     } else if ($nextMatch[0][7] == 1 && $nextMatch[0][11] == 1 && $team == $nextMatch[0][2]) {?>
         <div class="LastMatch">
         <h2>Prochain Match: (Penalty)</h2>
         <form action="../../Controller/Capitain/setScore.php" method="post">
-        <input type="submit" value="<?php echo $nextMatch[0][1], " ", $nextMatch[0][9]," - ", $nextMatch[0][10], " ",$nextMatch[0][2]; ?>">
-        <label for="confirm">Valider Score: <input type="checkbox" name="confirmPenal"></label>
+        <input type="submit" name ="confirmate" value="<?php echo $nextMatch[0][1], " ", $nextMatch[0][9]," - ", $nextMatch[0][10], " ",$nextMatch[0][2]; ?>">
+        <label for="confirm">Valider Score: <input type="checkbox" name="confirm"></label>
         </form><?php
     } else if ($nextMatch[0][7] == 1 && $nextMatch[0][11] == 1 && $team == $nextMatch[0][1]){
         ?><p>Prochain match sur prochain parcours à venir... </p><?php

@@ -15,13 +15,11 @@ $Player2 = $_POST['Player2'];
 $Player3 = $_POST['Player3'];
 
 if (($Captain == $Player1 or $Captain == $Player2 or $Captain == $Player3)or($Player1 == $Player2 or $Player1==$Player3)or($Player2==$Player3)) {
-
-}
-
-
-$bdd = __init__();
-
-$user = launch();
+    header("location: ../../View/AdminViews/CreateTeamBFError.php");
+} else {
+    $bdd = __init__();
+    $user = launch();
+    echo $user->username == $Captain;
 
     if ($Captain == $user->username) {
         $_SESSION['teamName'] = $TeamName;

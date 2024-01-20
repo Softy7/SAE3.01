@@ -125,16 +125,17 @@ class Capitain extends Player {
 
 
 
-    function getMatchNotPlayed($bdd) {
-
-        $requete=$bdd->prepare("SELECT * FROM Match join run on Match.idRun = run.idRun 
-         WHERE ((goal = 0 OR goal > 2 OR (penal = true or (penal = true and countmoves = 1))) 
+    function getMatchNotPlayed($bdd)
+    {
+        $requete = $bdd->prepare("SELECT * FROM Match join run on Match.idRun = run.idRun 
+         WHERE ((goal = 0 OR goal > 2 OR ((penal = true and countmoves = 1) or 
+                                          (penal = true and countattack is null))) 
          AND (attack=:equipeCap OR defend=:teamCap)) ORDER BY (orderrun)");
         $t = $this->getTeam();
         $requete->bindParam(':equipeCap', $t);
         $requete->bindParam(':teamCap', $t);
         $requete->execute();
-        $req=$requete->fetchAll();
+        $req = $requete->fetchAll();
         return $req;
     }
 

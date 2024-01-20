@@ -95,13 +95,13 @@ class AdminCapitain extends PlayerAdministrator
         $request->execute();
         $prepare = $this->db->prepare("UPDATE Guests SET Team=null where Team = :teamname");
         $prepare->bindValue(':teamname', $team);
-        $prepare->bindValue(':teamname', $this->team->name);
+        $prepare->bindValue(':teamname', $this->team);
         $prepare->execute();
         $request2 = $this->db->prepare("Delete
                                         From Team
                                         where teamname = :teamname ");
         $request2->bindParam(':teamname', $team);
-        $request2->bindParam(':teamname', $this->team->name);
+        $request2->bindParam(':teamname', $this->team);
         $request2->execute();
         return new Player($this->username,
             $this->getMail(),
@@ -168,7 +168,8 @@ class AdminCapitain extends PlayerAdministrator
     {
 
         $requete = $bdd->prepare("SELECT * FROM Match join run on Match.idRun = run.idRun 
-         WHERE ((goal = 0 OR goal > 2 OR (penal = true or (penal = true and countmoves = 1))) 
+         WHERE ((goal = 0 OR goal > 2 OR ((penal = true and countmoves = 1) or 
+                                          (penal = true and countattack is null))) 
          AND (attack=:equipeCap OR defend=:teamCap)) ORDER BY (orderrun)");
         $t = $this->getTeam();
         $requete->bindParam(':equipeCap', $t);
