@@ -20,7 +20,7 @@ if (isset($_POST)) {
             $username = str_replace('yes_', '', $key);
             $reqMail = $bdd->prepare("SELECT mail FROM guests WHERE username = '$username'");
             $reqMail->execute();
-            $email = $reqMail->fetchAll()[0][0];
+            $email = $reqMail->fetchall()[0][0];
 
             launch()->addPlayer($team, $username);
 

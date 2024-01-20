@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('../launch.php');
 require_once('../../Model/AdminCapitain.php');
 // Inclusion de la bibliothèque PHPMailer

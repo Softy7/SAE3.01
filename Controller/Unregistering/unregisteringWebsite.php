@@ -8,7 +8,7 @@ require_once('../launch.php');
 
 $user = launch();
 if ($_SESSION['openn'] == 1) {
-    $bdd = __init();
+    $bdd = __init__();
     $user = launch();
     $test = $user->unregisterMember($bdd);
     if ($test == 1) {

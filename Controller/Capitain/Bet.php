@@ -31,9 +31,9 @@ if (isset($_POST["bet"])) {
         if ($bets[0][2] == $bets[1][2]) {
             $user->betIfEquals($bdd, $idMatch, $_POST['bet'], $equipe2);
         } else if ($bets[0][2] > $bets[1][2]) {
-            $user->bet($bdd, $idMatch, $_POST["bet"], $equipe2);
+            $user->bet($idMatch, $bets[1][2], $equipe2, $equipe1);
         } else {
-            $user->bet($bdd, $idMatch, $_POST["bet"], $equipe1);
+            $user->bet($idMatch, $bets[0][2], $equipe2, $equipe1);
         }
     }
     header('location: ../../View/HomeTournaments/HomeTournaments.php');

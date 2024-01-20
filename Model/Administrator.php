@@ -63,32 +63,6 @@ class Administrator extends Member
         return $req->fetchall();
     }
 
-    function createTeamByStrench($team, $cap, $P1, $bdd){
-        $this->createTeam($team, $cap, $bdd);
-        $this->addPlayerBis($team, $P1);
-    }
-
-    public function createTeam($teamName, $playerUsername, $bdd)
-    {
-        $requete = $bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
-        $requete->bindParam(':teamName', $teamName);
-        $requete->execute();
-
-        $requete0 = $bdd->prepare("INSERT INTO Capitain VALUES (:capUsername,:teamName)");
-        $requete0->bindParam(':capUsername', $this->username);
-        $requete0->bindParam(':teamName', $teamName);
-        $requete0->execute();
-
-        $requete1 = $bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:playerUsername");
-        $requete1->bindParam(':teamName', $teamName);
-        $requete1->bindParam(':playerUsername', $playerUsername);
-        $requete1->execute();
-
-        $requete2 = $bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:thisUsername");
-        $requete2->bindParam(':teamName', $teamName);
-        $requete2->bindParam(':thisUsername', $this->username);
-        $requete2->execute();
-    }
     function addPlayerBis($teamname, $player){
         $bdd = __init__();
         $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
@@ -211,11 +185,11 @@ class Administrator extends Member
     function checkMatchs() {
         $req = $this->db->prepare('Select count(*) from match');
         $req->execute();
-        $x = $req->fetchAll();
-        $req = $this->db->prepare('Select count(*) from match where ((goal >0 and goal < 3) or (penal and countmoves != 1) and contest is null)');
+        $x = $req->fetchAll()[0][0];
+        $req = $this->db->prepare('Select count(*) from match where ((goal >0 and goal < 3) or (penal = true and countmoves != 1) and contest = false)');
         $req->execute();
-        $y = $req->fetchAll();
-        return $x == $y&&$x>0;
+        $y = $req->fetchAll()[0][0];
+        return ($x == $y) && ($x>>0);
     }
 
     function SaveTournament($bdd, $class, $Team){
@@ -397,17 +371,16 @@ class Administrator extends Member
 
     public function createTeamF($teamName, $capiUsername, $bdd) {
         $requete = $bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
-        $requete->bindParam(':teamName', $teamName);
+        $requete->bindValue(':teamName', $teamName);
         $requete->execute();
         $requete0 = $bdd->prepare("INSERT INTO Capitain VALUES (:capUsername,:teamName)");
-        $requete0->bindParam(':capUsername', $capiUsername);
-        $requete0->bindParam(':teamName', $teamName);
+        $requete0->bindValue(':capUsername', $capiUsername);
+        $requete0->bindValue(':teamName', $teamName);
         $requete0->execute();
         $requete1 = $bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:playerUsername");
-        $requete1->bindParam(':teamName', $teamName);
-        $requete1->bindParam(':playerUsername', $capiUsername);
+        $requete1->bindValue(':teamName', $teamName);
+        $requete1->bindValue(':playerUsername', $capiUsername);
         $requete1->execute();
-
     }
 
     function searchFile($title, $bdd){
@@ -425,6 +398,7 @@ class Administrator extends Member
         $request->bindValue(':username', $player, PDO::PARAM_STR);
         $request->execute();
     }
+
     function deleteTournament($bdd)
     {
         $req = $bdd->prepare("UPDATE Guests SET isplayer = false and team = NULL");
@@ -435,6 +409,8 @@ class Administrator extends Member
         $req2->execute();
         $req5 = $bdd->prepare("DELETE FROM request");
         $req5->execute();
+        $req6 = $bdd->prepare("UPDATE Guests set Team = null");
+        $req6->execute();
         $req3 = $bdd->prepare("DELETE FROM team");
         $req3->execute();
     }

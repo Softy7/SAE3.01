@@ -24,6 +24,14 @@ class PlayerAdministrator extends Administrator {
         $this->team = $team;
     }
 
+    function addPlayer($teamname, $player){
+        $bdd = __init__();
+        $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");
+        $request->bindValue(':teamname', $teamname, PDO::PARAM_STR);
+        $request->bindValue(':username', $player, PDO::PARAM_STR);
+        $request->execute();
+    }
+
     public function unsetTeam() {
         $bdd = __init__();
 

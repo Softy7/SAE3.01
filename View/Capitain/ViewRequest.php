@@ -94,11 +94,8 @@ if ($_SESSION['captain'] == 1) {
         echo"<tr id='players'><td>$team[0]</td>";
         echo"<td>$team[1]</td>";
         echo"<td>$team[2]</td>";
-        if ($team[3]) {
-            echo"<td>oui</td>";
-        }else{
-            echo"<td>non</td>";
-        }if ($team[4] != null) {
+        echo"<td>$team[3]</td>";
+        if ($team[4] != null) {
             echo"<td>Admin</td>";
         }else {
             echo "<td>Non Admin</td>";
@@ -107,8 +104,8 @@ if ($_SESSION['captain'] == 1) {
         ?>
         <td>
             <form action="../../Controller/Capitain/Response_Request.php" id="form" method='post'>
-                <input id="response" type='submit' name="yes_<?php echo $result[0]; ?>" value="Accepter"/>
-                <input id="response" type='submit' name="no_<?php echo $result[0]; ?>" value="Refuser"/>
+                <input id="response" type='submit' name="yes_<?php echo $team[0]; ?>" value="Accepter"/>
+                <input id="response" type='submit' name="no_<?php echo $team[0]; ?>" value="Refuser"/>
             </form>
         </td>
         <?php

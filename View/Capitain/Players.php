@@ -7,8 +7,8 @@ require_once('../../ConnexionDataBase.php');
 
 if ($_SESSION['captain']) {
     $bdd = __init__();
-$user = launch();
-$teamMates = $user->getTeammates($bdd);
+    $user = launch();
+    $teamMates = $user->getTeammates($bdd);
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -85,20 +85,18 @@ $teamMates = $user->getTeammates($bdd);
 <?php
 foreach($teamMates as $team) {
     if($team[0]!=$user->username){
-    ?><?php
         echo "<table><tr id='players'><th>Pseudo</th><th>Mail</th><th>Nom</th><th>Prénom</th><th>Fonction</th><th>Décision</th></tr>";
             echo"<tr id='players'><td>$team[0]</td>";
-            echo"<td>$team[1]</td>";
-            echo"<td>$team[2]</td>";
-            if ($team[3]) {
-                echo"<td>oui</td>";
-            }else{
-                echo"<td>non</td>";
-            }if ($team[4] != null) {
+            ?>
+            <td><?php echo $team[1]; ?></td>
+            <td><?= $team[2] ?></td>
+            <td><?= $team[3] ?></td>
+                <?php
+            }if ($team[4]) {
                 echo"<td>Admin</td>";
             }else {
                 echo "<td>Non Admin</td>";
-        }
+            }
 
                 ?>
                 <td>
@@ -113,17 +111,15 @@ foreach($teamMates as $team) {
         echo"</table>";
         ?>
         <br>
-
-    <?php
-    }
-    ?></body>
+    </body>
     <footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
                 Projet Réalisé dans le cadre de la SAE 3.01<br>
                 Références:<br>
                 Michel Ewan | Meriaux Thomas | Hostelart Anthony | Faës Hugo | Benredouane Ilies<br>
                 A destination de: <br>
                 Philippe Polet<br>-----</p></center></footer>
-    </html><?php
+</html><?php
+
 } else {
     header('location: ../Guest_home.html');
-}
+} ?>

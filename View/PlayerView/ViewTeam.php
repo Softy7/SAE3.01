@@ -16,7 +16,7 @@ if ($_SESSION['isPlayer']) {
     <head>
         <meta charset="UTF-8">
         <title>Cholage Club Quaroule.fr</title>
-        <link href="" rel="stylesheet">
+        <link href="viewTeam.css" rel="stylesheet">
     </head>
 <body>
 <h1>Espace Effectif</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
