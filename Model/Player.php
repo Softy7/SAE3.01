@@ -126,7 +126,6 @@ class Player extends Member {
         $request->bindValue(':username', $this->username, PDO::PARAM_STR);
         $request->execute();
         return $request->fetchAll();
-
     }
 
     public function scearchName($teamName,$bdd){

@@ -197,9 +197,14 @@ class AdminCapitain extends PlayerAdministrator
         $requete->execute();
     }
 
-    function contest($id)
-    {
+    function contest($id){
         $req = $this->db->prepare("Update Match SET contest = true where idmatch = :id");
+        $req->bindParam(':id', $id);
+        $req->execute();
+    }
+
+    function Confirm($id){
+        $req = $this->db->prepare("Update Match SET contest = false where idmatch = :id");
         $req->bindParam(':id', $id);
         $req->execute();
     }
@@ -250,6 +255,14 @@ class AdminCapitain extends PlayerAdministrator
         $req->execute();
         $result = $req->fetchAll();
         return $result;
+    }
+
+    function getTeammates($bdd) {
+        $request = $bdd->prepare("Select username, mail, name, firstname, isadmin from Guests where team = :teamname and username != :username");//retire le joueur de son equipe
+        $request->bindValue(':teamname', $this->getTeam(), PDO::PARAM_STR);
+        $request->bindValue(':username', $this->username, PDO::PARAM_STR);
+        $request->execute();
+        return $request->fetchAll();
     }
 
     function checkScoreEntered($bdd)

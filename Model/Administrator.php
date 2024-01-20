@@ -63,32 +63,6 @@ class Administrator extends Member
         return $req->fetchall();
     }
 
-    function createTeamByStrench($team, $cap, $P1, $bdd){
-        $this->createTeam($team, $cap, $bdd);
-        $this->addPlayerBis($team, $P1);
-    }
-
-    public function createTeam($teamName, $playerUsername, $bdd)
-    {
-        $requete = $bdd->prepare("INSERT INTO Team VALUES (:teamName,0,0,0)");
-        $requete->bindParam(':teamName', $teamName);
-        $requete->execute();
-
-        $requete0 = $bdd->prepare("INSERT INTO Capitain VALUES (:capUsername,:teamName)");
-        $requete0->bindParam(':capUsername', $this->username);
-        $requete0->bindParam(':teamName', $teamName);
-        $requete0->execute();
-
-        $requete1 = $bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:playerUsername");
-        $requete1->bindParam(':teamName', $teamName);
-        $requete1->bindParam(':playerUsername', $playerUsername);
-        $requete1->execute();
-
-        $requete2 = $bdd->prepare("UPDATE Guests SET Team=:teamName WHERE username=:thisUsername");
-        $requete2->bindParam(':teamName', $teamName);
-        $requete2->bindParam(':thisUsername', $this->username);
-        $requete2->execute();
-    }
     function addPlayerBis($teamname, $player){
         $bdd = __init__();
         $request = $bdd->prepare("UPDATE Guests set team = :teamname where username = :username");

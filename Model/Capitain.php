@@ -255,6 +255,14 @@ class Capitain extends Player {
         return $result;
     }
 
+    function getTeammates($bdd) {
+        $request = $bdd->prepare("Select username, mail, name, firstname, isadmin from Guests where team = :teamname and username != :username");//retire le joueur de son equipe
+        $request->bindValue(':teamname', $this->getTeam(), PDO::PARAM_STR);
+        $request->bindValue(':username', $this->username, PDO::PARAM_STR);
+        $request->execute();
+        return $request->fetchAll();
+    }
+
     function checkScoreEntered($bdd){
         $matchsNotValidated=$this->getMatchNotValidated($bdd);
         $matchNotPlayed=$this->getMatchNotPlayed($bdd);
