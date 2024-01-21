@@ -1,0 +1,140 @@
+table {
+    border-collapse: collapse;
+    margin : auto;
+}
+
+main {
+    align-items: center;
+}
+
+#container{
+    width:400px;
+    margin:0 auto;
+    margin-top:5%;
+
+    align-items: center;
+}
+/* Bordered form */
+
+#container {
+    align-items: center;
+    width: 22%;
+    padding-bottom: 10px;
+    font-family: Arial, sans-serif;
+    margin-left: 33%;
+    margin-right: 45%;
+}
+
+#players{
+    background-color: #cccccc;
+    border: 1px solid black;
+    padding: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+
+td {
+    padding: 55px;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+
+th {
+    font-weight: bolder;
+}
+
+button:hover{
+    background-color: #9a9696;
+    color: white;
+}
+
+input, option, select, label {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #9a9696;
+}
+
+input[type="submit"]:hover {
+    background-color: #9a9696;
+    color: white;
+}
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
+}
+
+/* Style pour le message "404 not found" */
+h1 {
+    font-family: "Baskerville Old Face" ;
+    margin-left:35% ;
+    margin-right:35%;
+    text-align: center;
+    color: #000000;
+    background-color: #cccccc;
+    width: 30%;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#head {
+    background-color: #c5c5c5;
+    border-radius: 9px;
+    width: 100%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#profile {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
+}
+
+#profile:hover {
+    position: absolute;
+    top: 6px;
+    right: 2px;
+    background-color: white;
+    color: black;
+}
+
+#classment {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+
+#classment:hover {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    background-color: white;
+    color: black;
+}
+#notActive {
+    background-color: #9a9696;
+    color: white;
+}
+
+.LastMatch {
+    text-align: center;
+    border-radius: 9px;
+    width:35%;
+    padding: 130px;
+    background: #bbbbbb;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+}
+
+#Match {
+    font-size: 32px;
+    min-width: 70%;
+}

@@ -1,0 +1,56 @@
+button:hover{
+    background-color: #9a9696;
+    color: white;
+}
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
+}
+
+input {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
+}
+
+input:hover {
+    background-color: #9a9696;
+    color: white;
+}
+
+table {
+    border-collapse: collapse;
+    margin : auto;
+}
+
+td,th {
+    border: 1px solid black;
+    padding: 15px;
+}
+
+th {
+    font-weight: bolder;
+}
+
+h1 {
+    font-family: "Baskerville Old Face" ;
+    margin-left:35% ;
+    margin-right:35%;
+    text-align: center;
+    color: #000000;
+    background-color: #cccccc;
+    width: 30%;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+}

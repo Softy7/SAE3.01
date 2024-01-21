@@ -34,13 +34,13 @@ $contests = array();
         foreach($matchs as $match) {
             if ($match[8] != 1) {
                 if ($match[4] == 1) {
-                    ?><table><tr><th><input type="submit" id="correct" value="Choleur :<?php echo $match[1], " 1 - 0 Decholeur : ", $match[2], ' Pari: ',$match[3], ' Coups: ', $match[11]?>"></th></tr></table><?php
+                    ?><br><table><tr><th><input type="submit" id="correct" value="Choleur :<?php echo $match[1], " 1 - 0 Decholeur : ", $match[2], ' Pari: ',$match[3], ' Coups: ', $match[11]?>"></th></tr></table><?php
                 } else if ($match[4] == 2) {
-                    ?><table><tr><th><input type="submit" id="correct" value="Choleur :<?php echo $match[1], " 0 - 1 Decholeur : ", $match[2], ' Pari: ',$match[3], ' Coups: ',$match[11]?>"</th></tr></table><?php
-                } else if ($match[7] != null && $match[9] != null && $match[10] != null) {
-                    ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], ' ', $match[9]," - ", $match[10], ' ', $match[2]?>"</th></tr></table><?php
+                    ?><br><table><tr><th><input type="submit" id="correct" value="Choleur :<?php echo $match[1], " 0 - 1 Decholeur : ", $match[2], ' Pari: ',$match[3], ' Coups: ',$match[11]?>"</th></tr></table><?php
+                } else if ($match[7] == 1 && ($match[9] != null or $match[9] == 0) && ($match[10] != null or $match[10] == 0)) {
+                    ?><br><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], ' ', $match[9]," - ", $match[10], ' ', $match[2]?>"</th></tr></table><?php
                 } else {
-                    ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " - ", $match[2]?>"</th></tr></table><?php
+                    ?><br><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " - ", $match[2]?>"</th></tr></table><?php
                 }
             } else {
                 $contests[] = $match;
@@ -60,10 +60,10 @@ $contests = array();
                     $str = " Erreur ";
                 }
             }
-            ?><table><tr><th><input type="submit" name="_contest_<?php echo $match[0]?>" value="<?php echo $match[1], $str, $match[2]?>"</th></tr></table><?php
+            ?><br><table><tr><th><input type="submit" name="_contest_<?php echo $match[0]?>" value="<?php echo $match[1], $str, $match[2]?>"</th></tr></table><?php
         } ?></form><?php
     } ?>
-</main>
+    <table><tr><th><button onclick="window.location.href='viewRunMatch.php';">Retour</button></th></tr></table></main>
 </body><footer><center><p>-----<br>Références: Chôlage Quarouble, IUT Valenciennes Campus de Maubeuge<br>
             Projet Réalisé dans le cadre de la SAE 3.01<br>
             Références:<br>

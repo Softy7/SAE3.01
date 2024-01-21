@@ -1,6 +1,10 @@
 <?php
 
 include('PlayerAdministrator.php');
+
+/**
+ *
+ */
 class AdminCapitain extends PlayerAdministrator
 {
     function __construct($un, $m, $n, $fn, $b, $p, $tn)
@@ -17,12 +21,6 @@ class AdminCapitain extends PlayerAdministrator
         $request->execute();
     }
 
-
-    function removePlayerInTeam($player)
-    {
-        $this->team->removePlayer($player);
-    }
-
     public function askPlayer($player, $team)
     {
 
@@ -32,6 +30,11 @@ class AdminCapitain extends PlayerAdministrator
         $request->execute();
     }
 
+    /**
+     * @param $teamname
+     * @param $player
+     * @return void
+     */
     function addPlayer($teamname, $player)
     {
 

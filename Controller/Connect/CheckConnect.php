@@ -63,12 +63,12 @@ if ($temp != null) {
         }
         header("location: ../../View/Home/Home.php");
     } else {
-        /*header('location: ../../View/NotAccepted.html');*/
+        header('location: ../../View/NotAccepted.html');
     }
 
 } else if ($_SESSION['try']) {
-    /*$header('location: ../../View/NotAccepted.html');*/
+    header('location: ../../View/NotAccepted.html');
 } else {
-    /*header("location: ../../View/Guest_Home.html");*/
+    header("location: ../../View/Guest_Home.html");
 }
 exit;
