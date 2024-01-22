@@ -66,7 +66,7 @@ if ($run == 0) {
                     ?><br><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " - ", $match[2]?>"</th></tr></table><?php
                 }
             } else {
-                $contests[-1] = $match;
+                $contests[] = $match;
             }
         }
                 foreach($contests as $match) {

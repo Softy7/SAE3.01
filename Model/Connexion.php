@@ -66,7 +66,7 @@ class Connexion {
     function enoughtPlayer() {
         $request = $this->db->prepare("SELECT count(*)
                                 FROM guests 
-                                WHERE isPlayer = true and team is null");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre et regarde si l'utilisateur ne s'est pas désinscrit au préalable
+                                WHERE isPlayer = true and isdeleted = false and team is null");//recherche le pseudo et mots de passe dans la base de donné et regarde si l'administrateur a accepter sa demande pour devenir membre et regarde si l'utilisateur ne s'est pas désinscrit au préalable
         $request->execute();
         return $request->fetchAll()[0][0] >= 3;
     }

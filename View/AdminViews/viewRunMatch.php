@@ -93,7 +93,7 @@ $teams = $user->getTeams($bdd);
         ?><form action="../../Controller/AdminFunctions/getRun.php" method="post"><?php
 
         foreach ($run as $r) {
-            ?><tr><th><input type="submit" name="_idRun_<?php echo $r[0]?>" value="<?php echo "Parcours: ", $r[1]; if ($r[5] == 0) { echo " Penalty";} else { echo " Pari Max: ", $r[6];} ?>"></th></tr><?php
+            ?><tr><th><input type="submit" name="_idRun_<?php echo $r[0]?>" value="<?php echo "Parcours: ", $r[1]; if ($r[6] == 0) { echo " Penalty";} else { echo " Pari Max: ", $r[6];} ?>"></th></tr><?php
         }
         ?><?php
     }

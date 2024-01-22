@@ -43,7 +43,7 @@ if ($user instanceof Administrator && $_SESSION['tname'] != null) {
                     ?><br><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " - ", $match[2]?>"</th></tr></table><?php
                 }
             } else {
-                $contests[-1] = $match;
+                $contests[] = $match;
             }
         }
         ?><form action="Winner.php" method="post"><?php
