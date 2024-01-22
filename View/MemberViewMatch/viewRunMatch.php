@@ -64,7 +64,7 @@ $teams = $init->getTeams($bdd);
 
         if ($_SESSION['teamName'] == null && $_SESSION['openn'] && $_SESSION['isPlayer']) {
             if ($user->ableToCreate()) {
-                ?><th><button onclick="window.location.href='../Capitain/CreateTeam.php'">Devenir Capitaine</button></th><?php
+                ?><th><button onclick="window.location.href='../CreateTeam/Form.php'">Devenir Capitaine</button></th><?php
             }
             ?><th><button onclick="window.location.href='../Registering/AskJoin.php'">Espace Intégration</button></th><?php
             ?><th><button onclick="window.location.href='../Registering/TeamRequest.php'">Espace Demandes</button></th><?php
@@ -94,7 +94,7 @@ $teams = $init->getTeams($bdd);
     ?><form action="viewMatch.php" method="post"><?php
 
         foreach ($run as $r) {
-            ?><tr><th><input type="submit" name="_idRun_<?php echo $r[0]?>" value="<?php echo "Parcours: ", $r[1]; if ($r[5] == 0) { echo " Penalty";} else { echo " Pari Max: ", $r[6];} ?>"></th></tr><?php
+            ?><tr><th><input type="submit" name="_idRun_<?php echo $r[0]?>" value="<?php echo "Parcours: ", $r[1]; if ($r[6] == 0) { echo " Penalty";} else { echo " Pari Max: ", $r[6];} ?>"></th></tr><?php
         }
         ?><?php
         }

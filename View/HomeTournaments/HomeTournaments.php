@@ -24,7 +24,7 @@ if ($_SESSION['connected']) {
         <link href="HomeTournaments.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <h1>Chôlage Quarouble</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
+    <button id="classment" onclick="window.location.href='viewOldTournament.php'">Classements</button><h1>Chôlage Quarouble</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
     <center><table id="head"><tr>
                 <th><button  onclick="window.location.href='../Home/Home.php'">Espace Principal</button></th><th>
                 <?php if ($_SESSION['isAdmin']) {
@@ -67,7 +67,7 @@ if ($_SESSION['connected']) {
 
             if ($_SESSION['teamName'] == null && $_SESSION['openn'] && $_SESSION['isPlayer']) {
                 if ($user->ableToCreate()) {
-                    ?><th><button onclick="window.location.href='../Capitain/CreateTeam.php'">Devenir Capitaine</button></th><?php
+                    ?><th><button onclick="window.location.href='../CreateTeam/Form.php'">Devenir Capitaine</button></th><?php
                 }
                 ?><th><button onclick="window.location.href='../Registering/AskJoin.php'">Espace Intégration</button></th><?php
                 ?><th><button onclick="window.location.href='../Registering/TeamRequest.php'">Espace Demandes</button></th><?php
@@ -92,7 +92,7 @@ if ($_SESSION['connected']) {
         <div class="LastMatch">
         <h2>Prochain Match:</h2>
             <form action="../Capitain/setScore.php">
-            <input type="submit" id="Match" value="<?php echo $nextMatch[0][1]; if ($nextMatch[0][4] == 0) {echo " VS ";} else if ($nextMatch[0][4] == 3) {echo " 1 - 0 ";} else if ($nextMatch[0][4] == 4) {echo " 0 - 1 ";} echo $nextMatch[0][2]; ?>">
+            <input type="submit" id="Match" value="<?php echo $nextMatch[0][1]; if ($nextMatch[0][4] == 3) {echo " 1 - 0 ";} else if ($nextMatch[0][4] == 4) {echo " 0 - 1 ";} else if ($nextMatch[0][7] == 1) {echo " ", $nextMatch[0][9], " - ", $nextMatch[0][10], " ";}  else if ($nextMatch[0][4] == 0 ) {echo " VS ";} echo $nextMatch[0][2];?>">
             </form>
         <h2>Matchs à venir: </h2>
             <?php
@@ -107,7 +107,7 @@ if ($_SESSION['connected']) {
         </div>
         <?php
     } else {
-        echo 'Aucun match, générer les d\'abors';
+        echo 'Aucun match à venir existant pour le moment... Veuillez patienter.';
     }
     ?>
     </body>

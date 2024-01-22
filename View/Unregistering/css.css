@@ -1,0 +1,24 @@
+input:hover{
+    background-color: #9a9696;
+    color: white;
+}
+
+input{
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #ffffff;
+    border-radius: 13px;
+    border-color: #c5c5c5;
+}
+
+div {
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    width: 25%;
+    font-size: 20px;
+}
+
+body {
+    align-items: center;
+}

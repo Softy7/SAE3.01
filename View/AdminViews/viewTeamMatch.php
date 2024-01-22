@@ -33,21 +33,22 @@ if ($user instanceof Administrator && $_SESSION['tname'] != null) {
         foreach($matchs as $match) {
             if ($match[8] != 1) {
                 if ($match[4] == 1) {
-                    ?><table><tr><th><input type="submit" id="correct" value="Choleur :<?php echo $match[1], " 1 - 0 Decholeur : ", $match[2], ' Pari:',$match[3], ' Coups:', $match[11]?>"></th></tr></table><?php
+                    ?><br><table><tr><th><input type="submit" id="correct" value="Choleur :<?php echo $match[1], " 1 - 0 Decholeur : ", $match[2], ' Pari:',$match[3], ' Coups:', $match[11]?>"></th></tr></table><?php
                 } else if ($match[4] == 2) {
-                    ?><table><tr><th><input type="submit" id="correct" value="Choleur :<?php echo $match[1], " 0 - 1 Decholeur : ", $match[2], ' Pari:',$match[3], ' Coups:',$match[11]?>"</th></tr></table><?php
-                } else if ($match[6] != null && $match[9] != null && $match[10]!=null) {
-                    ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], ' ', $match[9]," - ", $match[10], ' ', $match[2], " (Penalty)"?>"</th></tr></table><?php
+                    ?><br><table><tr><th><input type="submit" id="correct" value="Choleur :<?php echo $match[1], " 0 - 1 Decholeur : ", $match[2], ' Pari:',$match[3], ' Coups:',$match[11]?>"</th></tr></table><?php
+                } else if ($match[7] && ($match[9] != null or $match[9] == 0) && ($match[10] != null or $match[10] == 0)) {
+                    ?><br><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], ' ', $match[9]," - ", $match[10], ' ', $match[2], " (Penalty)"?>"</th></tr></table><?php
                 } else {
-                    ?><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " - ", $match[2]?>"</th></tr></table><?php
+                    echo $match[9];
+                    ?><br><table><tr><th><input type="submit" id="correct" value="<?php echo $match[1], " - ", $match[2]?>"</th></tr></table><?php
                 }
             } else {
-                $contests[-1] = $match;
+                $contests[] = $match;
             }
         }
         ?><form action="Winner.php" method="post"><?php
         foreach($contests as $match) {
-            if ($match[6] != null) {
+            if ($match[7] == 1) {
                 $str = " $match[9] - $match[10] ";
             } else {
                 $bet = "Pari: $match[3], Coups: $match[11]";
@@ -59,7 +60,7 @@ if ($user instanceof Administrator && $_SESSION['tname'] != null) {
                     $str = " Erreur ";
                 }
             }
-            ?><table><tr><th><input type="submit" name="_contest_<?php echo $match[0]?>" value="<?php echo $match[1], $str, $match[2]?>"</th></tr></table><?php
+            ?><br><table><tr><th><input type="submit" name="_contest_<?php echo $match[0]?>" value="<?php echo $match[1], $str, $match[2]?>"</th></tr></table><?php
         } ?></form><?php
     } ?>
     <table><tr><th><button onclick="window.location.href='viewRunMatch.php';">Retour</button></th></tr></table></main></body>

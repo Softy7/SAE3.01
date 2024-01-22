@@ -140,10 +140,10 @@ class Player extends Member {
         }
     }
 
-    function ableToCreate() {
-        $requete = $this->db->prepare("SELECT count(*) from guests where isPlayer = true and team is null");
+    function ableToCreate() : bool {
+        $requete = $this->db->prepare("SELECT count(*) from guests where isPlayer = true and isdeleted = false and team is null");
         $requete->execute();
-        return $requete->fetchAll()[0][0] > 3;
+        return $requete->fetchAll()[0][0] >= 3;
     }
     /**/
 }

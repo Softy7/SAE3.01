@@ -18,10 +18,10 @@ if ($_SESSION['isAdmin'] == 1) {
     <link href="viewAllMember.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<h1>ATTENTION, voulez-vous vraiment supprimer les tournois? (équipes, joueurs, parcours, capitaines et matchs) :</h1>
+<h1>ATTENTION, voulez-vous vraiment tout remettre à zéro ? (équipes, joueurs->membres, parcours, capitaines ?) :</h1>
 
 <form action='../../Controller/AdminFunctions/deleteTournament.php' method="post">
-    <input type='submit' name="deleteTournament" value="Supprimer les tournois">
+    <input type='submit' name="deleteTournament" value="Réinitialiser">
 </form>
 </body>
 <?php

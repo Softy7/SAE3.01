@@ -1,4 +1,4 @@
-Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Old_Tournament, Request cascade;
+Drop table if exists Guests, Team, Capitain, Match, Articles, Inscription, Run, Old_Tournament, Request, bet cascade;
 
 create table Team (
                       teamName text unique not null primary key,
@@ -91,7 +91,7 @@ insert into Inscription
 values (true);
 
 
-/* Jeu de test*/
+/* Jeu de test (Mot de passe Hashé par défaut: N1nt3nd0# )*/
 insert into Guests
 values ('Softy16', 'ewanrecquignies@gmail.com','Michel','Ewan','2004-11-12', '$2y$10$kvQreEw6k1KF6b.rVj3gheT4fOGKnCh2t5KOHuUD/r3u6CL.aO7/C',true,true,true,false),
        ('OptimusPrime3000', 'optimus@gmail.com','Prime','Optimus','2004-11-12', '$2y$10$kvQreEw6k1KF6b.rVj3gheT4fOGKnCh2t5KOHuUD/r3u6CL.aO7/C',True,false,true,false),
