@@ -18,7 +18,7 @@ if ($_SESSION['isPlayer']) {
     <link href="AskJoin.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<h1>Espace Intégration</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
+<button id="classment" onclick="window.location.href='viewOldTournament.php'">Classements</button><h1>Espace Intégration</h1><button id="profile" onclick="window.location.href='../Profile/viewProfile.php'"><?php echo "Pseudo: ", $_SESSION['username']?><br><?php echo "Equipe: ", $_SESSION['teamName']?><br><?php echo $_SESSION['view']?></button>
 <center><table id="head"><tr>
             <th><button onclick="window.location.href='../Home/Home.php'">Espace Principal</button></th><th>
             <?php if ($_SESSION['isAdmin']) {
